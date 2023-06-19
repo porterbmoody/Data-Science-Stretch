@@ -1,0 +1,9 @@
+
+
+# C++ vs Python For Machine Learning
+
+## Background
+
+Both C++ and Python are powerful, capable languages. Lets explore some of their pros and cons for machine learning.
+
+

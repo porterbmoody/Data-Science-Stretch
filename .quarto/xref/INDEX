@@ -1,0 +1,20 @@
+{
+  "about.qmd": {
+    "about.html": "b13d202a"
+  },
+  "articles/about.qmd": {
+    "about.html": "47c78768"
+  },
+  "articles/cpp_vs_python.qmd": {
+    "cpp_vs_python.html": "bc45ea9d"
+  },
+  "articles/Neural Network Theory.qmd": {
+    "Neural Network Theory.html": "49a0b73c"
+  },
+  "index.qmd": {
+    "index.html": "c8d3cca8"
+  },
+  "articles/Feedforward Neural Network.qmd": {
+    "Feedforward Neural Network.html": "f2047dd8"
+  }
+}
