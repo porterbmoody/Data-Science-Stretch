@@ -2,4 +2,6 @@
 title: "About"
 ---
 
-Deeper insights into data science, neural networks, and the underlying math and theory. Dig in and see if you like some of the stuff they say in it.
+Yo whats up it's me Porter!! (That's my cousin Josh)
+
+![](../images/porter.png){width=400}

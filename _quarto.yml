@@ -13,24 +13,22 @@ website:
     left:
       - text: Home
         file: index.qmd
-      - articles/about.qmd
+      - about.qmd
       # margin-header: |
         # ![ai](/images/porter_small.png)
 
   sidebar:
+    contents: articles/math/*
+    # contents: articles/*
     # style: "docked"
     # search: true
-    title: "Articles"
-    contents:
-      - section: "Math"
-        contents:
-          - text: "Feedforward Neural Network"
-            file: articles/Feedforward Neural Network.qmd
+    # title: "Feedforward Neural Network"
+    # contents:
+    # - text: "Feedforward Neural Network"
+      # file: articles/Feedforward Neural Network.qmd
+    #   contents:
+      # - section: "Math"
 
-      # - section: "Software Debate"
-      #   contents:
-      #     - text: "C++ vs Python"
-      #       file: articles/cpp_vs_python.qmd
 
 format:
   html:

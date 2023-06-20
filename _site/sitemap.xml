@@ -2,18 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://porter.quarto.pub/data-science-stretch/about.html</loc>
-    <lastmod>2023-06-19T19:01:24.428Z</lastmod>
+    <lastmod>2023-06-20T00:09:23.340Z</lastmod>
   </url>
   <url>
-    <loc>https://porter.quarto.pub/data-science-stretch/articles/about.html</loc>
-    <lastmod>2023-06-19T19:01:25.134Z</lastmod>
+    <loc>https://porter.quarto.pub/data-science-stretch/articles/coding/cpp_vs_python.html</loc>
+    <lastmod>2023-06-20T00:09:23.855Z</lastmod>
   </url>
   <url>
-    <loc>https://porter.quarto.pub/data-science-stretch/articles/cpp_vs_python.html</loc>
-    <lastmod>2023-06-19T19:01:25.598Z</lastmod>
+    <loc>https://porter.quarto.pub/data-science-stretch/articles/math/Feedforward Neural Network.html</loc>
+    <lastmod>2023-06-20T00:09:24.479Z</lastmod>
   </url>
   <url>
-    <loc>https://porter.quarto.pub/data-science-stretch/articles/Feedforward Neural Network.html</loc>
-    <lastmod>2023-06-19T19:01:26.147Z</lastmod>
+    <loc>https://porter.quarto.pub/data-science-stretch/articles/math/nns.html</loc>
+    <lastmod>2023-06-20T00:09:25.030Z</lastmod>
   </url>
 </urlset>

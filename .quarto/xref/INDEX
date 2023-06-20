@@ -16,5 +16,20 @@
   },
   "articles/Feedforward Neural Network.qmd": {
     "Feedforward Neural Network.html": "f2047dd8"
+  },
+  "articles/completed/Feedforward Neural Network.qmd": {
+    "Feedforward Neural Network.html": "9040f16c"
+  },
+  "articles/in_progress/cpp_vs_python.qmd": {
+    "cpp_vs_python.html": "f7c75e45"
+  },
+  "articles/coding/cpp_vs_python.qmd": {
+    "cpp_vs_python.html": "3dc4e1d2"
+  },
+  "articles/math/Feedforward Neural Network.qmd": {
+    "Feedforward Neural Network.html": "1ff4d31a"
+  },
+  "articles/math/nns.md": {
+    "nns.html": "f1a1f131"
   }
 }

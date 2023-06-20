@@ -4,55 +4,48 @@
     "href": "about.html",
     "title": "About",
     "section": "",
-    "text": "Deeper insights into data science, neural networks, and the underlying math and theory. Dig in and see if you like some of the stuff they say in it."
+    "text": "Yo whats up it’s me Porter!! (That’s my cousin Josh)"
   },
   {
-    "objectID": "articles/about.html",
-    "href": "articles/about.html",
-    "title": "About",
-    "section": "",
-    "text": "Yo whats up it’s me Porter!!"
-  },
-  {
-    "objectID": "articles/cpp_vs_python.html",
-    "href": "articles/cpp_vs_python.html",
+    "objectID": "articles/coding/cpp_vs_python.html",
+    "href": "articles/coding/cpp_vs_python.html",
     "title": "C++ vs Python For Machine Learning",
     "section": "",
     "text": "Both C++ and Python are powerful, capable languages. Lets explore some of their pros and cons for machine learning."
   },
   {
-    "objectID": "articles/cpp_vs_python.html#background",
-    "href": "articles/cpp_vs_python.html#background",
+    "objectID": "articles/coding/cpp_vs_python.html#background",
+    "href": "articles/coding/cpp_vs_python.html#background",
     "title": "C++ vs Python For Machine Learning",
     "section": "",
     "text": "Both C++ and Python are powerful, capable languages. Lets explore some of their pros and cons for machine learning."
   },
   {
-    "objectID": "articles/Feedforward Neural Network.html",
-    "href": "articles/Feedforward Neural Network.html",
-    "title": "Feedforward Neural Network",
+    "objectID": "articles/math/nns.html",
+    "href": "articles/math/nns.html",
+    "title": "pizza",
     "section": "",
-    "text": "A Neural Network is typically a type of machine learning model that use linear algebra and multivariable calculus to create a mapping from an input vector to an output vector that minmizes the loss function. Here is lined out the mathematics for a single layer neural network.\nNote: DNN’s (Deep Neural Networks) or ANN’s with more than 1 hidden layer will be covered in another article."
+    "text": "A Neural Network is typically a type of machine learning model that use linear algebra and multivariable calculus to create a mapping from an input vector to an output vector that minmizes the loss function. Here is lined out the mathematics for a single layer neural network.\nNote: DNN’s (Deep Neural Networks) or neural networks with more than 1 hidden layer will be covered in another article."
   },
   {
-    "objectID": "articles/Feedforward Neural Network.html#background",
-    "href": "articles/Feedforward Neural Network.html#background",
-    "title": "Feedforward Neural Network",
+    "objectID": "articles/math/nns.html#background",
+    "href": "articles/math/nns.html#background",
+    "title": "pizza",
     "section": "",
-    "text": "A Neural Network is typically a type of machine learning model that use linear algebra and multivariable calculus to create a mapping from an input vector to an output vector that minmizes the loss function. Here is lined out the mathematics for a single layer neural network.\nNote: DNN’s (Deep Neural Networks) or ANN’s with more than 1 hidden layer will be covered in another article."
+    "text": "A Neural Network is typically a type of machine learning model that use linear algebra and multivariable calculus to create a mapping from an input vector to an output vector that minmizes the loss function. Here is lined out the mathematics for a single layer neural network.\nNote: DNN’s (Deep Neural Networks) or neural networks with more than 1 hidden layer will be covered in another article."
   },
   {
-    "objectID": "articles/Feedforward Neural Network.html#prerequisites",
-    "href": "articles/Feedforward Neural Network.html#prerequisites",
-    "title": "Feedforward Neural Network",
+    "objectID": "articles/math/nns.html#prerequisites",
+    "href": "articles/math/nns.html#prerequisites",
+    "title": "pizza",
     "section": "Prerequisites:",
     "text": "Prerequisites:\n\nTransformations, mappings, vector and matrix multiplication and other operations from linear algebra\nPartial derivatives from multivariable calculus"
   },
   {
-    "objectID": "articles/Feedforward Neural Network.html#feed-forward-process",
-    "href": "articles/Feedforward Neural Network.html#feed-forward-process",
-    "title": "Feedforward Neural Network",
+    "objectID": "articles/math/nns.html#feed-forward-process",
+    "href": "articles/math/nns.html#feed-forward-process",
+    "title": "pizza",
     "section": "Feed Forward Process",
-    "text": "Feed Forward Process\nThe transformation \\(T_1: \\mathbb{R^n} \\rightarrow \\mathbb{R^h}\\) maps the input vector \\(\\vec{x} \\in \\mathbb{R^n}\\)\n\\[\n\\vec{x} =\n\\begin{bmatrix}\n    x_1\\\\\n    x_2\\\\\n    \\vdots\\\\\n    x_n\n\\end{bmatrix}\n\\]\nto the hidden layer vector \\(\\vec{h} \\in \\mathbb{R^h}\\)\n\\[\n\\vec{h} =\n\\begin{bmatrix}\n    h_1\\\\\n    h_2\\\\\n    \\vdots\\\\\n    h_h\n\\end{bmatrix}\n\\]\nAnd the transformation \\(T_2: \\mathbb{R^h} \\rightarrow \\mathbb{R^m}\\) maps the hidden layer vector \\(\\vec{h} \\in \\mathbb{R^h}\\) to the output layer vector \\(\\vec{y} \\in \\mathbb{R^m}\\)\n\\[\n\\vec{y} =\n\\begin{bmatrix}\n    y_1\\\\\n    y_2\\\\\n    \\vdots\\\\\n    y_m\n\\end{bmatrix}\n\\]\nThere are 2 matrices of randomly generated weights and \\(W_2\\).\nThe mapping \\(T_1: R^n\\rightarrow R^h\\\\\\) is represented by a matrix of randomly generated scalars, or weights \\(W_1\\).\n$$\n\\[\\begin{gather}\nW = \\begin{bmatrix}\n    w_{1,1} & w_{1,2} & \\ldots & w_{1,n}\\\\\n    w_{2,1} & w_{2,2} & \\ldots & w_{2,n}\\\\\n    \\vdots & \\vdots & \\ddots & \\vdots\\\\\n    w_{h,1} & w_{h,2} & \\ldots & w_{h,n}\\\\\n    \\end{bmatrix}\n\n\\newline\n\\newline\n\nT(\\vec{x}) = W\\vec{x} = \\vec{s}\n\\end{gather}\\] $$\n\\(W_h\\) that represents the transformations from the input layer \\(\\vec{x}\\) to the hidden layer \\(\\vec{s}\\) and the hidden layer \\(\\vec{s}\\) to the ouput layer \\(\\vec{y}\\), respectively.\n\\[\n$W$ is represented by an  matrix where $n$ is the number of elements in the input vector and $h$ is the number of elements in the hidden layer.\n\\]\nAnd \\(W_2\\) is represened by an \\(mxh\\) matrix where \\(h\\) is the number of elements in the hidden layer and m is the number of elements in the output layer.\n\\[\n\\begin{align}\nT: R^n\\rightarrow R^m\\\\\nT(\\vec{s}) = W_h\\vec{s} = \\vec{y}\n\\end{align}\n\\]"
+    "text": "Feed Forward Process\nThe transformation \\(T_1: \\mathbb{R^n} \\rightarrow \\mathbb{R^h}\\) maps the input vector \\(\\vec{x} \\in \\mathbb{R^n}\\)\n\\[\n\\vec{x} =\n\\begin{bmatrix}\n    x_1\\\\\n    x_2\\\\\n    \\vdots\\\\\n    x_n\n\\end{bmatrix}\n\\]\nto the hidden layer vector \\(\\vec{h} \\in \\mathbb{R^h}\\)\n\\[\n\\vec{h} =\n\\begin{bmatrix}\n    h_1\\\\\n    h_2\\\\\n    \\vdots\\\\\n    h_h\n\\end{bmatrix}\n\\]\nAnd the transformation \\(T_2: \\mathbb{R^h} \\rightarrow \\mathbb{R^m}\\) maps the hidden layer vector \\(\\vec{h} \\in \\mathbb{R^h}\\) to the output layer vector \\(\\vec{y} \\in \\mathbb{R^m}\\)\n\\[\n\\vec{y} =\n\\begin{bmatrix}\n    y_1\\\\\n    y_2\\\\\n    \\vdots\\\\\n    y_m\n\\end{bmatrix}\n\\]\nThe transformations \\(T_1\\) and \\(T_2\\) are represented by matrices \\(W_1\\) and \\(W_2\\) of randomly generated weights.\n$$ \\[\\begin{align}\nW_1 = \\begin{bmatrix}\n    w_{1,1} & w_{1,2} & \\ldots & w_{1,n}\\\\\n    w_{2,1} & w_{2,2} & \\ldots & w_{2,n}\\\\\n    \\vdots & \\vdots & \\ddots & \\vdots\\\\\n    w_{h,1} & w_{h,2} & \\ldots & w_{h,n}\\\\\n    \\end{bmatrix}\n\nT(\\vec{x}) = W\\vec{x} = \\vec{s}\n\\end{align}\\] $$\nand\n$$ \\[\\begin{gather}\nW_1 = \\begin{bmatrix}\n    w_{1,1} & w_{1,2} & \\ldots & w_{1,n}\\\\\n    w_{2,1} & w_{2,2} & \\ldots & w_{2,n}\\\\\n    \\vdots & \\vdots & \\ddots & \\vdots\\\\\n    w_{h,1} & w_{h,2} & \\ldots & w_{h,n}\\\\\n    \\end{bmatrix}\n\nT(\\vec{x}) = W\\vec{x} = \\vec{s}\n\\end{gather}\\] $$\nAnd \\(W_2\\) is represened by an \\(mxh\\) matrix where \\(h\\) is the number of elements in the hidden layer and m is the number of elements in the output layer.\n\\[\n\\begin{align}\nT: R^n\\rightarrow R^m\\\\\nT(\\vec{s}) = W_h\\vec{s} = \\vec{y}\n\\end{align}\n\\]"
   }
 ]
