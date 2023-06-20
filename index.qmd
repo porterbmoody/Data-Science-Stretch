@@ -2,3 +2,4 @@
 title: "Data Science Stretch"
 ---
 
+Cool data science blog. Currently in its early stages please be patient.

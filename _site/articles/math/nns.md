@@ -3,7 +3,7 @@ title: "Linear Algebra and Multivariable Calculus is All you Need"
 ---
 
 
-# Background
+## Background
 
 A Neural Network is a type of artifitial intelligence model that uses linear algebra and multivariable calculus to learn and store the relationship between an input vector and an output vector that minimizes the loss function. Here is lined out the mathematics for a single layer neural network.
 
@@ -13,7 +13,7 @@ Note: DNN's (Deep Neural Networks) or neural networks with more than 1 hidden la
 - Transformations, mappings, vector and matrix multiplication and other operations from linear algebra
 - Partial derivatives and their implications from multivariable calculus
 
-# Forward Propagation
+## Forward Propagation
 The input, hidden, and output layers are represented by the following vectors, respectively.
 
 
@@ -93,12 +93,10 @@ T_2(\vec{h}) = W_2\vec{h} = \vec{y}
 
 $$
 
-# Back Propgation
+## Back Propgation
 
 If you haven't already been mezmerised, get ready for the real magic show: back progagation. It is the process of adjusting the weights and biases in direction of the local minimun of the loss function with respect to each individual weight as computed by the partial derivative of the loss function with respect to the given weight.
 
-## Review
-Remember, the derivative of a function $f(x)$ at a certian point equals the slope of that function at the given point.
 
 
 
