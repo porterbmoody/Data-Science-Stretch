@@ -23,23 +23,23 @@
   {
     "objectID": "articles/math/nns.html",
     "href": "articles/math/nns.html",
-    "title": "Linear Algebra and Multivariable Calculus is All you Need",
+    "title": "The Linear Algebra and Multivariable Calculus behind Artificial Neural Networks",
     "section": "",
     "text": "A Neural Network is a type of artifitial intelligence model that uses linear algebra and multivariable calculus to learn and store the relationship between an input vector and an output vector that minimizes the loss function. Here is lined out the mathematics for a single layer neural network.\nNote: DNN’s (Deep Neural Networks) or neural networks with more than 1 hidden layer will be covered in another article.\n\n\n\nTransformations, mappings, vector and matrix multiplication and other operations from linear algebra\nPartial derivatives and their implications from multivariable calculus"
   },
   {
     "objectID": "articles/math/nns.html#prerequisites",
     "href": "articles/math/nns.html#prerequisites",
-    "title": "Linear Algebra and Multivariable Calculus is All you Need",
+    "title": "The Linear Algebra and Multivariable Calculus behind Artificial Neural Networks",
     "section": "",
     "text": "Transformations, mappings, vector and matrix multiplication and other operations from linear algebra\nPartial derivatives and their implications from multivariable calculus"
   },
   {
     "objectID": "articles/math/nns.html#review",
     "href": "articles/math/nns.html#review",
-    "title": "Linear Algebra and Multivariable Calculus is All you Need",
+    "title": "The Linear Algebra and Multivariable Calculus behind Artificial Neural Networks",
     "section": "Review",
-    "text": "Review\nRemember, the derivative of a function \\(f(x)\\) at a certian point equals the slope of that function at the given point. The partial derivative of a multivariate function a given point equals the direction of largest increase at that point."
+    "text": "Review\nRemember, the derivative of a function \\(f(x)\\) at a certian point equals the slope of that function at the given point."
   },
   {
     "objectID": "index.html",

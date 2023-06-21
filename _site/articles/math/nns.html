@@ -7,7 +7,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
 
 
-<title>Data Science Stretch - Linear Algebra and Multivariable Calculus is All you Need</title>
+<title>Data Science Stretch - The Linear Algebra and Multivariable Calculus behind Artificial Neural Networks</title>
 <style>
 code{white-space: pre-wrap;}
 span.smallcaps{font-variant: small-caps;}
@@ -103,7 +103,7 @@ ul.task-list li input[type="checkbox"] {
       <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
         <i class="bi bi-layout-text-sidebar-reverse"></i>
       </button>
-      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../articles/math/nns.html">Linear Algebra and Multivariable Calculus is All you Need</a></li></ol></nav>
+      <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../articles/math/nns.html">The Linear Algebra and Multivariable Calculus behind Artificial Neural Networks</a></li></ol></nav>
       <a class="flex-grow-1" role="button" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar,#quarto-sidebar-glass" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
       </a>
     </div>
@@ -118,7 +118,7 @@ ul.task-list li input[type="checkbox"] {
         <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../articles/math/nns.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Linear Algebra and Multivariable Calculus is All you Need</span></a>
+ <span class="menu-text">The Linear Algebra and Multivariable Calculus behind Artificial Neural Networks</span></a>
   </div>
 </li>
     </ul>
@@ -148,7 +148,7 @@ ul.task-list li input[type="checkbox"] {
 
 <header id="title-block-header" class="quarto-title-block default">
 <div class="quarto-title">
-<h1 class="title">Linear Algebra and Multivariable Calculus is All you Need</h1>
+<h1 class="title">The Linear Algebra and Multivariable Calculus behind Artificial Neural Networks</h1>
 </div>
 
 
@@ -184,36 +184,34 @@ ul.task-list li input[type="checkbox"] {
     x_1\\
     x_2\\
     \vdots\\
-    x_n
-\end{bmatrix} \in \mathbb{R^n}
+    x_m
+\end{bmatrix} \in \mathbb{R^m}
 ,
 \vec{h} =
 \begin{bmatrix}
     h_1\\
     h_2\\
     \vdots\\
-    h_k
-\end{bmatrix} \in \mathbb{R^k}
+    h_h
+\end{bmatrix} \in \mathbb{R^h}
 ,
 \vec{y} =
 \begin{bmatrix}
     y_1\\
     y_2\\
     \vdots\\
-    y_m
-\end{bmatrix} \in \mathbb{R^m}
+    y_n
+\end{bmatrix} \in \mathbb{R^n}
 \]</span></p>
-<p>Let <span class="math inline">\(T_1: \mathbb{R^n} \rightarrow \mathbb{R^k}\)</span> be a linear mapping. <span class="math inline">\(T_1\)</span> maps the input layer vector <span class="math inline">\(\vec{x} \in \mathbb{R^n}\)</span> to the hidden layer vector <span class="math inline">\(\vec{h} \in \mathbb{R^k}\)</span>. We will use the sigmoid (<span class="math inline">\(\sigma\)</span>) activation function which has a domain of <span class="math inline">\((-\infty,\infty)\)</span> and range of <span class="math inline">\((-1,1)\)</span>. Therefore the the codomain of <span class="math inline">\(T_1\)</span> is <span class="math inline">\((-1,1)\)</span>.</p>
+<p>Let <span class="math inline">\(T_1: \mathbb{R^m} \rightarrow \mathbb{R^h}\)</span> be a linear mapping. <span class="math inline">\(T_1\)</span> maps the input layer vector <span class="math inline">\(\vec{x} \in \mathbb{R^m}\)</span> to the hidden layer vector <span class="math inline">\(\vec{h} \in \mathbb{R^h}\)</span>. We will use the sigmoid (<span class="math inline">\(\sigma\)</span>) activation function which has a domain of <span class="math inline">\((-\infty,\infty)\)</span> and range of <span class="math inline">\((-1,1)\)</span>. Therefore the the codomain of <span class="math inline">\(T_1\)</span> is <span class="math inline">\((-1,1)\)</span>.</p>
 <p>$$ <span class="math display">\[\begin{gather}
 W_1 =
     \begin{bmatrix}
-    w_{1,1} &amp; w_{1,2} &amp; \ldots &amp; w_{1,n}\\
-    w_{2,1} &amp; w_{2,2} &amp; \ldots &amp; w_{2,n}\\
+    w_{1,1} &amp; w_{1,2} &amp; \ldots &amp; w_{1,m}\\
+    w_{2,1} &amp; w_{2,2} &amp; \ldots &amp; w_{2,m}\\
     \vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
-    w_{k,1} &amp; w_{k,2} &amp; \ldots &amp; w_{k,n}\\
+    w_{h,1} &amp; w_{h,2} &amp; \ldots &amp; w_{h,m}\\
     \end{bmatrix}
-
-\newline
 \newline
 T_1(\vec{x}) = \sigma(W_1\vec{x}) = \vec{s}
 
@@ -228,8 +226,6 @@ W_2 = \begin{bmatrix}
     \end{bmatrix}
 
 \newline
-\newline
-
 T_2(\vec{h}) = W_2\vec{h} = \vec{y}
 
 \end{gather}\]</span> $$</p>
@@ -243,7 +239,7 @@ T_2(\vec{h}) = W_2\vec{h} = \vec{y}
 <p>If you haven’t already been mezmerised, get ready for the real magic show: back progagation. It is the process of adjusting the weights and biases in direction of the local minimun of the loss function with respect to each individual weight as computed by the partial derivative of the loss function with respect to the given weight.</p>
 <section id="review" class="level2">
 <h2 class="anchored" data-anchor-id="review">Review</h2>
-<p>Remember, the derivative of a function <span class="math inline">\(f(x)\)</span> at a certian point equals the slope of that function at the given point. The partial derivative of a multivariate function a given point equals the direction of largest increase at that point.</p>
+<p>Remember, the derivative of a function <span class="math inline">\(f(x)\)</span> at a certian point equals the slope of that function at the given point.</p>
 
 
 </section>

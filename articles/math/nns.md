@@ -1,5 +1,5 @@
 ---
-title: "Linear Algebra and Multivariable Calculus is All you Need"
+title: "The Linear Algebra and Multivariable Calculus behind Artificial Neural Networks"
 ---
 
 
@@ -56,7 +56,10 @@ W_1 =
 	\vdots & \vdots & \ddots & \vdots\\
 	w_{h,1} & w_{h,2} & \ldots & w_{h,m}\\
 	\end{bmatrix}
+
 \newline
+\newline
+
 T_1(\vec{x}) = \sigma(W_1\vec{x}) = \vec{s}
 
 \end{gather}
@@ -76,6 +79,8 @@ W_2 = \begin{bmatrix}
 	\end{bmatrix}
 
 \newline
+\newline
+
 T_2(\vec{h}) = W_2\vec{h} = \vec{y}
 
 \end{gather}
@@ -98,7 +103,8 @@ $$
 If you haven't already been mezmerised, get ready for the real magic show: back progagation. It is the process of adjusting the weights and biases in direction of the local minimun of the loss function with respect to each individual weight as computed by the partial derivative of the loss function with respect to the given weight.
 
 ## Review
-Remember, the derivative of a function $f(x)$ at a certian point equals the slope of that function at the given point.
+Remember, the derivative of a function $f(x)$ at a certian point equals the slope of that function at the given point. And the partial derivative of a multivariable function $f(x,y,z)$ at a given point $x_0$ with respective to a given variable $x$ returns equals the derivative of that function with respect to the single given variable.
 
+In this article we will be using `directional derivates`. They are partial derivates for vector valued functions which we will be dealing with here. They represent the instantaneous rate of change along the axis of the given variable with which we're taking the partial derivative.
 
 
