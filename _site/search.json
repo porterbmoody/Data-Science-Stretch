@@ -25,7 +25,7 @@
     "href": "articles/math/nns.html",
     "title": "The Linear Algebra and Multivariable Calculus behind Artificial Neural Networks",
     "section": "",
-    "text": "A Neural Network is a type of artifitial intelligence model that uses linear algebra and multivariable calculus to learn and store the relationship between an input vector and an output vector that minimizes the loss function. Here is lined out the mathematics for a single layer neural network.\nNote: DNN’s (Deep Neural Networks) or neural networks with more than 1 hidden layer will be covered in another article.\n\n\n\nTransformations, mappings, vector and matrix multiplication and other operations from linear algebra\nPartial derivatives and their implications from multivariable calculus"
+    "text": "A neural network is a type of artifitial intelligence model that uses linear algebra and multivariable calculus to learn and store the relationship between an input vector and an output vector that minimizes the loss function. Here is the mathematics for a single layer artificial neural network.\n\nNOTE: DNN’s (Deep Neural Networks) or neural networks with more than 1 hidden layer will be covered in another article.\n\n\n\n\nTransformations, mappings, vector and matrix multiplication and other operations from linear algebra\nPartial derivatives and their implications from multivariable calculus"
   },
   {
     "objectID": "articles/math/nns.html#prerequisites",
@@ -35,11 +35,11 @@
     "text": "Transformations, mappings, vector and matrix multiplication and other operations from linear algebra\nPartial derivatives and their implications from multivariable calculus"
   },
   {
-    "objectID": "articles/math/nns.html#review",
-    "href": "articles/math/nns.html#review",
+    "objectID": "articles/math/nns.html#summary",
+    "href": "articles/math/nns.html#summary",
     "title": "The Linear Algebra and Multivariable Calculus behind Artificial Neural Networks",
-    "section": "Review",
-    "text": "Review\nRemember, the derivative of a function \\(f(x)\\) at a certian point equals the slope of that function at the given point."
+    "section": "Summary",
+    "text": "Summary\nTo summarise the forward propogations process…\n\\[\nT_1(\\vec{x}) = \\sigma(W_1\\vec{x}) = \\vec{h}\n\\newline\nT_2(\\vec{h}) = W_2\\vec{h} = \\vec{y}\n\\]\nAre the linear mappings represented by weight matrices that map the input vector to the hidden vector to the output vector. Now we will study the process of optimizing the weights to minimize the loss function \\(\\mathcal{L}\\)."
   },
   {
     "objectID": "index.html",
