@@ -131,10 +131,15 @@ ul.task-list li input[type="checkbox"] {
     <h2 id="toc-title">On this page</h2>
    
   <ul>
-  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a></li>
+  <li><a href="#background" id="toc-background" class="nav-link active" data-scroll-target="#background">Background</a>
+  <ul class="collapse">
   <li><a href="#prerequisites" id="toc-prerequisites" class="nav-link" data-scroll-target="#prerequisites">Prerequisites:</a></li>
+  </ul></li>
   <li><a href="#forward-propagation" id="toc-forward-propagation" class="nav-link" data-scroll-target="#forward-propagation">Forward Propagation</a></li>
-  <li><a href="#back-propgation" id="toc-back-propgation" class="nav-link" data-scroll-target="#back-propgation">Back Propgation</a></li>
+  <li><a href="#back-propgation" id="toc-back-propgation" class="nav-link" data-scroll-target="#back-propgation">Back Propgation</a>
+  <ul class="collapse">
+  <li><a href="#review" id="toc-review" class="nav-link" data-scroll-target="#review">Review</a></li>
+  </ul></li>
   </ul>
 </nav>
     </div>
@@ -158,11 +163,10 @@ ul.task-list li input[type="checkbox"] {
 
 </header>
 
-<section id="background" class="level2">
-<h2 class="anchored" data-anchor-id="background">Background</h2>
+<section id="background" class="level1">
+<h1>Background</h1>
 <p>A Neural Network is a type of artifitial intelligence model that uses linear algebra and multivariable calculus to learn and store the relationship between an input vector and an output vector that minimizes the loss function. Here is lined out the mathematics for a single layer neural network.</p>
 <p>Note: DNN’s (Deep Neural Networks) or neural networks with more than 1 hidden layer will be covered in another article.</p>
-</section>
 <section id="prerequisites" class="level2">
 <h2 class="anchored" data-anchor-id="prerequisites">Prerequisites:</h2>
 <ul>
@@ -170,8 +174,9 @@ ul.task-list li input[type="checkbox"] {
 <li>Partial derivatives and their implications from multivariable calculus</li>
 </ul>
 </section>
-<section id="forward-propagation" class="level2">
-<h2 class="anchored" data-anchor-id="forward-propagation">Forward Propagation</h2>
+</section>
+<section id="forward-propagation" class="level1">
+<h1>Forward Propagation</h1>
 <p>The input, hidden, and output layers are represented by the following vectors, respectively.</p>
 <p><span class="math display">\[
 \vec{x} =
@@ -179,34 +184,36 @@ ul.task-list li input[type="checkbox"] {
     x_1\\
     x_2\\
     \vdots\\
-    x_m
-\end{bmatrix} \in \mathbb{R^m}
+    x_n
+\end{bmatrix} \in \mathbb{R^n}
 ,
 \vec{h} =
 \begin{bmatrix}
     h_1\\
     h_2\\
     \vdots\\
-    h_h
-\end{bmatrix} \in \mathbb{R^h}
+    h_k
+\end{bmatrix} \in \mathbb{R^k}
 ,
 \vec{y} =
 \begin{bmatrix}
     y_1\\
     y_2\\
     \vdots\\
-    y_n
-\end{bmatrix} \in \mathbb{R^n}
+    y_m
+\end{bmatrix} \in \mathbb{R^m}
 \]</span></p>
-<p>Let <span class="math inline">\(T_1: \mathbb{R^m} \rightarrow \mathbb{R^h}\)</span> be a linear mapping. <span class="math inline">\(T_1\)</span> maps the input layer vector <span class="math inline">\(\vec{x} \in \mathbb{R^m}\)</span> to the hidden layer vector <span class="math inline">\(\vec{h} \in \mathbb{R^h}\)</span>. We will use the sigmoid (<span class="math inline">\(\sigma\)</span>) activation function which has a domain of <span class="math inline">\((-\infty,\infty)\)</span> and range of <span class="math inline">\((-1,1)\)</span>. Therefore the the codomain of <span class="math inline">\(T_1\)</span> is <span class="math inline">\((-1,1)\)</span>.</p>
+<p>Let <span class="math inline">\(T_1: \mathbb{R^n} \rightarrow \mathbb{R^k}\)</span> be a linear mapping. <span class="math inline">\(T_1\)</span> maps the input layer vector <span class="math inline">\(\vec{x} \in \mathbb{R^n}\)</span> to the hidden layer vector <span class="math inline">\(\vec{h} \in \mathbb{R^k}\)</span>. We will use the sigmoid (<span class="math inline">\(\sigma\)</span>) activation function which has a domain of <span class="math inline">\((-\infty,\infty)\)</span> and range of <span class="math inline">\((-1,1)\)</span>. Therefore the the codomain of <span class="math inline">\(T_1\)</span> is <span class="math inline">\((-1,1)\)</span>.</p>
 <p>$$ <span class="math display">\[\begin{gather}
 W_1 =
     \begin{bmatrix}
-    w_{1,1} &amp; w_{1,2} &amp; \ldots &amp; w_{1,m}\\
-    w_{2,1} &amp; w_{2,2} &amp; \ldots &amp; w_{2,m}\\
+    w_{1,1} &amp; w_{1,2} &amp; \ldots &amp; w_{1,n}\\
+    w_{2,1} &amp; w_{2,2} &amp; \ldots &amp; w_{2,n}\\
     \vdots &amp; \vdots &amp; \ddots &amp; \vdots\\
-    w_{h,1} &amp; w_{h,2} &amp; \ldots &amp; w_{h,m}\\
+    w_{k,1} &amp; w_{k,2} &amp; \ldots &amp; w_{k,n}\\
     \end{bmatrix}
+
+\newline
 \newline
 T_1(\vec{x}) = \sigma(W_1\vec{x}) = \vec{s}
 
@@ -221,6 +228,8 @@ W_2 = \begin{bmatrix}
     \end{bmatrix}
 
 \newline
+\newline
+
 T_2(\vec{h}) = W_2\vec{h} = \vec{y}
 
 \end{gather}\]</span> $$</p>
@@ -229,12 +238,15 @@ T_2(\vec{h}) = W_2\vec{h} = \vec{y}
 <p>$$ T_1() = (W_1) = T_2() = W_2 = </p>
 <p>$$</p>
 </section>
-<section id="back-propgation" class="level2">
-<h2 class="anchored" data-anchor-id="back-propgation">Back Propgation</h2>
+<section id="back-propgation" class="level1">
+<h1>Back Propgation</h1>
 <p>If you haven’t already been mezmerised, get ready for the real magic show: back progagation. It is the process of adjusting the weights and biases in direction of the local minimun of the loss function with respect to each individual weight as computed by the partial derivative of the loss function with respect to the given weight.</p>
-<p>Remember, the derivative</p>
+<section id="review" class="level2">
+<h2 class="anchored" data-anchor-id="review">Review</h2>
+<p>Remember, the derivative of a function <span class="math inline">\(f(x)\)</span> at a certian point equals the slope of that function at the given point. The partial derivative of a multivariate function a given point equals the direction of largest increase at that point.</p>
 
 
+</section>
 </section>
 
 </main> <!-- /main -->

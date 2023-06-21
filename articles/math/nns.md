@@ -56,6 +56,8 @@ W_1 =
 	\vdots & \vdots & \ddots & \vdots\\
 	w_{k,1} & w_{k,2} & \ldots & w_{k,n}\\
 	\end{bmatrix}
+
+\newline
 \newline
 T_1(\vec{x}) = \sigma(W_1\vec{x}) = \vec{s}
 
@@ -76,6 +78,8 @@ W_2 = \begin{bmatrix}
 	\end{bmatrix}
 
 \newline
+\newline
+
 T_2(\vec{h}) = W_2\vec{h} = \vec{y}
 
 \end{gather}
@@ -98,7 +102,7 @@ $$
 If you haven't already been mezmerised, get ready for the real magic show: back progagation. It is the process of adjusting the weights and biases in direction of the local minimun of the loss function with respect to each individual weight as computed by the partial derivative of the loss function with respect to the given weight.
 
 ## Review
-Remember, the derivative of a function $f(x)$ at a certian point equals the slope of that function at the given point.
+Remember, the derivative of a function $f(x)$ at a certian point equals the slope of that function at the given point. The partial derivative of a multivariate function $f(x,y,z$ at a given point equals the direction of largest increase at that point.
 
 
 
