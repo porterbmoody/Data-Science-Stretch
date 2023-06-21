@@ -102,3 +102,4 @@ Remember, the derivative of a function $f(x)$ at a certian point equals the slop
 
 
 
+
