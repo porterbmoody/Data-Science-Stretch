@@ -23,38 +23,38 @@ $$
 	x_1\\
 	x_2\\
 	\vdots\\
-	x_m
-\end{bmatrix} \in \mathbb{R^m}
+	x_n
+\end{bmatrix} \in \mathbb{R^n}
 ,
 \vec{h} =
 \begin{bmatrix}
 	h_1\\
 	h_2\\
 	\vdots\\
-	h_h
-\end{bmatrix} \in \mathbb{R^h}
+	h_k
+\end{bmatrix} \in \mathbb{R^k}
 ,
 \vec{y} =
 \begin{bmatrix}
 	y_1\\
 	y_2\\
 	\vdots\\
-	y_n
-\end{bmatrix} \in \mathbb{R^n}
+	y_m
+\end{bmatrix} \in \mathbb{R^m}
 $$
 
 
-Let $T_1: \mathbb{R^m}	\rightarrow \mathbb{R^h}$ be a linear mapping. $T_1$ maps the input layer vector $\vec{x} \in \mathbb{R^m}$ to the hidden layer vector  $\vec{h} \in \mathbb{R^h}$. We will use the sigmoid ($\sigma$) activation function which has a domain of $(-\infty,\infty)$ and range of $(-1,1)$. Therefore the the codomain of $T_1$ is $(-1,1)$.
+Let $T_1: \mathbb{R^n}	\rightarrow \mathbb{R^k}$ be a linear mapping. $T_1$ maps the input layer vector $\vec{x} \in \mathbb{R^n}$ to the hidden layer vector  $\vec{h} \in \mathbb{R^k}$. We will use the sigmoid ($\sigma$) activation function which has a domain of $(-\infty,\infty)$ and range of $(-1,1)$. Therefore the the codomain of $T_1$ is $(-1,1)$.
 
 
 $$
 \begin{gather}
 W_1 =
 	\begin{bmatrix}
-	w_{1,1} & w_{1,2} & \ldots & w_{1,m}\\
-	w_{2,1} & w_{2,2} & \ldots & w_{2,m}\\
+	w_{1,1} & w_{1,2} & \ldots & w_{1,n}\\
+	w_{2,1} & w_{2,2} & \ldots & w_{2,n}\\
 	\vdots & \vdots & \ddots & \vdots\\
-	w_{h,1} & w_{h,2} & \ldots & w_{h,m}\\
+	w_{k,1} & w_{k,2} & \ldots & w_{k,n}\\
 	\end{bmatrix}
 \newline
 T_1(\vec{x}) = \sigma(W_1\vec{x}) = \vec{s}
