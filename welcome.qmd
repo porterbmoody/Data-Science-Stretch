@@ -1,0 +1,11 @@
+---
+title: "Welcome"
+---
+
+Yo whats up it's me Porter!! (That's my cousin Josh)
+
+<<<<<<< HEAD:about.qmd
+![](images/porter.png){width=400}s
+=======
+![](images/porter.png){width=400}
+>>>>>>> 317916ef8055a1594e46e0ba92a9c2fd5c1349e6:welcome.qmd

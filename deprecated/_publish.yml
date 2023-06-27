@@ -1,0 +1,4 @@
+- source: project
+  quarto-pub:
+    - id: d32444ee-86f2-4d87-9fbf-c61adf43bd50
+      url: 'https://porter.quarto.pub/woodruff-papers-scripture-matching'

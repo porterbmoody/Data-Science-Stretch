@@ -1,0 +1,12 @@
+
+
+# C++ vs Python For Machine Learning
+
+## Background
+
+Both C++ and Python are powerful, capable languages. Lets explore some of their pros and cons for machine learning.
+
+Previously, c and c++ languages were mainly just used for developement. With the immergence of data science and machine learning, c and c++ are now being used underneath many data science and machine learning functions. For example, python and r and their data science are written in c, objective c or c++.
+
+`tensorflow`, `pytorch`, the tidyverse | c
+

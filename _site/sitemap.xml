@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
+<<<<<<< HEAD
     <loc>https://porter.quarto.pub/data-science-stretch/about.html</loc>
     <lastmod>2023-06-25T00:24:53.432Z</lastmod>
   </url>
@@ -15,5 +16,21 @@
   <url>
     <loc>https://porter.quarto.pub/data-science-stretch/index.html</loc>
     <lastmod>2023-06-25T00:24:56.465Z</lastmod>
+=======
+    <loc>https://porter.quarto.pub/data-science-stretch/articles/cpp_vs_python.html</loc>
+    <lastmod>2023-06-27T06:08:49.045Z</lastmod>
+  </url>
+  <url>
+    <loc>https://porter.quarto.pub/data-science-stretch/articles/nns.html</loc>
+    <lastmod>2023-06-27T06:08:49.410Z</lastmod>
+  </url>
+  <url>
+    <loc>https://porter.quarto.pub/data-science-stretch/articles/wwp.html</loc>
+    <lastmod>2023-06-27T06:08:59.308Z</lastmod>
+  </url>
+  <url>
+    <loc>https://porter.quarto.pub/data-science-stretch/welcome.html</loc>
+    <lastmod>2023-06-27T06:08:59.893Z</lastmod>
+>>>>>>> 317916ef8055a1594e46e0ba92a9c2fd5c1349e6
   </url>
 </urlset>

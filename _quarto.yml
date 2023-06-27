@@ -11,23 +11,13 @@ website:
     background: primary
     search: true
     left:
-      - text: Home
-        file: index.qmd
-      - about.qmd
+      - text: Welcome
+        file: welcome.qmd
       # margin-header: |
         # ![ai](/images/porter_small.png)
 
   sidebar:
-    contents: articles/math/*
-    # contents: articles/*
-    # style: "docked"
-    # search: true
-    # title: "Feedforward Neural Network"
-    # contents:
-    # - text: "Feedforward Neural Network"
-      # file: articles/Feedforward Neural Network.qmd
-    #   contents:
-      # - section: "Math"
+    contents: articles/*
 
 
 format:
