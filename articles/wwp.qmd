@@ -1,0 +1,89 @@
+---
+title: "Woodruff Papers Scripture Matches"
+jupyter: python3
+code-fold: true
+---
+
+![](../images/ww.png)
+
+
+### Matches per volume
+
+```{python}
+from IPython.display import Markdown
+from tabulate import tabulate
+import pandas as pd
+
+number_of_rows = 50
+
+top_matches = pd.read_csv("../Woodruff Papers Scripture Matching/data/matches/top_matches.csv").sort_values(by='similarity_score',ascending=False)
+
+matches_counts = top_matches.groupby(['volume_title']).count().reset_index()[['volume_title', 'phrase_woodruff']]
+matches_counts
+# match count/volume
+Markdown(tabulate(
+  matches_counts,
+  headers=list(matches_counts)
+))
+```
+
+
+
+
+### New Testament Matches
+
+```{python}
+data = top_matches.query('volume_title == "New Testament"').reset_index(drop=True)
+Markdown(tabulate(
+  data.head(number_of_rows),
+  headers=list(data)
+))
+
+```
+
+
+### Book of Mormon Matches
+
+```{python}
+data = top_matches.query('volume_title == "Book of Mormon"').reset_index(drop=True)
+Markdown(tabulate(
+  data.head(number_of_rows),
+  headers=list(data)
+))
+
+```
+
+### Doctrine and Covenants Matches
+
+```{python}
+data = top_matches.query('volume_title == "Doctrine and Covenants"').reset_index(drop=True)
+Markdown(tabulate(
+  data.head(number_of_rows),
+  headers=list(data)
+))
+
+```
+
+### Old Testament Matches
+
+```{python}
+data = top_matches.query('volume_title == "Old Testament"').reset_index(drop=True)
+Markdown(tabulate(
+  data.head(number_of_rows),
+  headers=list(data)
+))
+
+```
+
+### Other Matches
+
+```{python}
+data = top_matches.query('volume_title == "Pearl of Great Price"').reset_index(drop=True)
+Markdown(tabulate(
+  data.head(number_of_rows),
+  headers=list(data)
+))
+
+```
+
+

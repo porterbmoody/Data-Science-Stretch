@@ -1,0 +1,17 @@
+project:
+  type: website
+
+website:
+  title: "Woodruff Papers Scripture Matching"
+  favicon: images/ww.png
+  navbar:
+    left:
+      - href: woodruff_papers.qmd
+        # text: Home
+      # - woodruff_papers.qmd
+
+format:
+  html:
+    theme: darkly
+    css: styles.css
+    toc: true

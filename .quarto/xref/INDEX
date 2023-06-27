@@ -34,5 +34,20 @@
   },
   "articles/math/nns.qmd": {
     "nns.html": "4efb5af6"
+  },
+  "articles/nns.md": {
+    "nns.html": "9cdb951a"
+  },
+  "articles/wwp.qmd": {
+    "wwp.html": "e3c46572"
+  },
+  "deprecated/index.qmd": {
+    "index.html": "cc136e4a"
+  },
+  "welcome.qmd": {
+    "welcome.html": "a4c02584"
+  },
+  "articles/welcome.qmd": {
+    "welcome.html": "88a8fe07"
   }
 }
