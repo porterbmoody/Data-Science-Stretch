@@ -1,20 +1,22 @@
 ---
-title: "The Linear Algebra and Multivariable Calculus behind Artificial Neural Networks"
+title: "Deep Learning: The Future of Intelligence"
 ---
 
 
 # Background
 
-A neural network is a type of artifitial intelligence model that uses linear algebra and multivariable calculus to learn and store the relationship between an input vector and an output vector that minimizes the loss function. Here is the mathematics for a single layer artificial neural network.
+Deep learning is a type of artifitial intelligence model that uses linear algebra and multivariable calculus to learn the relationship between an set of inputs and a set of outputs. A deep learning model is a type of neural network that involves more than 1 hidden layer. 
 
-> **_NOTE:_** DNN's (Deep Neural Networks) or neural networks with more than 1 hidden layer will be covered in another article.
+![](../../images/nn_cool.png)
+
 
 ## Prerequisites:
 - Transformations, mappings, vector and matrix multiplication and other operations from linear algebra
 - Partial derivatives and their implications from multivariable calculus
 
+
 # Forward Propagation
-The input, hidden, and output layers are represented by the following vectors, respectively.
+Let $\vec{x}$ be the input vector, $\vec{h^\ell}$ be 1 of $\ell$ hidden layer vectors, and $\vec{y}$ be the ouput vector. 
 
 
 $$
@@ -26,7 +28,15 @@ $$
 	x_m
 \end{bmatrix} \in \mathbb{R^m}
 ,
-\vec{h} =
+\vec{h^1} =
+\begin{bmatrix}
+	h_1\\
+	h_2\\
+	\vdots\\
+	h_k
+\end{bmatrix} \in \mathbb{R^k}
+,
+\vec{h^{\ell}} =
 \begin{bmatrix}
 	h_1\\
 	h_2\\
@@ -44,8 +54,9 @@ $$
 $$
 
 
-Let $T_1: \mathbb{R^m}	\rightarrow \mathbb{R^k}$ be a linear mapping. $T_1$ maps the input layer vector $\vec{x} \in \mathbb{R^m}$ to the hidden layer vector  $\vec{h} \in \mathbb{R^k}$. We will use the sigmoid ($\sigma$) activation function which has a domain of $(-\infty,\infty)$ and range of $(-1,1)$. Therefore the the codomain of $T_1$ is $(-1,1)$.
+Let $T_1: \mathbb{R^m}	\rightarrow \mathbb{R^k}$ be a linear mapping. $T_1$ maps the input layer vector $\vec{x} \in \mathbb{R^m}$ to the hidden layer vector  $\vec{h^\ell} \in \mathbb{R^k}$. 
 
+Each transformation from 1 layer to the next is represented by a matrix of wieghts and a vector of biases and an (optional) activation function. 
 
 $$
 \begin{gather}
@@ -56,13 +67,12 @@ W_1 =
 	\vdots & \vdots & \ddots & \vdots\\
 	w_{k,1} & w_{k,2} & \ldots & w_{k,m}\\
 	\end{bmatrix}
-
-\newline
-\newline
-
-T_1(\vec{x}) = \sigma(W_1\vec{x}) = \vec{h}
-
 \end{gather}
+$$
+
+
+$$
+T_1(\vec{x}) = \sigma(W_1\vec{x}) = \vec{h}
 $$
 
 
@@ -94,7 +104,10 @@ To summarise the forward propogations process...
 
 $$
 T_1(\vec{x}) = \sigma(W_1\vec{x}) = \vec{h}
+
 \newline
+\newline
+
 T_2(\vec{h}) = W_2\vec{h} = \vec{y}
 $$
 
