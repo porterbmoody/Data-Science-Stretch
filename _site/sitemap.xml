@@ -2,18 +2,18 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://porter.quarto.pub/data-science-stretch/articles/cpp_vs_python.html</loc>
-    <lastmod>2023-06-28T17:40:47.136Z</lastmod>
+    <lastmod>2023-06-28T18:00:32.020Z</lastmod>
   </url>
   <url>
     <loc>https://porter.quarto.pub/data-science-stretch/articles/nns.html</loc>
-    <lastmod>2023-06-28T17:40:47.547Z</lastmod>
+    <lastmod>2023-06-28T18:00:32.408Z</lastmod>
+  </url>
+  <url>
+    <loc>https://porter.quarto.pub/data-science-stretch/articles/wwp.html</loc>
+    <lastmod>2023-06-28T18:00:41.871Z</lastmod>
   </url>
   <url>
     <loc>https://porter.quarto.pub/data-science-stretch/welcome.html</loc>
-    <lastmod>2023-06-28T17:40:48.121Z</lastmod>
-  </url>
-  <url>
-    <loc>https://porter.quarto.pub/data-science-stretch/Woodruff Papers Scripture Matching/code/wwp.html</loc>
-    <lastmod>2023-06-28T17:40:57.812Z</lastmod>
+    <lastmod>2023-06-28T18:00:42.470Z</lastmod>
   </url>
 </urlset>

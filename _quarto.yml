@@ -19,7 +19,8 @@ website:
   sidebar:
     contents:
       - articles/nns.md
-      - Woodruff Papers Scripture Matching/code/wwp.qmd
+      - articles/wwp.qmd
+      - articles/cpp_vs_python.qmd
 
 
 format:

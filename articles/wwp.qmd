@@ -4,7 +4,7 @@ jupyter: python3
 code-fold: true
 ---
 
-![](../../images/wilford_woodruff.png){width=400}
+![](../images/wilford_woodruff.png){width=400}
 
 
 
@@ -16,7 +16,7 @@ from tabulate import tabulate
 import pandas as pd
 
 number_of_rows = 50
-path_mathes = "../data/data_matches.csv"
+path_mathes = "../Woodruff Papers Scripture Matching/data/data_matches.csv"
 top_matches = pd.read_csv(path_mathes).sort_values(by='similarity_score',ascending=False)
 
 matches_counts = top_matches.groupby(['volume_title']).count().reset_index()[['volume_title', 'phrase_woodruff']]
@@ -77,4 +77,4 @@ create_markdown_table(path_mathes, 'volume_title == "Pearl of Great Price"', num
 ### Supah Hot Fyah
 Supa hot fyah!!!
 
-![](../../images/supah_hot_fyah.webp)
+![](../images/supah_hot_fyah.webp)
