@@ -16,7 +16,7 @@ from tabulate import tabulate
 import pandas as pd
 
 number_of_rows = 50
-path_mathes = "../Woodruff Papers Scripture Matching/data/data_matches.csv"
+path_mathes = "../Woodruff Papers Scripture Matching/data/data_matches_temporary.csv"
 top_matches = pd.read_csv(path_mathes).sort_values(by='similarity_score',ascending=False)
 
 matches_counts = top_matches.groupby(['volume_title']).count().reset_index()[['volume_title', 'phrase_woodruff']]

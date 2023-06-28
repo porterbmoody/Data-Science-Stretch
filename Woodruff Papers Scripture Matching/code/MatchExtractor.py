@@ -6,53 +6,81 @@ import subprocess
 
 
 class MatchExtractor:
-    def __init__(self, phrases_woodruff, threshold: float, path_matches, path_matches_temporary):
+
+    def __init__(self, phrases_woodruff, text_woodruff, threshold: float, path_matches, path_matches_temporary):
         self.threshold = threshold
         self.phrases_woodruff = phrases_woodruff
+        self.text_woodruff = text_woodruff
         self.matches_total = pd.DataFrame()
         self.current_matches = pd.DataFrame()
         self.path_matches = path_matches
         self.path_matches_temporary = path_matches_temporary
-        self.load_vectorizer()
 
     def load_vectorizer(self):
         self.vectorizer = TfidfVectorizer()
-        self.tfidf_matrix_1 = self.vectorizer.fit_transform(self.phrases_woodruff)
+        self.tfidf_matrix_woodruff = self.vectorizer.fit_transform(self.phrases_woodruff)
 
-    def run_extractor(self, data_input, save=False, save_temporary=True, publish=False):
-        self.progress_bar = tqdm(total=len(data_input))
-        for index, input_row in data_input.iterrows():
+    def run_extractor(self, data_scriptures, save=False, save_temporary=True, publish=False):
+        progress_bar = tqdm(total=len(data_scriptures))
+        for index, input_row in data_scriptures.iterrows():
+
+            self.tfidf_matrix_woodruff = self.vectorizer.transform(self.phrases_woodruff)
             self.extract_single_phrase_matches(input_row['scripture_text'])
             self.current_matches['verse_title'] = input_row['verse_title']
             self.current_matches['volume_title'] = input_row['volume_title']
             self.current_matches['book_title'] = input_row['book_title']
             self.matches_total = pd.concat([self.matches_total, self.current_matches]).sort_values(
-                by='similarity_score', ascending=False)
+                by='similarity_score', ascending=False)[['phrase_woodruff', 'verse_title', 'similarity_score', 'phrase_scripture', 'volume_title']]
 
-            self.progress_bar.update(1)
+            progress_bar.update(1)
             description = f"{input_row['verse_title']} total match count: {len(self.matches_total)}"
-            self.progress_bar.set_description(description)
+            progress_bar.set_description(description)
             if save_temporary:
                 self.matches_total.to_csv(self.path_matches_temporary, index=False)
 
-        self.progress_bar.close()
+        progress_bar.close()
 
         if save:
             self.matches_total.to_csv(self.path_matches, index=False)
         if publish:
             self.quarto_publish()
 
-    def extract_single_phrase_matches(self, phrase):
-        tfidf_matrix_2 = self.vectorizer.transform([phrase])
-        scores = cosine_similarity(self.tfidf_matrix_1, tfidf_matrix_2)
-        scores = pd.DataFrame(scores, columns=['similarity_score'])
-        matches = pd.DataFrame({
-            'phrase_woodruff': self.phrases_woodruff,
-            'phrase_scripture': phrase
-        })
-        self.current_matches = pd.concat([matches, scores], axis=1).query('similarity_score > @self.threshold')
+    def extract_single_phrase_matches(self, phrase_scripture):
+        words_scripture = phrase_scripture.split()
+        words_woodruff = self.text_woodruff.split()
+        # iterate through each n word window the same length as the verse
+        for i in range(len(words_woodruff)):
+            min = i
+            max = i + len(words_scripture)
+            if max > len(words_woodruff):
+                break
+            window_woodruff = " ".join(words_woodruff[min:max])
+            print(window_woodruff)
+
+            tfidf_matrix_woodruff = self.vectorizer.transform([window_woodruff])
+            tfidf_matrix_scriptures = self.vectorizer.transform([phrase_scripture])
+            scores = cosine_similarity(tfidf_matrix_woodruff, tfidf_matrix_scriptures)
+            scores = pd.DataFrame(scores, columns=['similarity_score'])
+            matches = pd.DataFrame({
+                'phrase_woodruff': self.phrases_woodruff,
+                'phrase_scripture': phrase_scripture
+            })
+            self.current_matches = pd.concat([matches, scores], axis=1).query('similarity_score > @self.threshold')
+        return
 
     @staticmethod
     def quarto_publish():
         command = 'quarto publish'
         subprocess.run(command, shell=True, input='y\n', encoding='utf-8')
+
+
+#%%
+string_woodruff = 'hello string of cool words hello my name is bob what is your name my name is pizza'
+phrase_scripture = 'keep the commandments hello'
+
+words_woodruff
+print(string_woodruff)
+
+def extract_single_phrase_matches(string_woodruff, phrase_scripture):
+
+

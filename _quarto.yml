@@ -20,7 +20,7 @@ website:
     contents:
       - articles/nns.md
       - articles/wwp.qmd
-      - articles/cpp_vs_python.qmd
+      # - articles/cpp_vs_python.qmd
 
 
 format:

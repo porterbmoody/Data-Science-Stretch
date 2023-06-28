@@ -132,9 +132,7 @@ phrases_woodruff
 total_matches = pd.DataFrame()
 match_extractor = MatchExtractor(phrases_woodruff, threshold = .65, path_matches = path_matches, path_matches_temporary = path_matches_temporary)
 # iterate through each row of scripture phrases dataset and run TFIDF model and cosine similarity.
-match_extractor.run_extractor(data_scriptures.head(1000), save = False, save_temporary = True, publish=False)
-
-# match_extractor.total_matches
+match_extractor.run_extractor(data_scriptures, save = True, save_temporary = True, publish=True)
 
 
 #%%
