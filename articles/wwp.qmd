@@ -17,7 +17,7 @@ import pandas as pd
 
 number_of_rows = 50
 
-top_matches = pd.read_csv("../Woodruff Papers Scripture Matching/data/matches/top_matches.csv").sort_values(by='similarity_score',ascending=False)
+top_matches = pd.read_csv("../Woodruff Papers Scripture Matching/data/data_matches.csv").sort_values(by='similarity_score',ascending=False)
 
 matches_counts = top_matches.groupby(['volume_title']).count().reset_index()[['volume_title', 'phrase_woodruff']]
 matches_counts
@@ -27,8 +27,6 @@ Markdown(tabulate(
   headers=list(matches_counts)
 ))
 ```
-
-
 
 
 ### New Testament Matches
