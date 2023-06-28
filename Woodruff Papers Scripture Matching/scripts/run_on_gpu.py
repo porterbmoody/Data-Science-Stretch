@@ -72,7 +72,6 @@ from sklearn.metrics.pairwise import cosine_similarity
 def factorial(vector1, vector2):
     return cosine_similarity(vector1, vector2)
 
-
 def factorial_poop(n):
     n **= 20
     return n
@@ -84,3 +83,5 @@ print("with GPU:", timer()-start)
 # factorial_poop(100)
 # print("without GPU:", timer()-start)
 # print('sauce')
+
+# %%
