@@ -4,7 +4,7 @@ jupyter: python3
 code-fold: true
 ---
 
-![](../images/ww.png)
+![](../images/wilford_woodruff.png){width=500}
 
 
 
@@ -85,5 +85,6 @@ Markdown(tabulate(
 
 ```
 
+### Supah Hot Fyah
 
 ![](../images/supah_hot_fyah.webp)

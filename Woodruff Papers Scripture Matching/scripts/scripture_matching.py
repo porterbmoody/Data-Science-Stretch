@@ -5,13 +5,29 @@ from DataUtil import DataUtil
 from MatchExtractor import MatchExtractor
 # import cupy as cp
 # from cupy.sparse import csr_matrix
-from tqdm import tqdm
+
 from numba import jit, float64, typeof
 import os
 import numpy as np
 pd.set_option('display.max_colwidth', None)
 
 woodruff_typos = {
+    r'(, b\.)'              : r'',
+    r'\<U\+25CA\>'          : r'',
+    r'\&amp;c?'             : r"and",
+    r'\&apos;'              : r"'",
+    r"(\^?FIGURES?\^?)"     : r'',
+    r'[\{\}\~]'             : r'',
+    r'\s{2}'                : r' ',
+    r','                    : r'',
+    r'\n'                   : r' ',
+    r'\[\[(.*?)\|(.*?)\]\]' : r'\1',
+    r'\-\s'                  : r'',
+    r'\n'                 : r' ',
+    r'\–'               : r'',
+    r'\—'               : r'',
+    r'\s+'                 : r' ',
+    r'\.|\:|\;|\,|\-|\(|\)|\?' : r'',
     r'sacrafice'    : r'sacrifice',
     r'discours'     : r'discourse',
     r'travling'      : r'traveling',
@@ -51,25 +67,6 @@ woodruff_typos = {
     r'esspecially' : r'especially',
     r'ownly' : r'only',
     r'th\[e\]' : r'the',
-    }
-
-woodruff_character_replacements = {
-    r'(, b\.)'              : r'',
-    r'\<U\+25CA\>'          : r'',
-    r'\&amp;c?'             : r"and",
-    r'\&apos;'              : r"'",
-    r"(\^?FIGURES?\^?)"     : r'',
-    r'[\{\}\~]'             : r'',
-    r'\s{2}'                : r' ',
-    r','                    : r'',
-    r'\n'                   : r' ',
-    r'\[\[(.*?)\|(.*?)\]\]' : r'\1',
-    r'\-\s'                  : r'',
-    r'\n'                 : r' ',
-    r'\–'               : r'',
-    r'\—'               : r'',
-    r'\s+'                 : r' ',
-    r'\.|\:|\;|\,|\-|\(|\)|\?' : r'',
 }
 
 exact_replacements = {r'a b c d e f g h i j k l m n o p q r s t u v w x y z and 1 2 3 4 5 6 7 8 9 0' : r''}
@@ -80,13 +77,14 @@ scripture_replacements = {
 
 #%%
 os.chdir('C:/Users/porte/Desktop/coding/Data-Science-Stretch')
-# local data
+# local paths
 path_data_woodruff_raw = 'Woodruff Papers Scripture Matching/data/data_woodruff_raw.csv'
 path_data_woodruff_clean = 'Woodruff Papers Scripture Matching/data/data_woodruff_clean.csv'
 path_data_scriptures = 'Woodruff Papers Scripture Matching/data/data_scriptures.csv'
 path_matches = 'Woodruff Papers Scripture Matching/data/data_matches.csv'
+path_matches_temporary = 'Woodruff Papers Scripture Matching/data/data_matches_temporary.csv'
 
-# url data
+# url paths
 url_woodruff = "https://github.com/wilfordwoodruff/Main-Data/raw/main/data/derived/derived_data.csv"
 url_scriptures = 'https://github.com/wilfordwoodruff/wilford_woodruff_hack23/raw/main/data/lds-scriptures.csv'
 
@@ -97,7 +95,6 @@ data_woodruff
 data_woodruff['text'] = data_woodruff['text'].str.lower()
 
 # clean woodruff data
-data_woodruff['text'] = data_woodruff['text'].replace(woodruff_character_replacements, regex=True)
 data_woodruff['text'] = data_woodruff['text'].replace(woodruff_typos, regex=True)
 data_woodruff['text'] = data_woodruff['text'].replace(exact_replacements, regex=True)
 
@@ -112,7 +109,7 @@ data_scriptures = data_scriptures.explode('scripture_text')
 
 # filter to certain volumes
 volume_titles = [
-    #  'Old Testament',
+     'Old Testament',
      'New Testament',
      'Book of Mormon',
      'Doctrine and Covenants',
@@ -131,25 +128,13 @@ print('woodruff phrase count:', len(phrases_woodruff))
 phrases_woodruff
 
 #%%
-data_scriptures1 = data_scriptures
 
-progress_bar = tqdm(total=len(data_scriptures1))
 total_matches = pd.DataFrame()
-match_extractor = MatchExtractor(phrases_woodruff, threshold = .65, path_matches = path_matches)
+match_extractor = MatchExtractor(phrases_woodruff, threshold = .65, path_matches = path_matches, path_matches_temporary = path_matches_temporary)
+match_extractor.run_extractor(data_scriptures, save = True, publish=True)
 
 # iterate through each row of scripture phrases dataset and run TFIDF model and cosine similarity.
-for index, row in data_scriptures1.iterrows():
-    match_extractor.extract_matches_phrase(row, save = True)
-    match_extractor.save_matches()
+# match_extractor.total_matches
 
-    progress_bar.update(1)
-    description = row['verse_title'] + ' total match count: ' + str(len(match_extractor.total_matches))# + 'verse length: ' + str(len(phrases_scriptures[0]))
-    progress_bar.set_description(description)
-
-progress_bar.close()
-match_extractor.total_matches
-
-
-match_extractor.quarto_publish()
 
 #%%
