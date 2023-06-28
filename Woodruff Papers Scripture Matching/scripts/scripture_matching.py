@@ -162,10 +162,8 @@ class MatchExtractor:
         return top_matches_scores.sort_values(by = 'similarity_score', ascending=False)
 
 
-# data_scriptures1 = data_scriptures.iloc[:100]
-data_scriptures1 = data_scriptures
-data_scriptures1
 #%%
+data_scriptures1 = data_scriptures#.iloc[:100]
 
 progress_bar = tqdm(total=len(data_scriptures1))
 total_matches = pd.DataFrame()
