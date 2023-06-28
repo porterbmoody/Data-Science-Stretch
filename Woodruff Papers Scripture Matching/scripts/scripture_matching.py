@@ -33,13 +33,9 @@ replacements = {
     r'[\{\}\~]'             : r'',
     r'\s{2}'                : r' ',
     r','                    : r'',
-    # r'\[(\w+)\]'            : r'',
     r'\n'                   : r' ',
     r'\[\[(.*?)\|(.*?)\]\]' : r'\1',
     r'\-\s'                  : r'',
-    # r'- ng '                 : r'ng ',
-    # r' ng '                 : r'ng ',
-    # r' ed '                 : r'ed ',
     r'\n'                 : r' ',
     r'\s+'                 : r' ',
     r'\.'                 : r'',
@@ -148,7 +144,7 @@ data_scriptures
 
 #%%
 
-# @jit(nopython=True, parallel=True)
+@jit(backend='cuda')
 def extract_matches(phrases_woodruff, tfidf_matrix_woodruff, vectorizer, phrases_scriptures):
     tfidf_matrix_scriptures = vectorizer.transform(phrases_scriptures)
     similarity_matrix = cosine_similarity(tfidf_matrix_woodruff, tfidf_matrix_scriptures)
@@ -203,10 +199,6 @@ for i in range(len(data_scriptures1)):
     verse_title = row[2]
     phrase_scripture = [row[3]]
 
-    # tfidf_matrix_type = typeof(tfidf_matrix_woodruff)
-    # vectorizer_type = typeof(vectorizer)
-    # extract_matches(phrases_woodruff, tfidf_matrix_woodruff.astype(tfidf_matrix_type), vectorizer.astype(vectorizer_type), phrase_scripture)
-
     # extract scripture phrase matches from woodruff journal entry list of phrases
     top_matches = extract_matches(phrases_woodruff, tfidf_matrix_woodruff, vectorizer, phrase_scripture)
     top_matches['verse_title'] = verse_title
@@ -225,3 +217,5 @@ total_matches
 
 
 #%%
+
+

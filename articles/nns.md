@@ -5,9 +5,9 @@ title: "Deep Learning: The Future of Intelligence"
 
 # Background
 
-Deep learning is a type of artifitial intelligence model that uses linear algebra and multivariable calculus to learn the relationship between an set of inputs and a set of outputs. A deep learning model is a type of neural network that involves more than 1 hidden layer. 
+Deep learning is a type of artifitial intelligence model that uses linear algebra and multivariable calculus to learn the relationship between an set of inputs and a set of outputs. A deep learning model is a neural network that involves more than 1 hidden layer.
 
-![](../../images/nn_cool.png)
+![](../images/nn_cool.png)
 
 
 ## Prerequisites:
@@ -16,7 +16,7 @@ Deep learning is a type of artifitial intelligence model that uses linear algebr
 
 
 # Forward Propagation
-Let $\vec{x}$ be the input vector, $\vec{h^\ell}$ be 1 of $\ell$ hidden layer vectors, and $\vec{y}$ be the ouput vector. 
+Let $\vec{x}$ be the input vector, $\vec{h^\ell}$ be 1 of $\ell$ hidden layer vectors, and $\vec{y}$ be the ouput vector.
 
 
 $$
@@ -54,9 +54,9 @@ $$
 $$
 
 
-Let $T_1: \mathbb{R^m}	\rightarrow \mathbb{R^k}$ be a linear mapping. $T_1$ maps the input layer vector $\vec{x} \in \mathbb{R^m}$ to the hidden layer vector  $\vec{h^\ell} \in \mathbb{R^k}$. 
+Let $T_1: \mathbb{R^m}	\rightarrow \mathbb{R^k}$ be a linear mapping. $T_1$ maps the input layer vector $\vec{x} \in \mathbb{R^m}$ to the hidden layer vector  $\vec{h^\ell} \in \mathbb{R^k}$.
 
-Each transformation from 1 layer to the next is represented by a matrix of wieghts and a vector of biases and an (optional) activation function. 
+Each transformation from 1 layer to the next is represented by a matrix of wieghts and a vector of biases and an (optional) activation function.
 
 $$
 \begin{gather}

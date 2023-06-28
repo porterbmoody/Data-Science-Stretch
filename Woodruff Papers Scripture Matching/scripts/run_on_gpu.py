@@ -59,9 +59,28 @@ def extract_matches(phrases_woodruff, tfidf_matrix_woodruff, vectorizer, phrases
 
 import numpy as np
 import numba
-from numba import cuda
+from numba import cuda, jit
+from timeit import default_timer as timer
+# print(np.__version__)
+# print(numba.__version__)
 
-print(np.__version__)
-print(numba.__version__)
 
-cuda.detect()
+#%%
+# import cupy
+from sklearn.metrics.pairwise import cosine_similarity
+@jit(target_backend='cuda', nopython=False)
+def factorial(vector1, vector2):
+    return cosine_similarity(vector1, vector2)
+
+
+def factorial_poop(n):
+    n **= 20
+    return n
+
+start = timer()
+factorial(vector1 = [2,3], vector2 = [3,4])
+print("with GPU:", timer()-start)
+
+# factorial_poop(100)
+# print("without GPU:", timer()-start)
+# print('sauce')
