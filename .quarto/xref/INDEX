@@ -49,5 +49,8 @@
   },
   "articles/welcome.qmd": {
     "welcome.html": "88a8fe07"
+  },
+  "Woodruff Papers Scripture Matching/code/wwp.qmd": {
+    "wwp.html": "8a4d2c29"
   }
 }

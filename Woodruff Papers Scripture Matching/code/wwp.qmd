@@ -1,0 +1,80 @@
+---
+title: "Woodruff Papers Scripture Matches"
+jupyter: python3
+code-fold: true
+---
+
+![](../../images/wilford_woodruff.png){width=400}
+
+
+
+### Matches per volume
+
+```{python}
+from IPython.display import Markdown
+from tabulate import tabulate
+import pandas as pd
+
+number_of_rows = 50
+path_mathes = "../data/data_matches.csv"
+top_matches = pd.read_csv(path_mathes).sort_values(by='similarity_score',ascending=False)
+
+matches_counts = top_matches.groupby(['volume_title']).count().reset_index()[['volume_title', 'phrase_woodruff']]
+matches_counts
+def create_markdown_table(path_mathes, condition, number_of_rows):
+  data = top_matches.query(condition).reset_index(drop=True)
+  markdown_table = Markdown(tabulate(
+    data.head(number_of_rows),
+    headers=list(data)
+  ))
+  return markdown_table
+
+# match count/volume
+Markdown(tabulate(
+  matches_counts,
+  headers=list(matches_counts)
+))
+
+
+```
+
+### Old Testament
+
+```{python}
+create_markdown_table(path_mathes, 'volume_title == "Old Testament"', number_of_rows)
+
+```
+
+### New Testament
+
+```{python}
+create_markdown_table(path_mathes, 'volume_title == "New Testament"', number_of_rows)
+
+```
+
+
+### Book of Mormon
+
+```{python}
+create_markdown_table(path_mathes, 'volume_title == "Book of Mormon"', number_of_rows)
+```
+
+### Doctrine and Covenants
+
+```{python}
+create_markdown_table(path_mathes, 'volume_title == "Doctrine and Covenants"', number_of_rows)
+
+```
+
+### Other
+
+```{python}
+create_markdown_table(path_mathes, 'volume_title == "Pearl of Great Price"', number_of_rows)
+
+```
+
+
+### Supah Hot Fyah
+Supa hot fyah!!!
+
+![](../../images/supah_hot_fyah.webp)

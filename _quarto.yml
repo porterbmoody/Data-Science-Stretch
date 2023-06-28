@@ -17,7 +17,9 @@ website:
         # ![ai](/images/porter_small.png)
 
   sidebar:
-    contents: articles/*
+    contents:
+      - articles/nns.md
+      - Woodruff Papers Scripture Matching/code/wwp.qmd
 
 
 format:
