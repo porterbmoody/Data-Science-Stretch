@@ -46,8 +46,8 @@ class MatchExtractor:
             self.quarto_publish()
 
     def extract_single_phrase_matches(self, phrase_scripture):
-        words_scripture = phrase_scripture.split()
         words_woodruff = self.text_woodruff.split()
+        words_scripture = phrase_scripture.split()
         # iterate through each n word window the same length as the verse
         for i in range(len(words_woodruff)):
             min = i
@@ -56,6 +56,8 @@ class MatchExtractor:
                 break
             window_woodruff = " ".join(words_woodruff[min:max])
             print(window_woodruff)
+
+
 
             tfidf_matrix_woodruff = self.vectorizer.transform([window_woodruff])
             tfidf_matrix_scriptures = self.vectorizer.transform([phrase_scripture])
