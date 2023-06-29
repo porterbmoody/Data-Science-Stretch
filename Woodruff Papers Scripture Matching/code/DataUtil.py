@@ -132,5 +132,28 @@ class DataUtil:
         return data.sort_values(by = 'frequency', ascending = False)
 
     @staticmethod
+    def string_percentage_match(string1, string2):
+        words1 = string1.split()
+        words2 = string2.split()
+        word_matches = [word1 for word1 in words1 if word1 in words2]
+        return round(len(word_matches) / len(string1.split()), 4)
+
+    @staticmethod
     def count_words(string):
         return len(DataUtil.str_split(string))
+
+    @staticmethod
+    def get_dataframe_chunks(data, chunk_size):
+        """ pass in dataframe and number of rows as chunk_size
+            iterates through dataframe and saves each chunk of the dataframe to a list
+        """
+        data_chunks = []
+        for i in range(0, len(data), chunk_size):
+            min = i
+            max = i + chunk_size
+            if max > len(data):
+                max = len(data)
+            data_chunk = data.iloc[min:max]
+            data_chunks.append(data_chunk)
+
+        return data_chunks
