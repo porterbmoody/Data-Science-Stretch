@@ -147,7 +147,6 @@ match_extractor.run_extractor(data_scriptures1, save = True, save_temporary = Tr
 # text_sample = 'hello hearken o ye people men, and there is none to escape'
 # scripture = 'elder benjamin lynn clapp'
 
-# from difflib import SequenceMatcher
 
 # def compute_similarity_ratio(string1, string2):
 #     matcher = SequenceMatcher(None, string1, string2)
@@ -157,11 +156,7 @@ match_extractor.run_extractor(data_scriptures1, save = True, save_temporary = Tr
 # DataUtil.compute_string_match_percentages(text_woodruff[:300], scripture, threshold=0)
 
 
-#%%
-
-
 
 #%%
 match_extractor.matches_total
-
 

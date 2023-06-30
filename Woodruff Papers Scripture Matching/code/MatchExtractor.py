@@ -53,14 +53,14 @@ class MatchExtractor:
         if publish:
             self.quarto_publish()
 
-    def compute_string_match_percentages(self, phrase_scripture):
+    def compute_string_match_percentages_window(self, phrase_scripture):
         words_woodruff = self.text_woodruff.split()
         words_scripture = phrase_scripture.split()
         percentage_match_list = []
         window_list = []
         phrase_scripture_list = []
         # iterate through each n word window the same length as the verse
-        for i in range(len(words_woodruff)):
+        for i in range(0, len(words_woodruff), 10):
             min = i
             max = i + len(words_scripture)
             if max > len(words_woodruff):
@@ -85,6 +85,39 @@ class MatchExtractor:
             'percentage_match' : percentage_match_list,
             })
         self.matches_current = matches.sort_values(by = 'percentage_match', ascending=False)
+
+    def compute_scripture_match_percentages(self, phrase_scripture):
+        words_woodruff = self.text_woodruff.split()
+        percentage_match_list = []
+        window_list = []
+        phrase_scripture_list = []
+        # iterate through each n word window the same length as the verse
+        # for :
+            min = i
+            max = i + len(words_scripture)
+            if max > len(words_woodruff):
+                break
+            window_woodruff = " ".join(words_woodruff[min:max])
+            # print('comparing...')
+            # print(window)
+            # print(string2)
+            percentage_match_raw = DataUtil.string_percentage_match(window_woodruff, phrase_scripture)
+            # raw percentage match filter
+            if percentage_match_raw > .2:
+
+                percentage_match_idfidf = self.compute_tfidf_percentage_match(window_woodruff, phrase_scripture)
+                # tfidf percentage match filter
+                if percentage_match_idfidf > self.threshold:
+                    percentage_match_list.append(percentage_match_idfidf)
+                    window_list.append(window_woodruff)
+                    phrase_scripture_list.append(phrase_scripture)
+        matches = pd.DataFrame({
+            'phrase_woodruff' : window_list,
+            'phrase_scripture' : phrase_scripture_list,
+            'percentage_match' : percentage_match_list,
+            })
+        self.matches_current = matches.sort_values(by = 'percentage_match', ascending=False)
+
 
     def compute_tfidf_percentage_match(self, phrase_woodruff, phrase_scripture):
             # self.matches_current = pd.concat([matches, scores], axis=1).query('similarity_score > @self.threshold')
