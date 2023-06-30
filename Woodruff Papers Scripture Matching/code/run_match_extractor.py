@@ -69,6 +69,9 @@ woodruff_typos = {
     r'th\[e\]' : r'the',
     r'judjment' : r'judgement',
     r'experiance' : r'experience',
+    r'ingaged' : r'engaged',
+    r'\[she\]' : r'she',
+    r'fulnes ' : r'fulness ',
 }
 
 exact_replacements = {r'a b c d e f g h i j k l m n o p q r s t u v w x y z and 1 2 3 4 5 6 7 8 9 0' : r''}
@@ -84,7 +87,7 @@ path_data_woodruff_raw = 'Woodruff Papers Scripture Matching/data/data_woodruff_
 path_data_woodruff_clean = 'Woodruff Papers Scripture Matching/data/data_woodruff_clean.csv'
 path_data_scriptures = 'Woodruff Papers Scripture Matching/data/data_scriptures.csv'
 path_matches = 'Woodruff Papers Scripture Matching/data/data_matches.csv'
-path_matches_temporary = 'Woodruff Papers Scripture Matching/data/data_matches_temporary.csv'
+
 
 # url paths
 url_woodruff = "https://github.com/wilfordwoodruff/Main-Data/raw/main/data/derived/derived_data.csv"
@@ -108,17 +111,15 @@ data_scriptures = pd.read_csv(path_data_scriptures)[['volume_title', 'book_title
 data_scriptures['scripture_text'] = data_scriptures['scripture_text'].str.lower()
 data_scriptures['scripture_text'] = data_scriptures['scripture_text'].replace(scripture_replacements, regex=True)
 
-# split each verse into a 15 word phrase then explode it all
-data_scriptures['scripture_text'] = data_scriptures['scripture_text'].apply(lambda x: DataUtil.split_string_into_list(x, 15))
-data_scriptures = data_scriptures.explode('scripture_text')
+
 
 # filter to certain volumes
 volume_titles = [
-    #  'Old Testament',
-    #  'New Testament',
-    #  'Book of Mormon',
+     'Old Testament',
+     'New Testament',
+     'Book of Mormon',
      'Doctrine and Covenants',
-    #  'Pearl of Great Price',
+     'Pearl of Great Price',
      ]
 data_scriptures = data_scriptures.query("volume_title in @volume_titles")
 
@@ -132,21 +133,25 @@ data_scriptures
 
 # data_scriptures_chunks = DataUtil.get_dataframe_chunks(data_scriptures.head(3), 1)
 # data_scriptures_chunks
+data_scriptures['scripture_text'] = data_scriptures['scripture_text'].apply(lambda x: DataUtil.split_string_into_list(x, 15))
+data_scriptures = data_scriptures.explode('scripture_text')
 #%%
-text_woodruff = DataUtil.combine_rows(data_woodruff.head(1000)['text'])
-data_scriptures1 = data_scriptures.head(500)
 
-# print(data_scriptures1.head(1))
-# print(text_woodruff)
-match_extractor = MatchExtractor(text_woodruff, threshold = .7, path_matches = path_matches, path_matches_temporary = path_matches_temporary)
+text_woodruff = DataUtil.combine_rows(data_woodruff['text'])
+data_scriptures1 = data_scriptures
+data_scriptures1
+
+
+match_extractor = MatchExtractor(text_woodruff,
+                                 threshold = .7,
+                                 phrase_length = 15,
+                                 path_matches = path_matches)
 
 # iterate through each row of scripture phrases dataset and run TFIDF model and cosine similarity.
-match_extractor.run_extractor(data_scriptures1, save = True, save_temporary = True, publish=False)
-
-
+# match_extractor.run_extractor(data_scriptures1, save = True, publish=True)
+match_extractor.quarto_publish()
 # text_sample = 'hello hearken o ye people men, and there is none to escape'
 # scripture = 'elder benjamin lynn clapp'
-
 
 # def compute_similarity_ratio(string1, string2):
 #     matcher = SequenceMatcher(None, string1, string2)
@@ -154,7 +159,6 @@ match_extractor.run_extractor(data_scriptures1, save = True, save_temporary = Tr
 #     return similarity_ratio * 100
 
 # DataUtil.compute_string_match_percentages(text_woodruff[:300], scripture, threshold=0)
-
 
 
 #%%
