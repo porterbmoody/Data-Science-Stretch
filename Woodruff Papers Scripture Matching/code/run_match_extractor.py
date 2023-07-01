@@ -148,8 +148,7 @@ match_extractor = MatchExtractor(text_woodruff,
                                  path_matches = path_matches)
 
 # iterate through each row of scripture phrases dataset and run TFIDF model and cosine similarity.
-# match_extractor.run_extractor(data_scriptures1, save = True, publish=True)
-match_extractor.quarto_publish()
+match_extractor.run_extractor(data_scriptures1, save = True, publish=True)
 # text_sample = 'hello hearken o ye people men, and there is none to escape'
 # scripture = 'elder benjamin lynn clapp'
 

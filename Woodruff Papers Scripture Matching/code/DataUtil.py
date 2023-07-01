@@ -98,9 +98,9 @@ class DataUtil:
             string = re.sub(regex, replacement, string)
         return string
 
-    @staticmethod
-    def remove_stop_words(string):
-        return DataUtil.str_replace_list(string, regex_list = stop_words, replacement = ' ')
+    # @staticmethod
+    # def remove_stop_words(string):
+    #     return DataUtil.str_replace_list(string, regex_list = stop_words, replacement = ' ')
 
     @staticmethod
     def split_string_into_list(string, n):

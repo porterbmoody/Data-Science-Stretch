@@ -14,7 +14,7 @@ class MatchExtractor:
         self.matches_current = pd.DataFrame()
         self.path_matches = path_matches
         self.phrase_length = phrase_length
-        self.path_matches_temporary = 'Woodruff Papers Scripture Matching/data/data_matches_temporary.csv'
+        self.path_matches_temporary = 'Woodruff Papers Scripture Matching/data/data_matches.csv'
         self.load_woodruff_data(text_woodruff)
         self.load_vectorizer()
 
@@ -79,61 +79,61 @@ class MatchExtractor:
         #     'phrase_scripture':phrase_scripture,
         #     })
 
-    def compute_string_match_percentages_window(self, phrase_scripture):
-        words_woodruff = self.text_woodruff.split()
-        words_scripture = phrase_scripture.split()
-        percentage_match_list = []
-        window_list = []
-        phrase_scripture_list = []
-        # iterate through each n word window the same length as the verse
-        for i in range(0, len(words_woodruff), 10):
-            min = i
-            max = i + len(words_scripture)
-            if max > len(words_woodruff):
-                break
-            window_woodruff = " ".join(words_woodruff[min:max])
-            # print('comparing...')
-            # print(window)
-            # print(string2)
-            percentage_match_raw = DataUtil.string_percentage_match(window_woodruff, phrase_scripture)
-            # raw percentage match filter
-            if percentage_match_raw > .2:
-                percentage_match_idfidf = self.compute_tfidf_percentage_match(window_woodruff, phrase_scripture)
-                # tfidf percentage match filter
-                if percentage_match_idfidf > self.threshold:
-                    percentage_match_list.append(percentage_match_idfidf)
-                    window_list.append(window_woodruff)
-                    phrase_scripture_list.append(phrase_scripture)
-        matches = pd.DataFrame({
-            'phrase_woodruff' : window_list,
-            'phrase_scripture' : phrase_scripture_list,
-            'percentage_match' : percentage_match_list,
-            })
-        self.matches_current = matches.sort_values(by = 'percentage_match', ascending=False)
+    # def compute_string_match_percentages_window(self, phrase_scripture):
+    #     words_woodruff = self.text_woodruff.split()
+    #     words_scripture = phrase_scripture.split()
+    #     percentage_match_list = []
+    #     window_list = []
+    #     phrase_scripture_list = []
+    #     # iterate through each n word window the same length as the verse
+    #     for i in range(0, len(words_woodruff), 10):
+    #         min = i
+    #         max = i + len(words_scripture)
+    #         if max > len(words_woodruff):
+    #             break
+    #         window_woodruff = " ".join(words_woodruff[min:max])
+    #         # print('comparing...')
+    #         # print(window)
+    #         # print(string2)
+    #         percentage_match_raw = DataUtil.string_percentage_match(window_woodruff, phrase_scripture)
+    #         # raw percentage match filter
+    #         if percentage_match_raw > .2:
+    #             percentage_match_idfidf = self.compute_tfidf_percentage_match(window_woodruff, phrase_scripture)
+    #             # tfidf percentage match filter
+    #             if percentage_match_idfidf > self.threshold:
+    #                 percentage_match_list.append(percentage_match_idfidf)
+    #                 window_list.append(window_woodruff)
+    #                 phrase_scripture_list.append(phrase_scripture)
+    #     matches = pd.DataFrame({
+    #         'phrase_woodruff' : window_list,
+    #         'phrase_scripture' : phrase_scripture_list,
+    #         'percentage_match' : percentage_match_list,
+    #         })
+    #     self.matches_current = matches.sort_values(by = 'percentage_match', ascending=False)
 
-    def compute_scripture_match_percentages(self, phrase_scripture):
-        percentage_match_list = []
-        phrase_woodruff_list = []
-        phrase_scripture_list = []
-        for phrase_woodruff in self.phrases_woodruff:
-            # percentage_match_raw = DataUtil.string_percentage_match(phrase_woodruff, phrase_scripture)
-            print('comparing...')
-            print(phrase_woodruff)
-            print(phrase_scripture)
-            # # raw percentage match filter
-            # if percentage_match_raw > .1:
-            percentage_match_idfidf = self.compute_tfidf_percentage_match(phrase_woodruff, phrase_scripture)
-            # tfidf percentage match filter
-            if percentage_match_idfidf > self.threshold:
-                percentage_match_list.append(percentage_match_idfidf)
-                phrase_woodruff_list.append(phrase_woodruff)
-                phrase_scripture_list.append(phrase_scripture)
-        matches = pd.DataFrame({
-            'phrase_woodruff'  : phrase_woodruff_list,
-            'phrase_scripture' : phrase_scripture_list,
-            'cosine_score' : percentage_match_list,
-            })
-        self.matches_current = matches.sort_values(by = 'cosine_score', ascending=False)
+    # def compute_scripture_match_percentages(self, phrase_scripture):
+    #     percentage_match_list = []
+    #     phrase_woodruff_list = []
+    #     phrase_scripture_list = []
+    #     for phrase_woodruff in self.phrases_woodruff:
+    #         # percentage_match_raw = DataUtil.string_percentage_match(phrase_woodruff, phrase_scripture)
+    #         print('comparing...')
+    #         print(phrase_woodruff)
+    #         print(phrase_scripture)
+    #         # # raw percentage match filter
+    #         # if percentage_match_raw > .1:
+    #         percentage_match_idfidf = self.compute_tfidf_percentage_match(phrase_woodruff, phrase_scripture)
+    #         # tfidf percentage match filter
+    #         if percentage_match_idfidf > self.threshold:
+    #             percentage_match_list.append(percentage_match_idfidf)
+    #             phrase_woodruff_list.append(phrase_woodruff)
+    #             phrase_scripture_list.append(phrase_scripture)
+    #     matches = pd.DataFrame({
+    #         'phrase_woodruff'  : phrase_woodruff_list,
+    #         'phrase_scripture' : phrase_scripture_list,
+    #         'cosine_score' : percentage_match_list,
+    #         })
+    #     self.matches_current = matches.sort_values(by = 'cosine_score', ascending=False)
 
 
 
