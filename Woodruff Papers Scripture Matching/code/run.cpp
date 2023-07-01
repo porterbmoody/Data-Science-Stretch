@@ -67,11 +67,14 @@ std::vector<std::string> extract_matches(const std::string& string1, const std::
     std::vector<std::string> string1_tokens = tokenize_string(string1);
     // std::cout << "length of string1 token vector: " << string1_tokens.size() << std::endl;
 
-    std::cout << "string1 tokens: " << string1_tokens.size();
-    print_vector(string1_tokens);
-    // for (int i = 0; string1_tokens.size(); ++i) {
-    //     std::cout << "hello" << std::endl;
-    // }
+    // std::cout << "string1 tokens: " << string1_tokens.size();
+    // print_vector(string1_tokens);
+    for (int i = 0; i < string1_tokens.size(); ++i) {
+        int min = i;
+        int max = i + string1_tokens.size();
+        std::cout << "range: " << min << " " << max << std::endl;
+        std::cout << string1_tokens[i] << std::endl;
+    }
     //     int min{i};
         // int max{i + string1_tokens.size()};
         // std::cout << "range: " << min << "\n";
@@ -89,8 +92,9 @@ int main() {
     std::vector<std::string> matches;
     std::string string1 = "hello my name is";
     std::string string2 = "pizza pizza taco";
-    std::cout << string1 << "\n";
+    // std::cout << string1 << "\n";
     matches = extract_matches(string1, string2);
+    // print_vector(matches);
     return 0;
 }
 
