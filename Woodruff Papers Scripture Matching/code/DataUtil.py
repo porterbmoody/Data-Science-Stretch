@@ -103,7 +103,7 @@ class DataUtil:
     #     return DataUtil.str_replace_list(string, regex_list = stop_words, replacement = ' ')
 
     @staticmethod
-    def split_string_into_list(string, n):
+    def split_string_into_list(string, n, increment = 0):
         """ Basically converts a string of text into a list of strings of text
         each element containing n words.
         Except the last few words get attatched on the end of the last element of the list,

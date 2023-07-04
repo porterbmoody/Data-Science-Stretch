@@ -7,7 +7,7 @@
 #include <thread>
 #include <algorithm>
 // #include "DataFrame.h"
-#include "DataUtil.h"
+#include "StringUtil.h"
 
 
 using namespace std;
@@ -15,17 +15,17 @@ using namespace std;
 
 
 int main() {
-    cout << "importing class DataUtil" << endl;
+    cout << "importing class StringUtil" << endl;
     string string_woodruff = "hello my name is taco hello pizza taco coding software c++";
     string string_verse = "hello pizza taco";
-    vector<string> tokens_woodruff = DataUtil::tokenize_string(string_woodruff);
+    vector<string> tokens_woodruff = StringUtil::tokenize_string(string_woodruff);
     string cool_string = "pizza";
 
-    // bool is_in = DataUtil::string_is_in_vector(tokens_woodruff, cool_string);
+    // bool is_in = StringUtil::string_is_in_vector(tokens_woodruff, cool_string);
     // cout << "is in: " << is_in << endl;
-    std::string sub_string = DataUtil::get_sub_string(string_woodruff, 0, 3);
+    std::string sub_string = StringUtil::get_sub_string(string_woodruff, 0, 3);
     cout << sub_string << endl;
-    // float percentage_match = DataUtil::compute_percentage_match(string_woodruff, string_verse);
+    // float percentage_match = StringUtil::compute_percentage_match(string_woodruff, string_verse);
     // cout << percentage_match << endl;
 
     // string path = "test.csv";
@@ -56,8 +56,8 @@ int main() {
     // vector<string> matches;
     // cout << "extracting matches...\n";
 
-	// vector<string> tokens_woodruff = DataUtil::tokenize_string(string_woodruff);
-	// DataUtil::print_vector(tokens_woodruff);
+	// vector<string> tokens_woodruff = StringUtil::tokenize_string(string_woodruff);
+	// StringUtil::print_vector(tokens_woodruff);
     // extract_matches(string_woodruff, string_verse);
     // print_vector(matches);
     // int totalProgress = 100;

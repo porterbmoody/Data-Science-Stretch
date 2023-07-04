@@ -1,14 +1,8 @@
 #%%
 import pandas as pd
-from termcolor import colored
 from DataUtil import DataUtil
 from MatchExtractor import MatchExtractor
-# import cupy as cp
-# from cupy.sparse import csr_matrix
-
-# from numba import jit, float64, typeof
 import os
-import numpy as np
 pd.set_option('display.max_colwidth', None)
 
 woodruff_typos = {
@@ -19,32 +13,29 @@ woodruff_typos = {
     r"(\^?FIGURES?\^?)"     : r'',
     r'[\{\}\~]'             : r'',
     r'\s{2}'                : r' ',
-    r','                    : r'',
     r'\n'                   : r' ',
     r'\[\[(.*?)\|(.*?)\]\]' : r'\1',
-    r'\-\s'                  : r'',
-    r'\n'                 : r' ',
-    r'\–'               : r'',
-    r'\—'               : r'',
-    r'\s+'                 : r' ',
-    r'\.|\:|\;|\,|\-|\(|\)|\?' : r'',
-    r'sacrafice'      : r'sacrifice',
-    r'discours'       : r'discourse',
-    r'travling'       : r'traveling',
-    r'oclock'         : r'oclock',
-    r'w\. woodruff'    : r'wilford woodruff',
-    r'any\s?whare'    : r'anywhere',
-    r'some\s?whare'     : r'somewhere',
-    r'whare'           : r'where',
-    r'sumthing'        : r'something',
-    r' els '           : r' else ',
-    r' wil '           : r' will ',
-    r'savio saviour'  : r'saviour',
-    r'arived'         : r'arrived',
-    r'intirely    '   : r'entirely',
-    r'phylosophers'   : r'philosophers',
-    r'baptised'       : r'baptized',
-    r'benef\- it'     : r'benefit',
+    r'\n'                   : r' ',
+    r'\–|\-|\—|\-\s'        : r'',
+    r'\s+'                  : r' ',
+    r'\.|\:|\;|\,|\(|\)|\?' : r'',
+    r'sacrafice'           : r'sacrifice',
+    r'discours'            : r'discourse',
+    r'travling'            : r'traveling',
+    r'oclock'              : r'oclock',
+    r'w\. woodruff'        : r'wilford woodruff',
+    r'any\s?whare'         : r'anywhere',
+    r'some\s?whare'        : r'somewhere',
+    r'whare'               : r'where',
+    r'sumthing'            : r'something',
+    r' els '               : r' else ',
+    r' wil '               : r' will ',
+    r'savio saviour'     : r'saviour',
+    r'arived'            : r'arrived',
+    r'intirely    '      : r'entirely',
+    r'phylosophers'      : r'philosophers',
+    r'baptised'           : r'baptized',
+    r'benef\- it'       : r'benefit',
     r'preachi \-ng'      : r'preaching',
     r'oppor- tunities' : r'opportunities',
     r'vary'         : r'very',
@@ -72,21 +63,23 @@ woodruff_typos = {
     r'ingaged' : r'engaged',
     r'\[she\]' : r'she',
     r'fulnes ' : r'fulness ',
+    r'interestin ' : r'interesting ',
+    # r'\sa\sb' : r'',
 }
-
-exact_replacements = {r'a b c d e f g h i j k l m n o p q r s t u v w x y z and 1 2 3 4 5 6 7 8 9 0' : r''}
+other_matches = {r'a b c d e f g h i j k l m n o p q r s t u v w x y z and 1 2 3 4 5 6 7 8 9 0' : r''}
 
 scripture_replacements = {
     r'\.|\:|\;|\,|\-|\(|\)|\?' : r'',
 }
 
 #%%
-os.chdir('C:/Users/porte/Desktop/coding/Data-Science-Stretch')
+os.chdir('C:/Users/porte/Desktop/coding/Data-Science-Stretch/Woodruff Papers Scripture Matching')
 # local paths
-path_data_woodruff_raw = 'Woodruff Papers Scripture Matching/data/data_woodruff_raw.csv'
-path_data_woodruff_clean = 'Woodruff Papers Scripture Matching/data/data_woodruff_clean.csv'
-path_data_scriptures = 'Woodruff Papers Scripture Matching/data/data_scriptures.csv'
-path_matches = 'Woodruff Papers Scripture Matching/data/data_matches.csv'
+path_data_woodruff_raw   = 'data/data_woodruff_raw.csv'
+path_data_woodruff_clean = 'data/data_woodruff_clean.csv'
+path_data_scriptures     = 'data/data_scriptures.csv'
+path_matches             = 'data/data_matches.csv'
+path_matches_temporary   = 'data/data_matches_temporary.csv'
 
 
 # url paths
@@ -101,16 +94,19 @@ data_woodruff['text'] = data_woodruff['text'].str.lower()
 
 # clean woodruff data
 data_woodruff['text'] = data_woodruff['text'].replace(woodruff_typos, regex=True)
-data_woodruff['text'] = data_woodruff['text'].replace(exact_replacements, regex=True)
+data_woodruff['text'] = data_woodruff['text'].replace(other_matches, regex=True)
 
 # output this just to check if cleaned data is clean
 data_woodruff.to_csv(path_data_woodruff_clean, index = False)
+str(data_woodruff.iloc[8390:8391]['text'])[-180:]
+
+
+#%%
 
 data_scriptures = pd.read_csv(path_data_scriptures)[['volume_title', 'book_title', 'verse_title', 'scripture_text']]
 # clean scripture data
 data_scriptures['scripture_text'] = data_scriptures['scripture_text'].str.lower()
 data_scriptures['scripture_text'] = data_scriptures['scripture_text'].replace(scripture_replacements, regex=True)
-
 
 
 # filter to certain volumes
@@ -123,43 +119,31 @@ volume_titles = [
      ]
 data_scriptures = data_scriptures.query("volume_title in @volume_titles")
 
-text_scriptures = DataUtil.combine_rows(data_scriptures['scripture_text'])
-data_scriptures
-# scripture_corpus_length = len(text_scriptures.split())
-# text_corpus_length = len(text_woodruff.split())
-# print('scripture corpus:', scripture_corpus_length)
-# print('woodruff corpus:', text_corpus_length)
-# print('number of word for word comparisons:', text_corpus_length*scripture_corpus_length)
+print(data_scriptures.head())
 
-# data_scriptures_chunks = DataUtil.get_dataframe_chunks(data_scriptures.head(3), 1)
-# data_scriptures_chunks
-data_scriptures['scripture_text'] = data_scriptures['scripture_text'].apply(lambda x: DataUtil.split_string_into_list(x, 15))
-data_scriptures = data_scriptures.explode('scripture_text')
 #%%
 
 text_woodruff = DataUtil.combine_rows(data_woodruff['text'])
 data_scriptures1 = data_scriptures
-data_scriptures1
 
 
-match_extractor = MatchExtractor(text_woodruff,
-                                 threshold = .7,
-                                 phrase_length = 15,
-                                 path_matches = path_matches)
+match_extractor = MatchExtractor(
+    text_woodruff,
+    threshold = .7,
+    phrase_length = 10,
+    # increment = 10
+    )
+
+match_extractor.load_scripture_data(data_scriptures1)
 
 # iterate through each row of scripture phrases dataset and run TFIDF model and cosine similarity.
-match_extractor.run_extractor(data_scriptures1, save = True, publish=True)
-# text_sample = 'hello hearken o ye people men, and there is none to escape'
-# scripture = 'elder benjamin lynn clapp'
-
-# def compute_similarity_ratio(string1, string2):
-#     matcher = SequenceMatcher(None, string1, string2)
-#     similarity_ratio = matcher.ratio()
-#     return similarity_ratio * 100
-
-# DataUtil.compute_string_match_percentages(text_woodruff[:300], scripture, threshold=0)
-
+match_extractor.run_extractor(
+    path_matches,
+    path_matches_temporary,
+    save=True,
+    publish=True,
+    )
 
 #%%
+# print matches dataframe
 match_extractor.matches_total
-
