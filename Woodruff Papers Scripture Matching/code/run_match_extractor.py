@@ -86,28 +86,14 @@ url_woodruff = "https://github.com/wilfordwoodruff/Main-Data/raw/main/data/deriv
 url_scriptures = 'https://github.com/wilfordwoodruff/wilford_woodruff_hack23/raw/main/data/lds-scriptures.csv'
 
 # load data
+data_scriptures = pd.read_csv(path_data_scriptures)
 data_woodruff = pd.read_csv(path_data_woodruff_raw)
+
 # clean woodruff data
 data_woodruff['text'] = StringUtil.str_replace_column(data_woodruff['text'], replacements_woodruff)
 
-data_woodruff
-
-#%%
-
-data_scriptures = pd.read_csv(path_data_scriptures)
 # clean scripture data
 data_scriptures['scripture_text'] = StringUtil.str_replace_column(data_scriptures['scripture_text'], scripture_replacements)
-
-# filter to certain volumes
-volume_titles = [
-     'Old Testament',
-     'New Testament',
-     'Book of Mormon',
-     'Doctrine and Covenants',
-     'Pearl of Great Price',
-     ]
-data_scriptures = data_scriptures.query("volume_title in @volume_titles")
-data_scriptures
 
 #%%
 match_extractor = MatchExtractor(data_woodruff, data_scriptures, phrase_length = 13)
@@ -120,3 +106,15 @@ match_extractor.run_extractor(
     save=True,
     quarto_publish=True,
     )
+
+
+# filter to certain volumes
+# volume_titles = [
+#      'Old Testament',
+#      'New Testament',
+#      'Book of Mormon',
+#      'Doctrine and Covenants',
+#      'Pearl of Great Price',
+#      ]
+# data_scriptures = data_scriptures.query("volume_title in @volume_titles")
+# data_scriptures
