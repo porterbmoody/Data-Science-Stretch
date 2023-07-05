@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Image Click Example</title>
+    <style>
+        .container {
+            display: flex;
+            align-items: center;
+        }
+
+        .image {
+            margin-right: 10px;
+        }
+
+        .buttons {
+            margin-center: auto;
+        }
+    </style>
+</head>
+<body>
+    <h3>Rooftop Image label App: {{ address }}</h3>
+    <div class="container">
+        <img src="{{ path_rooftop }}" alt="Image" id="image" onclick="handleClick(event)" ismap class="image">
+        <form id="clickForm" method="POST" action="{{ url_for('image_click') }}">
+            <input type="hidden" name="x" id="xInput">
+            <input type="hidden" name="y" id="yInput">
+        </form>
+        <div class="buttons">
+            <form action="{{ url_for('submit') }}" method="POST">
+                <button type="submit" id="submit" value='submit polygon'>submit polygon</button>
+            </form>
+            <form action="{{ url_for('clear') }}" method="POST">
+                <button type="submit" id="clear" value='submit polygon'>clear polygon</button>
+            </form>
+            <form action="{{ url_for('save_panel_frameworks') }}" method="POST">
+                <button type="submit" id="save_panel_frameworks">save panel frameworks</button>
+            </form>
+            <form action="{{ url_for('next_rooftop_image') }}" method="POST">
+                <button type="submit" id="next_rooftop_image">next rooftop image</button>
+            </form>
+        </div>
+    </div>
+    <script>
+        function handleClick(event) {
+            var x = event.offsetX;
+            var y = event.offsetY;
+            document.getElementById('xInput').value = x;
+            document.getElementById('yInput').value = y;
+            document.getElementById('clickForm').submit();
+        }
+    </script>
+</body>
+</html>
