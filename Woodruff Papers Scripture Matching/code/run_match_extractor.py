@@ -5,7 +5,7 @@ from MatchExtractor import MatchExtractor
 import os
 pd.set_option('display.max_colwidth', None)
 
-woodruff_typos = {
+replacements_woodruff = {
     r'(, b\.)'              : r'',
     r'\<U\+25CA\>'          : r'',
     r'\&amp;c?'             : r"and",
@@ -19,6 +19,7 @@ woodruff_typos = {
     r'\–|\-|\—|\-\s'        : r'',
     r'\s+'                  : r' ',
     r'\.|\:|\;|\,|\(|\)|\?' : r'',
+    r'confer ence'     : r'conference',
     r'sacrafice'           : r'sacrifice',
     r'discours'            : r'discourse',
     r'travling'            : r'traveling',
@@ -64,9 +65,11 @@ woodruff_typos = {
     r'\[she\]' : r'she',
     r'fulnes ' : r'fulness ',
     r'interestin ' : r'interesting ',
-    # r'\sa\sb' : r'',
+    r'respetible ' : r'respectable ',
+    r'diestroy ' : r'destroy ',
+    r'a b c d e f g h i j k l m n o p q r s t u v w x y z and 1 2 3 4 5 6 7 8 9 0' : r'',
+    r' \^e\^ 4 \^p\^ 5 \^t\^ 1 \^d\^ 3 ': r'',
 }
-other_matches = {r'a b c d e f g h i j k l m n o p q r s t u v w x y z and 1 2 3 4 5 6 7 8 9 0' : r''}
 
 scripture_replacements = {
     r'\.|\:|\;|\,|\-|\(|\)|\?' : r'',
@@ -88,18 +91,17 @@ url_scriptures = 'https://github.com/wilfordwoodruff/wilford_woodruff_hack23/raw
 
 # load data
 data_woodruff = pd.read_csv(path_data_woodruff_raw)
-data_woodruff
 # lowercase all text
 data_woodruff['text'] = data_woodruff['text'].str.lower()
 
 # clean woodruff data
-data_woodruff['text'] = data_woodruff['text'].replace(woodruff_typos, regex=True)
-data_woodruff['text'] = data_woodruff['text'].replace(other_matches, regex=True)
+data_woodruff['text'] = DataUtil.str_replace_column(data_woodruff['text'], replacements_woodruff)
 
 # output this just to check if cleaned data is clean
 data_woodruff.to_csv(path_data_woodruff_clean, index = False)
-str(data_woodruff.iloc[8390:8391]['text'])[-180:]
 
+data_woodruff
+# str(data_woodruff.iloc[6072-4:6073-4]['text'])
 
 #%%
 
@@ -129,7 +131,7 @@ data_scriptures1 = data_scriptures
 
 match_extractor = MatchExtractor(
     text_woodruff,
-    threshold = .7,
+    threshold = .75,
     phrase_length = 10,
     # increment = 10
     )

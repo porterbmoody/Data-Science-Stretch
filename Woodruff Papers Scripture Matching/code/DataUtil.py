@@ -40,6 +40,17 @@ class DataUtil:
         return re.sub(regex, replacement, string)
 
     @staticmethod
+    def str_replace_column(column, replacement_dict):
+        """ Inputs: a replacement dictionary, and pandas series or a single column of a pandas dataframe
+            Outputs: a single pandas series
+            Iterates through each element of replacement dictionary and replaces it with
+        """
+        for regex, replacement in replacement_dict.items():
+            # output_string = re.sub(regex, replacement, output_string)
+            column = column.apply(lambda x: DataUtil.str_replace(x, regex, replacement))
+        return column
+
+    @staticmethod
     def str_extract(string, regex):
         """ Returns first and only first match. If no matches, returns empty string
         """
