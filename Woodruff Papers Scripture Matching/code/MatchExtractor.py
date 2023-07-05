@@ -5,7 +5,6 @@ from tqdm import tqdm
 import pandas as pd
 import subprocess
 
-
 class MatchExtractor:
 
     def __init__(self, data_woodruff, data_scriptures, phrase_length):
