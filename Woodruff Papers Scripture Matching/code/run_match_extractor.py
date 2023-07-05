@@ -2,7 +2,6 @@
 import pandas as pd
 from StringUtil import StringUtil
 from MatchExtractor import MatchExtractor
-import os
 pd.set_option('display.max_colwidth', None)
 
 replacements_woodruff = {
@@ -75,14 +74,12 @@ scripture_replacements = {
 }
 
 #%%
-os.chdir('C:/Users/porte/Desktop/coding/Data-Science-Stretch/Woodruff Papers Scripture Matching')
 # local paths
-path_data_woodruff_raw   = 'data/data_woodruff_raw.csv'
-path_data_woodruff_clean = 'data/data_woodruff_clean.csv'
-path_data_scriptures     = 'data/data_scriptures.csv'
-path_matches             = 'data/data_matches.csv'
-path_matches_temporary   = 'data/data_matches_temporary.csv'
-
+path_data_woodruff_raw   = '../data/data_woodruff_raw.csv'
+path_data_woodruff_clean = '../data/data_woodruff_clean.csv'
+path_data_scriptures     = '../data/data_scriptures.csv'
+path_matches             = '../data/data_matches.csv'
+path_matches_temporary   = '../data/data_matches_temporary.csv'
 
 # url paths
 url_woodruff = "https://github.com/wilfordwoodruff/Main-Data/raw/main/data/derived/derived_data.csv"
@@ -90,63 +87,36 @@ url_scriptures = 'https://github.com/wilfordwoodruff/wilford_woodruff_hack23/raw
 
 # load data
 data_woodruff = pd.read_csv(path_data_woodruff_raw)
-# lowercase all text
-data_woodruff['text'] = data_woodruff['text'].str.lower()
-
 # clean woodruff data
 data_woodruff['text'] = StringUtil.str_replace_column(data_woodruff['text'], replacements_woodruff)
 
-# output this just to check if cleaned data is clean
-data_woodruff.to_csv(path_data_woodruff_clean, index = False)
-
 data_woodruff
-# str(data_woodruff.iloc[6072-4:6073-4]['text'])
 
 #%%
 
-data_scriptures = pd.read_csv(path_data_scriptures)[['volume_title', 'book_title', 'verse_title', 'scripture_text']]
+data_scriptures = pd.read_csv(path_data_scriptures)
 # clean scripture data
-data_scriptures['scripture_text'] = data_scriptures['scripture_text'].str.lower()
 data_scriptures['scripture_text'] = StringUtil.str_replace_column(data_scriptures['scripture_text'], scripture_replacements)
 
 # filter to certain volumes
 volume_titles = [
-    #  'Old Testament',
-    #  'New Testament',
+     'Old Testament',
+     'New Testament',
      'Book of Mormon',
-    #  'Doctrine and Covenants',
-    #  'Pearl of Great Price',
+     'Doctrine and Covenants',
+     'Pearl of Great Price',
      ]
 data_scriptures = data_scriptures.query("volume_title in @volume_titles")
 data_scriptures
 
 #%%
-
-text_woodruff = StringUtil.combine_rows(data_woodruff['text'])
-data_scriptures1 = data_scriptures
-
-
-match_extractor = MatchExtractor(
-    text_woodruff,
-    threshold = .75
-    ,
-    phrase_length = 10,
-    # increment = 10
-    )
-
-match_extractor.load_scripture_data(data_scriptures1)
+match_extractor = MatchExtractor(data_woodruff, data_scriptures, phrase_length = 13)
 
 # iterate through each row of scripture phrases dataset and run TFIDF model and cosine similarity.
 match_extractor.run_extractor(
     path_matches,
     path_matches_temporary,
+    threshold = .75,
     save=True,
-    publish=True,
+    quarto_publish=True,
     )
-
-#%%
-# print matches dataframe
-match_extractor.matches_total
-
-
-#%%
