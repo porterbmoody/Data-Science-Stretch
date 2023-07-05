@@ -5,11 +5,11 @@
 ## [quarto site](https://porter.quarto.pub/data-science-stretch/articles/wwp.html)
 
 ## code
-	- [run_match_extractor.py](code/run_match_extractor.py) python script that cleans the data and runs the MatchExtractor class comparing the scripture dataset phrases with the woodruff journal entries dataset.
+- [run_match_extractor.py](code/run_match_extractor.py) python script that cleans the data and runs the MatchExtractor class comparing the scripture dataset phrases with the woodruff journal entries dataset.
 
-	- [MatchExtractor.py](code/MatchExtractor.py) class that takes in Woodruff journal entries dataset, splits the entries into a list of `phrase_length` word phrases, then
+- [MatchExtractor.py](code/MatchExtractor.py) class that takes in Woodruff journal entries dataset, splits the entries into a list of `phrase_length` word phrases, then
 
-	- [StringUtil.py](code/StringUtil.py) String and pandas dataframe utility class to fix some the garbage existing pandas dataframe methods. Let's be honest, pandas has some room to improve.
+- [StringUtil.py](code/StringUtil.py) String and pandas dataframe utility class to fix some the garbage existing pandas dataframe methods. Let's be honest, pandas has some room to improve.
 
 ## data
 - [data_matches_temporary.csv](data/data_matches_temporary.csv) csv containing all the current matches found
