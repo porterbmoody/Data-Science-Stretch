@@ -1,6 +1,6 @@
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
-from DataUtil import DataUtil
+from StringUtil import StringUtil
 from tqdm import tqdm
 import pandas as pd
 import subprocess
@@ -19,7 +19,7 @@ class MatchExtractor:
     def __load_woodruff_data(self, text_woodruff):
         self.text_woodruff = text_woodruff
         # split each verse into a list of phrases then explode it all
-        self.phrases_woodruff = DataUtil.split_string_into_list(self.text_woodruff, n = self.phrase_length)
+        self.phrases_woodruff = StringUtil.split_string_into_list(self.text_woodruff, n = self.phrase_length)
 
     def __load_vectorizer(self):
         self.vectorizer = TfidfVectorizer()
@@ -27,7 +27,7 @@ class MatchExtractor:
 
     def load_scripture_data(self, data_scriptures):
         self.data_scriptures = data_scriptures
-        self.data_scriptures['scripture_text'] = self.data_scriptures['scripture_text'].apply(lambda x: DataUtil.split_string_into_list(x, self.phrase_length))
+        self.data_scriptures['scripture_text'] = self.data_scriptures['scripture_text'].apply(lambda x: StringUtil.split_string_into_list(x, self.phrase_length))
         self.data_scriptures = self.data_scriptures.explode('scripture_text')
 
     def run_extractor(self, path_matches, path_matches_temporary, save=False, publish=False):
@@ -44,6 +44,7 @@ class MatchExtractor:
 
                 # save to file
                 self.matches_total.to_csv(path_matches_temporary, index=False)
+
 
         self.progress_bar.close()
 
@@ -66,7 +67,6 @@ class MatchExtractor:
         self.matches_current['volume_title'] = row_scriptures['volume_title']
         self.matches_current['book_title']   = row_scriptures['book_title']
         self.matches_current = self.matches_current.query("cosine_score > @self.threshold")
-
 
     @staticmethod
     def quarto_publish():

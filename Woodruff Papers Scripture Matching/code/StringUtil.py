@@ -6,7 +6,7 @@ import numpy as np
 
 
 
-class DataUtil:
+class StringUtil:
     """ Utility class for cleaning the data
     """
 
@@ -47,7 +47,7 @@ class DataUtil:
         """
         for regex, replacement in replacement_dict.items():
             # output_string = re.sub(regex, replacement, output_string)
-            column = column.apply(lambda x: DataUtil.str_replace(x, regex, replacement))
+            column = column.apply(lambda x: StringUtil.str_replace(x, regex, replacement))
         return column
 
     @staticmethod
@@ -70,7 +70,7 @@ class DataUtil:
         """ Counts ocurrences of a certain keyword within string and
             returns int
         """
-        return len(DataUtil.str_extract_all(string, regex))
+        return len(StringUtil.str_extract_all(string, regex))
 
     @staticmethod
     def remove_duplicate_words(string):
@@ -102,7 +102,7 @@ class DataUtil:
         """Pass in a string, a list of regex patterns, and a single replacement string. It loops through each regex pattern and replaces it with the given replacement pattern
         """
         for regex in regex_list:
-            if regex == r'\s\d+\s' and DataUtil.str_detect(string, regex):
+            if regex == r'\s\d+\s' and StringUtil.str_detect(string, regex):
                 # print("PIZZA")
                 # print(string)
                 print(re.sub(regex, replacement, string))
@@ -111,7 +111,7 @@ class DataUtil:
 
     # @staticmethod
     # def remove_stop_words(string):
-    #     return DataUtil.str_replace_list(string, regex_list = stop_words, replacement = ' ')
+    #     return StringUtil.str_replace_list(string, regex_list = stop_words, replacement = ' ')
 
     @staticmethod
     def split_string_into_list(string, n, increment = 0):
@@ -151,7 +151,7 @@ class DataUtil:
 
     @staticmethod
     def count_words(string):
-        return len(DataUtil.str_split(string))
+        return len(StringUtil.str_split(string))
 
     @staticmethod
     def get_dataframe_chunks(data, chunk_size):
