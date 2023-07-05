@@ -1,6 +1,6 @@
 #%%
 import pandas as pd
-from DataUtil import DataUtil
+from StringUtil import StringUtil
 from MatchExtractor import MatchExtractor
 import os
 pd.set_option('display.max_colwidth', None)
@@ -94,7 +94,7 @@ data_woodruff = pd.read_csv(path_data_woodruff_raw)
 data_woodruff['text'] = data_woodruff['text'].str.lower()
 
 # clean woodruff data
-data_woodruff['text'] = DataUtil.str_replace_column(data_woodruff['text'], replacements_woodruff)
+data_woodruff['text'] = StringUtil.str_replace_column(data_woodruff['text'], replacements_woodruff)
 
 # output this just to check if cleaned data is clean
 data_woodruff.to_csv(path_data_woodruff_clean, index = False)
@@ -107,7 +107,7 @@ data_woodruff
 data_scriptures = pd.read_csv(path_data_scriptures)[['volume_title', 'book_title', 'verse_title', 'scripture_text']]
 # clean scripture data
 data_scriptures['scripture_text'] = data_scriptures['scripture_text'].str.lower()
-data_scriptures['scripture_text'] = DataUtil.str_replace_column(data_scriptures['scripture_text'], scripture_replacements)
+data_scriptures['scripture_text'] = StringUtil.str_replace_column(data_scriptures['scripture_text'], scripture_replacements)
 
 # filter to certain volumes
 volume_titles = [
@@ -122,7 +122,7 @@ data_scriptures
 
 #%%
 
-text_woodruff = DataUtil.combine_rows(data_woodruff['text'])
+text_woodruff = StringUtil.combine_rows(data_woodruff['text'])
 data_scriptures1 = data_scriptures
 
 
