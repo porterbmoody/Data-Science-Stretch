@@ -12,7 +12,6 @@ replacements_woodruff = {
     r'\&apos;'              : r"'",
     r"(\^?FIGURES?\^?)"     : r'',
     r'[\{\}\~]'             : r'',
-    r'\s{2}'                : r' ',
     r'\n'                   : r' ',
     r'\[\[(.*?)\|(.*?)\]\]' : r'\1',
     r'\n'                   : r' ',
@@ -108,20 +107,18 @@ data_woodruff
 data_scriptures = pd.read_csv(path_data_scriptures)[['volume_title', 'book_title', 'verse_title', 'scripture_text']]
 # clean scripture data
 data_scriptures['scripture_text'] = data_scriptures['scripture_text'].str.lower()
-data_scriptures['scripture_text'] = data_scriptures['scripture_text'].replace(scripture_replacements, regex=True)
-
+data_scriptures['scripture_text'] = DataUtil.str_replace_column(data_scriptures['scripture_text'], scripture_replacements)
 
 # filter to certain volumes
 volume_titles = [
-     'Old Testament',
-     'New Testament',
+    #  'Old Testament',
+    #  'New Testament',
      'Book of Mormon',
-     'Doctrine and Covenants',
-     'Pearl of Great Price',
+    #  'Doctrine and Covenants',
+    #  'Pearl of Great Price',
      ]
 data_scriptures = data_scriptures.query("volume_title in @volume_titles")
-
-print(data_scriptures.head())
+data_scriptures
 
 #%%
 
@@ -131,7 +128,8 @@ data_scriptures1 = data_scriptures
 
 match_extractor = MatchExtractor(
     text_woodruff,
-    threshold = .75,
+    threshold = .75
+    ,
     phrase_length = 10,
     # increment = 10
     )
@@ -149,3 +147,6 @@ match_extractor.run_extractor(
 #%%
 # print matches dataframe
 match_extractor.matches_total
+
+
+#%%
