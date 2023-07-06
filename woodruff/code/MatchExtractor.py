@@ -33,7 +33,12 @@ class MatchExtractor:
         self.vectorizer = TfidfVectorizer()
         self.tfidf_matrix_woodruff = self.vectorizer.fit_transform(self.data_woodruff['text'])
 
-    def run_extractor(self, path_matches, path_matches_temporary, threshold: float, save=False, quarto_publish=False):
+    def run_extractor(self, path_matches, path_matches_temporary, threshold: float, save = False, quarto_publish = False):
+        """ Iterate through each row of expanded scriptures dataframe and run extract_tfidf_percentage_matches method on the single phrase
+            then attach verse columns to current match dataframe
+            then filter down to only matches of a certain threshold
+            the conditionally save or publish to quarto
+        """
         self.progress_bar = tqdm(total=len(self.data_scriptures))
         # iterate through each row of data_scriptures_pandas dataframe and run TFIDF vectorizer on the scripture text
         for index, row_scriptures in self.data_scriptures.iterrows():
@@ -44,7 +49,6 @@ class MatchExtractor:
             self.matches_current = self.extract_tfidf_percentage_matches(row_scriptures['scripture_text'])
             self.matches_current['verse_title']  = row_scriptures['verse_title']
             self.matches_current['volume_title'] = row_scriptures['volume_title']
-            self.matches_current['book_title']   = row_scriptures['book_title']
 
             # filter matches by threshold
             self.matches_current = self.matches_current.query("cosine_score > @threshold")
