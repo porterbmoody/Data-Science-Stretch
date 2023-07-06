@@ -82,9 +82,6 @@ def clear():
     gui.polygon_coordinates.clear()
     return return_updated()
 
-
-
-
 if __name__ == '__main__':
     current_addresses = os.listdir('static/images/without_panels')
     for i, address in enumerate(current_addresses):
