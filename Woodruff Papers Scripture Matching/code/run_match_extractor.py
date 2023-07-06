@@ -98,23 +98,23 @@ data_scriptures['scripture_text'] = StringUtil.str_replace_column(data_scripture
 
 # filter to certain volumes
 volume_titles = [
-    #  'Old Testament',/
-    #  'New Testament',
-    #  'Book of Mormon',
+     'Old Testament',
+     'New Testament',
+     'Book of Mormon',
      'Doctrine and Covenants',
-    #  'Pearl of Great Price',
+     'Pearl of Great Price',
      ]
 data_scriptures = data_scriptures.query("volume_title in @volume_titles")
 data_scriptures
 #%%
-match_extractor = MatchExtractor(data_woodruff.head(10000), data_scriptures.head(1000), phrase_length = 13)
+match_extractor = MatchExtractor(data_woodruff, data_scriptures, phrase_length = 13)
 
 # iterate through each row of scripture phrases dataset and run TFIDF model and cosine similarity.
 match_extractor.run_extractor(
     path_matches,
     path_matches_temporary,
     threshold = .75,
-    save=False,
+    save=True,
     quarto_publish=False,
     )
 

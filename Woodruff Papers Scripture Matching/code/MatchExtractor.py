@@ -66,7 +66,8 @@ class MatchExtractor:
     def extract_tfidf_percentage_matches(self, scripture_text):
         tfidf_matrix_scriptures = self.vectorizer.transform([scripture_text])
         cosine_scores = cosine_similarity(self.tfidf_matrix_woodruff, tfidf_matrix_scriptures)
-        cosine_scores = pd.DataFrame(cosine_scores, columns=['cosine_score'])
+        cosine_scores = pd.DataFrame(cosine_scores, columns=['cosine_score']).apply(lambda x: round(x, 5))
+#        cosine_scores = cosine_scores.apply(lambda x: round(x, 5))
         # print(cosine_scores)
         # print(self.data_woodruff)
         cosine_scores['phrase_woodruff'] = list(self.data_woodruff['text'])
