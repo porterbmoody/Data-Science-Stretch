@@ -2,8 +2,6 @@ import pandas as pd
 import re
 from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
-import numpy as np
-
 
 class StringUtil:
     """ Utility class for manipulating strings and pandas dataframes some also
@@ -122,7 +120,7 @@ class StringUtil:
         """
         # split each verse into a list of phrases then explode it all
         data[column_name] = data[column_name].apply(lambda x: StringUtil.split_string_into_list(x, phrase_length))
-        data = data.explode(column_name)
+        data = data.explode(column_name).reset_index(drop=True)
         return data
 
     @staticmethod

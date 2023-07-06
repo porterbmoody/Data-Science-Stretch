@@ -2,7 +2,9 @@
 import pandas as pd
 from StringUtil import StringUtil
 from MatchExtractor import MatchExtractor
+import warnings
 pd.set_option('display.max_colwidth', None)
+warnings.filterwarnings('ignore')
 
 replacements_woodruff = {
     r'(, b\.)'              : r'',
@@ -17,7 +19,7 @@ replacements_woodruff = {
     r'\–|\-|\—|\-\s'        : r'',
     r'\s+'                  : r' ',
     r'\.|\:|\;|\,|\(|\)|\?' : r'',
-    r'confer ence'     : r'conference',
+    r'confer ence|Conferance'     : r'conference',
     r'sacrafice'           : r'sacrifice',
     r'discours'            : r'discourse',
     r'travling'            : r'traveling',
@@ -53,7 +55,6 @@ replacements_woodruff = {
     r'procedings' : r'proceedings',
     r'w odruff' : r'woodruff',
     r'prefered' : r'preferred',
-    r'traveling' : r'pizza',
     r'esspecially' : r'especially',
     r'ownly' : r'only',
     r'th\[e\]' : r'the',
@@ -91,24 +92,26 @@ data_woodruff = pd.read_csv(path_data_woodruff_raw)
 
 # clean woodruff data
 data_woodruff['text'] = StringUtil.str_replace_column(data_woodruff['text'], replacements_woodruff)
-
+# data_woodruff = data_woodruff.iloc[6400:6500]
 # clean scripture data
-data_scriptures['scripture_text'] = StringUtil.str_replace_column(data_scriptures['scripture_text'], scripture_replacements)
+data_scriptures = data_scriptures.rename(columns={"scripture_text": "text"})
+data_scriptures['text'] = StringUtil.str_replace_column(data_scriptures['text'], scripture_replacements)
 
 # filter to certain volumes
 volume_titles = [
-     'Old Testament',
-     'New Testament',
-     'Book of Mormon',
+    #  'Old Testament',
+    #  'New Testament',
+    #  'Book of Mormon',
      'Doctrine and Covenants',
-     'Pearl of Great Price',
+    #  'Pearl of Great Price',
      ]
 data_scriptures = data_scriptures.query("volume_title in @volume_titles")
+# data_scriptures = data_scriptures.query("verse_title == 'Doctrine and Covenants 136:11'|verse_title == 'Doctrine and Covenants 136:12'|verse_title == 'Doctrine and Covenants 136:13'|verse_title == 'Doctrine and Covenants 136:14'|verse_title == 'Doctrine and Covenants 136:15'|verse_title == 'Doctrine and Covenants 136:16'")
 data_scriptures
 #%%
-match_extractor = MatchExtractor(data_woodruff, data_scriptures, phrase_length = 13)
+match_extractor = MatchExtractor(data_woodruff.head(100), data_scriptures, phrase_length = 10)
 
 # iterate through each row of scripture phrases dataset and run TFIDF model and cosine similarity.
 match_extractor.run_extractor(path_matches, path_matches_temporary,
-                              threshold = .75, save=True, quarto_publish=True)
+                              threshold = .75, save=False, quarto_publish=False)
 
