@@ -6,23 +6,19 @@ import numpy as np
 
 
 class StringUtil:
-    """ Utility class for manipulating strings
+    """ Utility class for manipulating strings and pandas dataframes some also
     """
 
     @staticmethod
-    def str_split(string, remove_duplicates = True, stop_words = None):
+    def str_split(string: str, remove_duplicates = True, stop_words = None):
+        """ Split string into list of strings based on ' ' space
+        """
         if type(string) == float:
             print(string)
         words = string.split(' ')
         if remove_duplicates:
             words = list(set(words))
         return words
-
-    @staticmethod
-    def combine_rows(column):
-        """ pass in a column, or list of strings, and it returns a joined string separated by ' '
-        """
-        return ' '.join(str(cell) for cell in column)
 
     @staticmethod
     def regex_filter(dataframe, column, regex):
@@ -72,15 +68,8 @@ class StringUtil:
         return len(StringUtil.str_extract_all(string, regex))
 
     @staticmethod
-    def remove_duplicate_words(string):
-        # Split the string into individual words
-        words = string.split()
-
-        # Use a set to remove duplicates while preserving the order
-        unique_words = list(set(words))
-
-        # Join the unique words back into a string
-        return ' '.join(unique_words)
+    def str_count_words(string):
+        return len(StringUtil.str_split(string))
 
     @staticmethod
     def str_remove(string, regex):
@@ -108,10 +97,6 @@ class StringUtil:
             string = re.sub(regex, replacement, string)
         return string
 
-    # @staticmethod
-    # def remove_stop_words(string):
-    #     return StringUtil.str_replace_list(string, regex_list = stop_words, replacement = ' ')
-
     @staticmethod
     def split_string_into_list(string, n, increment = 0):
         """ Basically converts a string of text into a list of strings of text
@@ -131,6 +116,27 @@ class StringUtil:
         return result
 
     @staticmethod
+    def expand_dataframe_of_text(data, column_name, phrase_length):
+        """ split each individual cell of text into a list of strings of size phrase_length
+            then expand each element of each embedded list into its own separate row
+        """
+        # split each verse into a list of phrases then explode it all
+        data[column_name] = data[column_name].apply(lambda x: StringUtil.split_string_into_list(x, phrase_length))
+        data = data.explode(column_name)
+        return data
+
+    @staticmethod
+    def remove_duplicate_words(string):
+        # Split the string into individual words
+        words = string.split()
+
+        # Use a set to remove duplicates while preserving the order
+        unique_words = list(set(words))
+
+        # Join the unique words back into a string
+        return ' '.join(unique_words)
+
+    @staticmethod
     def create_frequency_dist(string):
         """ Returns pandas dataframe containing frequencies of each word in string
         """
@@ -142,15 +148,17 @@ class StringUtil:
         return data.sort_values(by = 'frequency', ascending = False)
 
     @staticmethod
-    def string_percentage_match(string1, string2):
+    def str_percentage_match(string1, string2):
         words1 = string1.split()
         words2 = string2.split()
         word_matches = [word1 for word1 in words1 if word1 in words2]
         return round(len(word_matches) / len(string1.split()), 4)
 
     @staticmethod
-    def count_words(string):
-        return len(StringUtil.str_split(string))
+    def combine_rows(column):
+        """ pass in a column, or list of strings, and it returns a joined string separated by ' '
+        """
+        return ' '.join(str(cell) for cell in column)
 
     @staticmethod
     def get_dataframe_chunks(data, chunk_size):
