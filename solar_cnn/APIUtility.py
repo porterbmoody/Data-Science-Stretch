@@ -67,7 +67,7 @@ class APIUtility:
         static_map_url = f'https://maps.googleapis.com/maps/api/staticmap?center={center}&zoom={zoom}&size={size}&maptype={maptype}&key={APIUtility.static_map_key}'
         response = requests.get(static_map_url, stream=True)
         return response.raw
-    
+
     @staticmethod
     def plus_code_to_coordinates(plus_code):
         converter = Converter()
@@ -106,7 +106,7 @@ class APIUtility:
             aws_access_key_id=APIUtility.aws_access_key_id,
             aws_secret_access_key=APIUtility.aws_secret_access_key)
         s3.generate_predesigned_url(
-            'get_object', 
+            'get_object',
             Params = {'Bucket' : APIUtility.bucket,
                       'Key' : "images_without_panels/" + static_image_filename}
             )
