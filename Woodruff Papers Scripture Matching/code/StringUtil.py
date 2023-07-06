@@ -5,9 +5,8 @@ from nltk.probability import FreqDist
 import numpy as np
 
 
-
 class StringUtil:
-    """ Utility class for cleaning the data
+    """ Utility class for manipulating strings
     """
 
     @staticmethod

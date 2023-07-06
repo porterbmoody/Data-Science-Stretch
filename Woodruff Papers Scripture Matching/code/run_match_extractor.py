@@ -89,32 +89,32 @@ url_scriptures = 'https://github.com/wilfordwoodruff/wilford_woodruff_hack23/raw
 data_scriptures = pd.read_csv(path_data_scriptures)
 data_woodruff = pd.read_csv(path_data_woodruff_raw)
 
+
 # clean woodruff data
 data_woodruff['text'] = StringUtil.str_replace_column(data_woodruff['text'], replacements_woodruff)
 
 # clean scripture data
 data_scriptures['scripture_text'] = StringUtil.str_replace_column(data_scriptures['scripture_text'], scripture_replacements)
 
+# filter to certain volumes
+volume_titles = [
+    #  'Old Testament',/
+    #  'New Testament',
+    #  'Book of Mormon',
+     'Doctrine and Covenants',
+    #  'Pearl of Great Price',
+     ]
+data_scriptures = data_scriptures.query("volume_title in @volume_titles")
+data_scriptures
 #%%
-match_extractor = MatchExtractor(data_woodruff, data_scriptures, phrase_length = 13)
+match_extractor = MatchExtractor(data_woodruff.head(10000), data_scriptures.head(1000), phrase_length = 13)
 
 # iterate through each row of scripture phrases dataset and run TFIDF model and cosine similarity.
 match_extractor.run_extractor(
     path_matches,
     path_matches_temporary,
     threshold = .75,
-    save=True,
-    quarto_publish=True,
+    save=False,
+    quarto_publish=False,
     )
 
-
-# filter to certain volumes
-# volume_titles = [
-#      'Old Testament',
-#      'New Testament',
-#      'Book of Mormon',
-#      'Doctrine and Covenants',
-#      'Pearl of Great Price',
-#      ]
-# data_scriptures = data_scriptures.query("volume_title in @volume_titles")
-# data_scriptures

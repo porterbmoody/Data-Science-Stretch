@@ -6,6 +6,8 @@ import pandas as pd
 import subprocess
 
 class MatchExtractor:
+    """ match extractor class, pass initialize with 2 pandas dataframes and the phrase to split each row of text into
+    """
 
     def __init__(self, data_woodruff, data_scriptures, phrase_length):
         self.matches_total = pd.DataFrame()
@@ -16,18 +18,19 @@ class MatchExtractor:
         self.__load_vectorizer()
 
     def __load_woodruff_data(self, data_woodruff):
-        self.text_woodruff = StringUtil.combine_rows(data_woodruff['text'])
+        self.data_woodruff = data_woodruff
         # split each verse into a list of phrases then explode it all
-        self.phrases_woodruff = StringUtil.split_string_into_list(self.text_woodruff, n = self.phrase_length)
-
-    def __load_vectorizer(self):
-        self.vectorizer = TfidfVectorizer()
-        self.tfidf_matrix_woodruff = self.vectorizer.fit_transform(self.phrases_woodruff)
+        self.data_woodruff['text'] = self.data_woodruff['text'].apply(lambda x: StringUtil.split_string_into_list(x, self.phrase_length))
+        self.data_woodruff = self.data_woodruff.explode('text')
 
     def __load_scripture_data(self, data_scriptures):
         self.data_scriptures = data_scriptures
         self.data_scriptures['scripture_text'] = self.data_scriptures['scripture_text'].apply(lambda x: StringUtil.split_string_into_list(x, self.phrase_length))
         self.data_scriptures = self.data_scriptures.explode('scripture_text')
+
+    def __load_vectorizer(self):
+        self.vectorizer = TfidfVectorizer()
+        self.tfidf_matrix_woodruff = self.vectorizer.fit_transform(self.data_woodruff['text'])
 
     def run_extractor(self, path_matches, path_matches_temporary, threshold: float, save=False, quarto_publish=False):
         self.progress_bar = tqdm(total=len(self.data_scriptures))
@@ -46,7 +49,7 @@ class MatchExtractor:
             self.matches_current = self.matches_current.query("cosine_score > @threshold")
             if len(self.matches_current) > 0:
                 self.matches_total = pd.concat([self.matches_total, self.matches_current]).sort_values(
-                    by='cosine_score', ascending=False)[['verse_title', 'cosine_score', 'phrase_woodruff','phrase_scripture', 'volume_title']]
+                    by='cosine_score', ascending=False)[['date', 'verse_title', 'cosine_score', 'phrase_woodruff','phrase_scripture', 'volume_title']]
 
                 # save to file
                 self.matches_total.to_csv(path_matches_temporary, index=False)
@@ -64,7 +67,10 @@ class MatchExtractor:
         tfidf_matrix_scriptures = self.vectorizer.transform([scripture_text])
         cosine_scores = cosine_similarity(self.tfidf_matrix_woodruff, tfidf_matrix_scriptures)
         cosine_scores = pd.DataFrame(cosine_scores, columns=['cosine_score'])
-        cosine_scores['phrase_woodruff'] = self.phrases_woodruff
+        # print(cosine_scores)
+        # print(self.data_woodruff)
+        cosine_scores['phrase_woodruff'] = list(self.data_woodruff['text'])
+        cosine_scores['date'] = list(self.data_woodruff['date'])
         cosine_scores['phrase_scripture'] = scripture_text
         return cosine_scores
 
