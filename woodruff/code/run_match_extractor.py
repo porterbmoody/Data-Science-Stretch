@@ -75,7 +75,7 @@ scripture_replacements = {
 
 #%%
 # local paths
-path_data_woodruff_raw   = '../data/data_woodruff_raw.csv'
+path_data_woodruff_raw   = 'Woodruff Papers Scripture Matching/data/data_woodruff_raw.csv'
 path_data_woodruff_clean = '../data/data_woodruff_clean.csv'
 path_data_scriptures     = '../data/data_scriptures.csv'
 path_matches             = '../data/data_matches.csv'
