@@ -18,15 +18,16 @@ class MatchExtractor:
         self.__load_vectorizer()
 
     def __load_woodruff_data(self, data_woodruff):
-        self.data_woodruff = data_woodruff
-        # split each verse into a list of phrases then explode it all
-        self.data_woodruff['text'] = self.data_woodruff['text'].apply(lambda x: StringUtil.split_string_into_list(x, self.phrase_length))
-        self.data_woodruff = self.data_woodruff.explode('text')
+        """ save self.data_woodruff as pandas dataframe
+        """
+        # split each journal entry into a list of phrases then explode it all
+        self.data_woodruff = StringUtil.expand_dataframe_of_text(data_woodruff, 'text', self.phrase_length)
 
     def __load_scripture_data(self, data_scriptures):
-        self.data_scriptures = data_scriptures
-        self.data_scriptures['scripture_text'] = self.data_scriptures['scripture_text'].apply(lambda x: StringUtil.split_string_into_list(x, self.phrase_length))
-        self.data_scriptures = self.data_scriptures.explode('scripture_text')
+        """ save self.data_scripture as pandas dataframe
+        """
+        # split each verse into a list of phrases then explode it all
+        self.data_scriptures = StringUtil.expand_dataframe_of_text(data_scriptures, 'scripture_text', self.phrase_length)
 
     def __load_vectorizer(self):
         self.vectorizer = TfidfVectorizer()

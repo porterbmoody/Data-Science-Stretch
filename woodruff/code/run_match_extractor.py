@@ -75,7 +75,7 @@ scripture_replacements = {
 
 #%%
 # local paths
-path_data_woodruff_raw   = 'Woodruff Papers Scripture Matching/data/data_woodruff_raw.csv'
+path_data_woodruff_raw   = '../data/data_woodruff_raw.csv'
 path_data_woodruff_clean = '../data/data_woodruff_clean.csv'
 path_data_scriptures     = '../data/data_scriptures.csv'
 path_matches             = '../data/data_matches.csv'
@@ -88,7 +88,6 @@ url_scriptures = 'https://github.com/wilfordwoodruff/wilford_woodruff_hack23/raw
 # load data
 data_scriptures = pd.read_csv(path_data_scriptures)
 data_woodruff = pd.read_csv(path_data_woodruff_raw)
-
 
 # clean woodruff data
 data_woodruff['text'] = StringUtil.str_replace_column(data_woodruff['text'], replacements_woodruff)
@@ -110,11 +109,6 @@ data_scriptures
 match_extractor = MatchExtractor(data_woodruff, data_scriptures, phrase_length = 13)
 
 # iterate through each row of scripture phrases dataset and run TFIDF model and cosine similarity.
-match_extractor.run_extractor(
-    path_matches,
-    path_matches_temporary,
-    threshold = .75,
-    save=True,
-    quarto_publish=False,
-    )
+match_extractor.run_extractor(path_matches, path_matches_temporary,
+                              threshold = .75, save=True, quarto_publish=True)
 
