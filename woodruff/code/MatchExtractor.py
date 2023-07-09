@@ -11,15 +11,15 @@ class MatchExtractor:
     """ match extractor class, pass initialize with 2 pandas dataframes and the phrase to split each row of text into
     """
 
-    def __init__(self, data_woodruff, data_scriptures, phrase_length, threshold):
-        self.path_matches             = '../data/data_matches.csv'
-        self.path_matches_temporary   = '../data/data_matches_temporary.csv'
-        self.path_matches_extensions = '../data/data_matches_extensions.csv'
-        self.path_matches_extensions_temporary = '../data/data_matches_extensions_temporary.csv'
+    def __init__(self, data_woodruff, data_scriptures, phrase_length, threshold, path_root):
         self.matches_total = pd.DataFrame()
         self.matches_current = pd.DataFrame()
         self.phrase_length = phrase_length
         self.threshold = threshold
+        self.path_matches             = path_root + 'data_matches.csv'
+        self.path_matches_temporary   = path_root + 'data_matches_temporary.csv'
+        self.path_matches_extensions = path_root + 'data_matches_extensions.csv'
+        self.path_matches_extensions_temporary = path_root + 'data_matches_extensions_temporary.csv'
         # local paths
         self.__load_woodruff_data(data_woodruff)
         self.__load_scripture_data(data_scriptures)
@@ -55,6 +55,7 @@ class MatchExtractor:
             self.matches_current['verse_title']  = row_scriptures['verse_title']
             self.matches_current['volume_title'] = row_scriptures['volume_title']
             self.matches_current['book_title']   = row_scriptures['book_title']
+
 
             # filter matches by threshold
             self.matches_current = self.matches_current.query("cosine_score > @self.threshold")
@@ -150,9 +151,9 @@ class MatchExtractor:
                     verse_titles.append(current_verse_title)
                     scores.append(score)
                     matches_dict = {
-                        'verse_title' : verse_titles,
                         'date' : dates,
-                        # 'total_match_indices' : total_match_indices,
+                        'verse_title' : verse_titles,
+                        'total_match_indices' : total_match_indices,
                         'score' : scores,
                         'matches_woodruff' : matches_woodruff,
                         'matches_scriptures' : matches_scriptures,
