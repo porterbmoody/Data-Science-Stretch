@@ -3,8 +3,7 @@ import re
 from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
 from sklearn.metrics.pairwise import cosine_similarity
-import itertools
-from tqdm import tqdm
+
 
 class StringUtil:
     """ Utility class for manipulating strings and pandas dataframes some also
@@ -192,77 +191,3 @@ class StringUtil:
             return round(cosine_score, 5)
         else:
             return 0
-
-    @staticmethod
-    def extract_matches_extensions(vectorizer, text1_list, text2_list, threshold, path_temporary):
-        threshold = threshold
-        matches1 = []
-        matches2 = []
-        scores = []
-        total_match_indices = []
-        progress_bar = tqdm(total=len(text1_list) - 1)
-        extension_count = 0
-        for index1, text1 in enumerate(text1_list):
-            progress_bar.update(1)
-            progress_bar.set_description('extensions found: ' + str(extension_count))
-            for index2, text2 in enumerate(text2_list):
-                current_match_indices = []
-                if (index1, index2) in list(itertools.chain.from_iterable(total_match_indices)):
-                    # print('repeat:', (index1, index2))
-                    continue
-                current_match_indices.append((index1, index2))
-                text1_copy = text1
-                text2_copy = text2
-                # print((index1, index2))
-                score = StringUtil.compute_similarity(vectorizer, text1_copy, text2_copy)
-                if score > threshold:
-                    print("match found:")
-                    print((index1, index2))
-                    index1_extension = index1
-                    index2_extension = index2
-                    while True:
-                        print('\nfinding extensions...')
-                        index1_extension += 1
-                        index2_extension += 1
-                        if index1_extension > len(text1_list)-1:
-                            break
-                        if index2_extension > len(text2_list)-1:
-                            break
-                        # print(index1_extension)
-                        # input('good? '+ str(index1_extension))
-                        text1_extension = text1_list[index1_extension]
-                        text2_extension = text2_list[index2_extension]
-                        score_extension = StringUtil.compute_similarity(vectorizer, text1_extension, text2_extension)
-                        # print(score_extension)
-                        # input('do you want to continue')
-                        if score_extension > threshold:
-                            extension_count += 1
-                            current_match_indices.append((index1_extension, index2_extension))
-                            print('adding extensions...', (index1_extension, index2_extension))
-                            text1_copy += ' ' + text1_extension
-                            text2_copy += ' ' + text2_extension
-                        else:
-                            break
-                    # compute new score with extensions included
-                    score = StringUtil.compute_similarity(vectorizer, text1_copy, text2_copy)
-                    total_match_indices.append(current_match_indices)
-                    matches1.append(text1_copy)
-                    matches2.append(text2_copy)
-                    scores.append(score)
-                    matches_dict = {
-                        'total_match_indices':total_match_indices,
-                        'scores':scores,
-                        'matches1':matches1,
-                        'matches2':matches2,
-                    }
-                    matches_current = pd.DataFrame(matches_dict)
-                    matches_current.to_csv(path_temporary)
-        progress_bar.close()
-        matches_total = pd.DataFrame({
-            'match_woodruff'  :matches1,
-            'match_scriptures':matches2,
-            'match_indices'   :total_match_indices,
-            'score'           :scores,
-        })
-
-        return matches_total.sort_values(by = 'score', ascending=False)

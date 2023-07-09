@@ -2,6 +2,7 @@ from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from StringUtil import StringUtil
 from tqdm import tqdm
+import itertools
 import pandas as pd
 import subprocess
 
@@ -42,7 +43,7 @@ class MatchExtractor:
         self.vectorizer = TfidfVectorizer()
         self.tfidf_matrix_woodruff = self.vectorizer.fit_transform(self.data_woodruff['text'])
 
-    def run_extractor(self, save=False, quarto_publish=False):
+    def run_extractor(self, extensions = True, save = False, quarto_publish = False):
         self.progress_bar = tqdm(total=len(self.data_scriptures))
         # iterate through each row of data_scriptures_pandas dataframe and run TFIDF vectorizer on the scripture text
         for index, row_scriptures in self.data_scriptures.iterrows():
@@ -66,14 +67,18 @@ class MatchExtractor:
 
         self.progress_bar.close()
 
+        if extensions:
+            self.filter_to_matches_only_data()
+            self.extract_matches_extensions()
+
         if save:
             self.matches_total.to_csv(self.path_matches, index=False)
-            print(self.matches_total)
+            self.matches_extensions.to_csv(self.path_matches_extensions, index = False)
 
         if quarto_publish:
             self.quarto_publish()
 
-    def __load_extensions_data(self):
+    def filter_to_matches_only_data(self):
         # filter input data down to rows that already contain matches
         if not len(self.matches_total) > 0:
             self.matches_total =  pd.read_csv(self.path_matches_temporary)
@@ -82,43 +87,6 @@ class MatchExtractor:
 
         verse_matches = list(self.matches_total['verse_title'].unique())
         self.data_scriptures_filtered = self.data_scriptures.query('verse_title in @verse_matches')
-
-    def extract_extensions(self, save = False, quarto_publish = False):
-        """ Iterate through each row of expanded scriptures dataframe as well as each row of expanded woodruff dataframe that both only contain verses where a match has already been found
-            run extract_tfidf_percentage_matches method on the single phrase
-            then filter down to only matches of a certain threshold
-            the conditionally save or publish to quarto
-        """
-        self.__load_extensions_data()
-        self.text1_list = self.data_woodruff_filtered['text']
-        self.text2_list = self.data_scriptures_filtered['text']
-        # print(text1_list)
-        # print(text2_list)
-        self.matches_extensions = StringUtil.extract_matches_extensions(
-            self.vectorizer, list(self.text1_list),
-            list(self.text2_list),
-            threshold = self.threshold,
-            path_temporary = self.path_matches_extensions_temporary)
-
-        self.matches_extensions.to_csv(self.path_matches_extensions_temporary)
-
-        if save:
-            self.matches_extensions.to_csv(self.path_matches_extensions, index=False)
-            print(self.matches_extensions)
-
-        if quarto_publish:
-            self.quarto_publish()
-
-    def compute_similarity(self, text_woodruff, text_scripture):
-        raw_percentage_match = StringUtil.str_percentage_match(text_woodruff, text_scripture)
-        if raw_percentage_match > 0.1:
-            tfidf_matrix_woodruff = self.vectorizer.transform([text_woodruff])
-            tfidf_matrix_scriptures = self.vectorizer.transform([text_scripture])
-            cosine_score = cosine_similarity(tfidf_matrix_woodruff, tfidf_matrix_scriptures)[0][0]
-            # cosine_scores = pd.DataFrame(cosine_scores, columns=['cosine_score'])
-            return round(cosine_score, 5)
-        else:
-            return 0
 
     def extract_tfidf_percentage_matches(self, scripture_text):
         tfidf_matrix_scriptures = self.vectorizer.transform([scripture_text])
@@ -129,67 +97,73 @@ class MatchExtractor:
         cosine_scores['phrase_scripture'] = scripture_text
         return cosine_scores
 
+    def extract_matches_extensions(self):
+        matches_woodruff = []
+        matches_scriptures = []
+        scores = []
+        total_match_indices = []
+        dates = []
+        verse_titles = []
+        progress_bar = tqdm(total=len(list(self.data_woodruff_filtered['text'])) - 1)
+        extension_count = 0
+        for index1, text_woodruff in enumerate(list(self.data_woodruff_filtered['text'])):
+            progress_bar.update(1)
+            progress_bar.set_description('extensions found: ' + str(extension_count))
+            for index2, text_scriptures in enumerate(list(self.data_scriptures_filtered['text'])):
+                current_match_indices = []
+                if (index1, index2) in list(itertools.chain.from_iterable(total_match_indices)):
+                    # print('repeat:', (index1, index2))
+                    continue
+                current_match_indices.append((index1, index2))
+                text_woodruff_copy = text_woodruff
+                text_scriptures_copy = text_scriptures
+                score = StringUtil.compute_similarity(self.vectorizer, text_woodruff_copy, text_scriptures_copy)
+                if score > self.threshold:
+                    current_date = self.data_woodruff_filtered.iloc[index1]['date']
+                    current_verse_title = self.data_scriptures_filtered.iloc[index2]['verse_title']
+                    index1_extension = index1
+                    index2_extension = index2
+                    while True:
+                        index1_extension += 1
+                        index2_extension += 1
+                        if index1_extension > len(list(self.data_woodruff_filtered['text']))-1:
+                            break
+                        if index2_extension > len(list(self.data_scriptures_filtered['text']))-1:
+                            break
+                        text_woodruff_extension = list(self.data_woodruff_filtered['text'])[index1_extension]
+                        text_scriptures_extension = list(self.data_scriptures_filtered['text'])[index2_extension]
+                        score_extension = StringUtil.compute_similarity(self.vectorizer, text_woodruff_extension, text_scriptures_extension)
+                        if score_extension > self.threshold:
+                            extension_count += 1
+                            current_match_indices.append((index1_extension, index2_extension))
+                            print('adding extensions...', (index1_extension, index2_extension))
+                            text_woodruff_copy += ' ' + text_woodruff_extension
+                            text_scriptures_copy += ' ' + text_scriptures_extension
+                        else:
+                            break
+                    # compute new score with extensions included
+                    score = StringUtil.compute_similarity(self.vectorizer, text_woodruff_copy, text_scriptures_copy)
+                    total_match_indices.append(current_match_indices)
+                    matches_woodruff.append(text_woodruff_copy)
+                    matches_scriptures.append(text_scriptures_copy)
+                    dates.append(current_date)
+                    verse_titles.append(current_verse_title)
+                    scores.append(score)
+                    matches_dict = {
+                        'verse_title' : verse_titles,
+                        'date' : dates,
+                        # 'total_match_indices' : total_match_indices,
+                        'score' : scores,
+                        'matches_woodruff' : matches_woodruff,
+                        'matches_scriptures' : matches_scriptures,
+                    }
+                    self.matches_extensions = pd.DataFrame(matches_dict).sort_values(by = 'score', ascending=False)
+                    self.matches_extensions.to_csv(self.path_matches_extensions_temporary, index = False)
+        progress_bar.close()
+
     @staticmethod
     def quarto_publish():
         command = 'quarto publish'
         subprocess.run(command, shell = True, input = 'y\n', encoding = 'utf-8')
 
 #%%
-        # self.progress_bar = tqdm(total=len(self.data_scriptures_filtered) - 1)
-        # index_match_references = []
-        # # iterate through each row of data_scriptures_pandas dataframe and run TFIDF vectorizer on the scripture text
-        # for index_scriptures, row_scriptures in self.data_scriptures_filtered.iterrows():
-        #     self.progress_bar.update(1)
-        #     description = f"{row_scriptures['verse_title']} total match count: {len(self.matches_total)}"
-        #     self.progress_bar.set_description(description)
-        #     phrase_scriptures = row_scriptures['text']
-        #     verse_title = row_scriptures['verse_title']
-        #     for index_woodruff, row_woodruff in self.data_woodruff_filtered.iterrows():
-        #         match_indices = (index_woodruff, index_scriptures)
-        #         if match_indices in index_match_references: # if match has already been found, the indices should be stored in references list
-        #             print('repeat matches...', match_indices)
-        #             continue
-        #         index_match_references.append(match_indices)
-        #         phrase_woodruff = row_woodruff['text']
-        #         date = row_woodruff['date']
-        #         cosine_score = self.compute_similarity(phrase_woodruff, phrase_scriptures)
-        #         if cosine_score > self.threshold: # match found
-        #             index_woodruff_extension   = index_woodruff
-        #             index_scriptures_extension = index_scriptures
-        #             while True:
-        #                 # add next phrase to the end of current phrase then compute cosine similarity on the new extended phrase
-        #                 index_woodruff_extension   += 1
-        #                 index_scriptures_extension += 1
-        #                 match_indices = (index_woodruff_extension, index_scriptures_extension)
-        #                 if match_indices in index_match_references:
-        #                     print('repeat matches...', match_indices)
-        #                     break
-        #                 if index_woodruff_extension >= len(self.data_woodruff_filtered):
-        #                     break
-        #                 if index_scriptures_extension >= len(self.data_scriptures_filtered):
-        #                     break
-        #                 phrase_extension_woodruff   = self.data_woodruff_filtered.iloc[index_woodruff_extension]['text']
-        #                 phrase_extension_scriptures = self.data_scriptures_filtered.iloc[index_scriptures_extension]['text']
-        #                 cosine_score = self.compute_similarity(phrase_extension_woodruff, phrase_extension_scriptures)
-        #                 index_match_references.append(match_indices)
-        #                 if cosine_score > self.threshold:
-        #                     print('extension match found...')
-        #                     print(phrase_extension_woodruff)
-        #                     # append extension indices to list of all match indices
-        #                     phrase_woodruff   += " " + phrase_extension_woodruff
-        #                     phrase_scriptures += " " + phrase_extension_scriptures
-        #                 else:
-        #                     cosine_score = self.compute_similarity(phrase_woodruff, phrase_scriptures)
-        #                     break
-
-                # if len(matches_extensions) > 0:
-            # self.matches_total = pd.concat([self.matches_total, match_found_dataframe]).sort_values(
-                # by='cosine_score', ascending=False)[['date', 'verse_title', 'cosine_score', 'phrase_woodruff','phrase_scripture']]
-
-            #     # filter matches by threshold
-            #     self.matches_current = self.matches_current.query("cosine_score > @self.threshold")
-            #     index_woodruff += 1
-            # index_scriptures += 1
-
-        #     # save to file
-            # self.matches_total.to_csv(self.path_matches_extensions_temporary, index=False)

@@ -166,3 +166,62 @@ entries_to_remove = [
 
 
 
+
+        # self.progress_bar = tqdm(total=len(self.data_scriptures_filtered) - 1)
+        # index_match_references = []
+        # # iterate through each row of data_scriptures_pandas dataframe and run TFIDF vectorizer on the scripture text
+        # for index_scriptures, row_scriptures in self.data_scriptures_filtered.iterrows():
+        #     self.progress_bar.update(1)
+        #     description = f"{row_scriptures['verse_title']} total match count: {len(self.matches_total)}"
+        #     self.progress_bar.set_description(description)
+        #     phrase_scriptures = row_scriptures['text']
+        #     verse_title = row_scriptures['verse_title']
+        #     for index_woodruff, row_woodruff in self.data_woodruff_filtered.iterrows():
+        #         match_indices = (index_woodruff, index_scriptures)
+        #         if match_indices in index_match_references: # if match has already been found, the indices should be stored in references list
+        #             print('repeat matches...', match_indices)
+        #             continue
+        #         index_match_references.append(match_indices)
+        #         phrase_woodruff = row_woodruff['text']
+        #         date = row_woodruff['date']
+        #         cosine_score = self.compute_similarity(phrase_woodruff, phrase_scriptures)
+        #         if cosine_score > self.threshold: # match found
+        #             index_woodruff_extension   = index_woodruff
+        #             index_scriptures_extension = index_scriptures
+        #             while True:
+        #                 # add next phrase to the end of current phrase then compute cosine similarity on the new extended phrase
+        #                 index_woodruff_extension   += 1
+        #                 index_scriptures_extension += 1
+        #                 match_indices = (index_woodruff_extension, index_scriptures_extension)
+        #                 if match_indices in index_match_references:
+        #                     print('repeat matches...', match_indices)
+        #                     break
+        #                 if index_woodruff_extension >= len(self.data_woodruff_filtered):
+        #                     break
+        #                 if index_scriptures_extension >= len(self.data_scriptures_filtered):
+        #                     break
+        #                 phrase_extension_woodruff   = self.data_woodruff_filtered.iloc[index_woodruff_extension]['text']
+        #                 phrase_extension_scriptures = self.data_scriptures_filtered.iloc[index_scriptures_extension]['text']
+        #                 cosine_score = self.compute_similarity(phrase_extension_woodruff, phrase_extension_scriptures)
+        #                 index_match_references.append(match_indices)
+        #                 if cosine_score > self.threshold:
+        #                     print('extension match found...')
+        #                     print(phrase_extension_woodruff)
+        #                     # append extension indices to list of all match indices
+        #                     phrase_woodruff   += " " + phrase_extension_woodruff
+        #                     phrase_scriptures += " " + phrase_extension_scriptures
+        #                 else:
+        #                     cosine_score = self.compute_similarity(phrase_woodruff, phrase_scriptures)
+        #                     break
+
+                # if len(matches_extensions) > 0:
+            # self.matches_total = pd.concat([self.matches_total, match_found_dataframe]).sort_values(
+                # by='cosine_score', ascending=False)[['date', 'verse_title', 'cosine_score', 'phrase_woodruff','phrase_scripture']]
+
+            #     # filter matches by threshold
+            #     self.matches_current = self.matches_current.query("cosine_score > @self.threshold")
+            #     index_woodruff += 1
+            # index_scriptures += 1
+
+        #     # save to file
+            # self.matches_total.to_csv(self.path_matches_extensions_temporary, index=False)

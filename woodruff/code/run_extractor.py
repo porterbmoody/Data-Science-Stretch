@@ -111,7 +111,7 @@ data_scriptures
 
 #%%
 match_extractor = MatchExtractor(data_woodruff.copy(), data_scriptures.copy(),
-                                 phrase_length = 15, threshold = .70)
+                                 phrase_length = 10, threshold = .70)
 
 # iterate through each row of scripture phrases dataset and run TFIDF model and cosine similarity.
 match_extractor.run_extractor(save=False, quarto_publish=False)
@@ -120,13 +120,7 @@ match_extractor.matches_total
 
 #%%
 # iterate through each row of scripture phrases dataset and run TFIDF model and cosine similarity.
-match_extractor.extract_extensions(save=False, quarto_publish=False)
 
-match_extractor.matches_extensions
+# match_extractor.matches_extensions
 
 #%%
-
-# match_extractor = MatchExtractor(data_woodruff_filtered.copy(),
-                                #  data_scriptures_filtered.copy(),
-                                #  phrase_length = 15, threshold = .7)
-
