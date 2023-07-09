@@ -3,6 +3,7 @@ import pandas as pd
 from StringUtil import StringUtil
 from MatchExtractor import MatchExtractor
 import warnings
+
 pd.set_option('display.max_colwidth', None)
 warnings.filterwarnings('ignore')
 
@@ -65,6 +66,7 @@ replacements_woodruff = {
     r'fulnes ' : r'fulness ',
     r'interestin ' : r'interesting ',
     r'respetible ' : r'respectable ',
+    r'attonement' : r'atonement',
     r'diestroy ' : r'destroy ',
     r'a b c d e f g h i j k l m n o p q r s t u v w x y z and 1 2 3 4 5 6 7 8 9 0' : r'',
     r' \^e\^ 4 \^p\^ 5 \^t\^ 1 \^d\^ 3 ': r'',
@@ -75,12 +77,9 @@ scripture_replacements = {
 }
 
 #%%
-# local paths
 path_data_woodruff_raw   = '../data/data_woodruff_raw.csv'
 path_data_woodruff_clean = '../data/data_woodruff_clean.csv'
 path_data_scriptures     = '../data/data_scriptures.csv'
-path_matches             = '../data/data_matches.csv'
-path_matches_temporary   = '../data/data_matches_temporary.csv'
 
 # url paths
 url_woodruff = "https://github.com/wilfordwoodruff/Main-Data/raw/main/data/derived/derived_data.csv"
@@ -106,12 +105,28 @@ volume_titles = [
     #  'Pearl of Great Price',
      ]
 data_scriptures = data_scriptures.query("volume_title in @volume_titles")
-# data_scriptures = data_scriptures.query("verse_title == 'Doctrine and Covenants 136:11'|verse_title == 'Doctrine and Covenants 136:12'|verse_title == 'Doctrine and Covenants 136:13'|verse_title == 'Doctrine and Covenants 136:14'|verse_title == 'Doctrine and Covenants 136:15'|verse_title == 'Doctrine and Covenants 136:16'")
+# query = "verse_title == 'Doctrine and Covenants 136:11'|verse_title == 'Doctrine and Covenants 136:12'|verse_title == 'Doctrine and Covenants 136:13'|verse_title == 'Doctrine and Covenants 136:14'|verse_title == 'Doctrine and Covenants 136:15'|verse_title == 'Doctrine and Covenants 136:16'|verse_title == 'Doctrine and Covenants 136:17'"
+# data_scriptures = data_scriptures.query(query)
 data_scriptures
+
 #%%
-match_extractor = MatchExtractor(data_woodruff.head(100), data_scriptures, phrase_length = 10)
+match_extractor = MatchExtractor(data_woodruff.copy(), data_scriptures.copy(),
+                                 phrase_length = 15, threshold = .70)
 
 # iterate through each row of scripture phrases dataset and run TFIDF model and cosine similarity.
-match_extractor.run_extractor(path_matches, path_matches_temporary,
-                              threshold = .75, save=False, quarto_publish=False)
+match_extractor.run_extractor(save=False, quarto_publish=False)
+
+match_extractor.matches_total
+
+#%%
+# iterate through each row of scripture phrases dataset and run TFIDF model and cosine similarity.
+match_extractor.extract_extensions(save=False, quarto_publish=False)
+
+match_extractor.matches_extensions
+
+#%%
+
+# match_extractor = MatchExtractor(data_woodruff_filtered.copy(),
+                                #  data_scriptures_filtered.copy(),
+                                #  phrase_length = 15, threshold = .7)
 

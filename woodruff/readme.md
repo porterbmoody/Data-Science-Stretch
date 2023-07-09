@@ -16,3 +16,6 @@
 - [data_matches.csv](data/data_matches.csv) csv containing total matches after `run_extractor` is fully run
 - [data_woodruff_raw.csv](data/data_woodruff_raw.csv) csv containing original woodruff entries. separated by date i believe.
 - [data_scriptures.csv](data/data_scriptures.csv) very clean csv of all verses in entries standard works including articles of faith and joseph smith history. very cool and awesome
+
+
+Total Depravity does not necessarily lead to irresistable grace. Some grace we receive is irresistable (resurrection), and some is conditioned upon our works (salvation). The fact is, the things we do qualify us for varying levels of grace.
