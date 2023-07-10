@@ -77,7 +77,7 @@ scripture_replacements = {
 }
 
 #%%
-path_root = '../data/all_books/'
+path_root = '../data/all_books2/'
 path_data_woodruff_raw   = '../data/data_woodruff_raw.csv'
 # path_data_woodruff_clean = path_root + 'data_woodruff_clean.csv'
 path_data_scriptures     = '../data/data_scriptures.csv'
@@ -111,11 +111,15 @@ data_scriptures = data_scriptures.query("volume_title in @volume_titles")
 data_scriptures
 
 #%%
-phrase_length = 13
+phrase_length = 10
+threshold = .70
 print('volumes:', volume_titles)
 print('phrase length:', phrase_length)
-match_extractor = MatchExtractor(data_woodruff.copy(), data_scriptures.copy(),
-                                 phrase_length, threshold = .70,
+print('threshold:', threshold)
+match_extractor = MatchExtractor(data_woodruff.copy(),
+                                 data_scriptures.copy(),
+                                 phrase_length,
+                                 threshold=threshold,
                                  path_root=path_root)
 
 # iterate through each row of scripture phrases dataset and run TFIDF model and cosine similarity.
