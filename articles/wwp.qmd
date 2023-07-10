@@ -7,7 +7,6 @@ code-fold: true
 ![](../images/wilford_woodruff.png){width=400}
 
 
-
 ### Matches per volume
 
 ```{python}
@@ -16,13 +15,12 @@ from tabulate import tabulate
 import pandas as pd
 
 number_of_rows = 50
-path_mathes = "../Woodruff Papers Scripture Matching/data/data_matches_temporary.csv"
-top_matches = pd.read_csv(path_mathes).sort_values(by='cosine_score',ascending=False)
+path_mathes = "../woodruff/data/all_books/data_matches_extensions_temporary.csv"
+top_matches = pd.read_csv(path_mathes).sort_values(by='score',ascending=False)[['date', 'verse_title','score','matches_woodruff','matches_scriptures']]
 
-matches_counts = top_matches.groupby(['volume_title']).count().reset_index()[['volume_title', 'phrase_woodruff']]
-matches_counts
-def create_markdown_table(path_mathes, condition, number_of_rows):
-  data = top_matches.query(condition).reset_index(drop=True)
+# matches_counts = top_matches.groupby(['volume_title']).count().reset_index()[['volume_title', 'phrase_woodruff']]
+# matches_counts
+def create_markdown_table(data):
   markdown_table = Markdown(tabulate(
     data.head(number_of_rows),
     headers=list(data)
@@ -30,51 +28,19 @@ def create_markdown_table(path_mathes, condition, number_of_rows):
   return markdown_table
 
 # match count/volume
-Markdown(tabulate(
-  matches_counts,
-  headers=list(matches_counts)
-))
+# Markdown(tabulate(
+#   matches_counts,
+#   headers=list(matches_counts)
+# ))
 
-
-```
-
-### Old Testament
-
-```{python}
-create_markdown_table(path_mathes, 'volume_title == "Old Testament"', number_of_rows)
-
-```
-
-### New Testament
-
-```{python}
-create_markdown_table(path_mathes, 'volume_title == "New Testament"', number_of_rows)
-
+create_markdown_table(top_matches.head(50))
 ```
 
 
-### Book of Mormon
-
-```{python}
-create_markdown_table(path_mathes, 'volume_title == "Book of Mormon"', number_of_rows)
-```
-
-### Doctrine and Covenants
-
-```{python}
-create_markdown_table(path_mathes, 'volume_title == "Doctrine and Covenants"', number_of_rows)
-
-```
-
-### Other
-
-```{python}
-create_markdown_table(path_mathes, 'volume_title == "Pearl of Great Price"', number_of_rows)
-
-```
 
 
 ### Supah Hot Fyah
 Supa hot fyah!!!
 
 ![](../images/supah_hot_fyah.webp)
+

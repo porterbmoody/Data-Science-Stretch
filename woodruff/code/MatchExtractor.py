@@ -99,6 +99,12 @@ class MatchExtractor:
         return cosine_scores
 
     def extract_matches_extensions(self):
+        """ Double for loop looping through expanded woodruff entries dataframe and expanded scriptures dataframe
+            checks each phrase with each other phrase. If the score is above the threshold it uses a while loop to check for extensions of each phrase
+            index values are stored in a list each time a score is calculated for each phrase
+            that way it can detect if 2 phrases have already been compared and skip to the next phrases
+            it appends all matche data to lists and creates a pandas dataframe with each list as a column to be saved to a csv
+        """
         matches_woodruff = []
         matches_scriptures = []
         scores = []
@@ -109,7 +115,8 @@ class MatchExtractor:
         extension_count = 0
         for index1, text_woodruff in enumerate(list(self.data_woodruff_filtered['text'])):
             progress_bar.update(1)
-            progress_bar.set_description('extensions found: ' + str(extension_count))
+            current_date = self.data_woodruff_filtered.iloc[index1]['date']
+            progress_bar.set_description('current_date:'+str(current_date)+'extensions found: ' + str(extension_count))
             for index2, text_scriptures in enumerate(list(self.data_scriptures_filtered['text'])):
                 current_match_indices = []
                 if (index1, index2) in list(itertools.chain.from_iterable(total_match_indices)):
@@ -120,7 +127,6 @@ class MatchExtractor:
                 text_scriptures_copy = text_scriptures
                 score = StringUtil.compute_similarity(self.vectorizer, text_woodruff_copy, text_scriptures_copy)
                 if score > self.threshold:
-                    current_date = self.data_woodruff_filtered.iloc[index1]['date']
                     current_verse_title = self.data_scriptures_filtered.iloc[index2]['verse_title']
                     index1_extension = index1
                     index2_extension = index2
@@ -137,7 +143,7 @@ class MatchExtractor:
                         if score_extension > self.threshold:
                             extension_count += 1
                             current_match_indices.append((index1_extension, index2_extension))
-                            print('adding extensions...', (index1_extension, index2_extension))
+                            # print('adding extensions...', (index1_extension, index2_extension))
                             text_woodruff_copy += ' ' + text_woodruff_extension
                             text_scriptures_copy += ' ' + text_scriptures_extension
                         else:
@@ -153,7 +159,7 @@ class MatchExtractor:
                     matches_dict = {
                         'date' : dates,
                         'verse_title' : verse_titles,
-                        'total_match_indices' : total_match_indices,
+                        'phrase_indices' : total_match_indices,
                         'score' : scores,
                         'matches_woodruff' : matches_woodruff,
                         'matches_scriptures' : matches_scriptures,
