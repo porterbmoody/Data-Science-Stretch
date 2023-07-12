@@ -70,6 +70,7 @@ replacements_woodruff = {
     r'diestroy ' : r'destroy ',
     r'a b c d e f g h i j k l m n o p q r s t u v w x y z and 1 2 3 4 5 6 7 8 9 0' : r'',
     r' \^e\^ 4 \^p\^ 5 \^t\^ 1 \^d\^ 3 ': r'',
+    r'W X Y Z and 1 2 3 4 5': r'',
 }
 
 scripture_replacements = {
@@ -77,7 +78,7 @@ scripture_replacements = {
 }
 
 #%%
-path_root = '../data/all_books2/'
+path_root = '../data/all_books3/'
 path_data_woodruff_raw   = '../data/data_woodruff_raw.csv'
 # path_data_woodruff_clean = path_root + 'data_woodruff_clean.csv'
 path_data_scriptures     = '../data/data_scriptures.csv'
@@ -92,18 +93,16 @@ data_woodruff = pd.read_csv(path_data_woodruff_raw)
 
 # clean woodruff data
 data_woodruff['text'] = StringUtil.str_replace_column(data_woodruff['text'], replacements_woodruff)
-# data_woodruff = data_woodruff.iloc[6400:6500]
 # clean scripture data
-data_scriptures = data_scriptures.rename(columns={"scripture_text": "text"})
 data_scriptures['text'] = StringUtil.str_replace_column(data_scriptures['text'], scripture_replacements)
 
 # filter to certain volumes
 volume_titles = [
-     'Old Testament',
-     'New Testament',
-     'Book of Mormon',
+    #  'Old Testament',
+    #  'New Testament',
+    #  'Book of Mormon',
      'Doctrine and Covenants',
-     'Pearl of Great Price',
+    #  'Pearl of Great Price',
      ]
 data_scriptures = data_scriptures.query("volume_title in @volume_titles")
 # query = "verse_title == 'Doctrine and Covenants 136:11'|verse_title == 'Doctrine and Covenants 136:12'|verse_title == 'Doctrine and Covenants 136:13'|verse_title == 'Doctrine and Covenants 136:14'|verse_title == 'Doctrine and Covenants 136:15'|verse_title == 'Doctrine and Covenants 136:16'|verse_title == 'Doctrine and Covenants 136:17'"

@@ -225,3 +225,57 @@ entries_to_remove = [
 
         #     # save to file
             # self.matches_total.to_csv(self.path_matches_extensions_temporary, index=False)
+
+
+# from sklearn.feature_extraction.text import TfidfVectorizer
+# from sklearn.metrics.pairwise import cosine_similarity
+# from StringUtil import StringUtil
+# import numpy as np
+
+# cool_dict1 = {
+#     'text' : ['hello my name is bob fitsgerald i live in rexburg it is so great here wow ok', 'hello i like pizza hearken o ye people of my church it is very delicious']
+# }
+# cool_dict2 = {
+#     'text' : ['hearken o ye people of my church i am god and i never make mistakes i am perfect and i know all things and nothing is hidden from mine eyes']
+# }
+# data1 = pd.DataFrame(cool_dict1)
+# data2 = pd.DataFrame(cool_dict2)
+# data1
+
+
+#%%
+# data.explode(column_name).reset_index(drop=True)
+# phrase_length = 10
+# data_expanded1 = StringUtil.expand_dataframe_of_text(data1.copy(), 'text', phrase_length)
+# data_expanded2 = StringUtil.expand_dataframe_of_text(data2.copy(), 'text', phrase_length)
+# data_expanded1
+# data_expanded2
+
+
+# vectorizer = TfidfVectorizer()
+# vectorizer.fit_transform(data_expanded1['text'])
+
+# tfidf_matrix1 = vectorizer.transform(data_expanded1['text'])
+# tfidf_matrix1
+# tfidf_matrix2 = vectorizer.transform(data_expanded2['text'])
+# tfidf_matrix2
+
+# similarities = cosine_similarity(tfidf_matrix1, tfidf_matrix2)
+# similarities
+# #%%
+# data_expanded1['vector'] = similarities
+# data_expanded1
+
+# #%%
+# similarities.max(axis=0)
+
+# #%%
+# # Map the scores back to the dataframes
+# data_expanded1['similarity_scores'] = similarities.max(axis=1)
+# data_expanded2['similarity_scores'] = similarities.max(axis=0)
+
+# print("Dataframe 1:")
+# print(data_expanded1)
+
+# print("Dataframe 2:")
+# print(data_expanded2)

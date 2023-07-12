@@ -147,7 +147,6 @@ print(np.min(first_image), np.max(first_image))
 
 
 #%%
-num_classes = 2
 
 model = tf.keras.Sequential([
   tf.keras.layers.Rescaling(1./255),
@@ -159,7 +158,7 @@ model = tf.keras.Sequential([
   tf.keras.layers.MaxPooling2D(),
   tf.keras.layers.Flatten(),
   tf.keras.layers.Dense(128, activation='relu'),
-  tf.keras.layers.Dense(num_classes)
+  tf.keras.layers.Dense(2)
 ])
 
 model.compile(
@@ -205,24 +204,26 @@ import tensorflow as tf
 from tensorflow.keras import layers
 import numpy as np
 
+print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+
 # Set random seed for reproducibility
 tf.random.set_seed(42)
 # Generate some dummy data for training
 # Replace this with your own data loading and preprocessing code
 input_dim = 2
-x = np.array([0, 1, 2, 3, 4, 5, 6])
+x = np.array([[1,1], [2,2]])
 # train_data = np.random.random((4, input_dim))
-y = np.array([0, 2, 4, 6, 8, 10, 12])
-x
+y = np.array([[2,2], [4,4]])
+print(x)
+print(y)
 
 #%%
-# Define the number of input features
 
 # Create the model architecture
 model = tf.keras.Sequential([
-    layers.Dense(units=64, input_shape=[1]),
+    layers.Dense(units=64, input_shape=[2]),
     layers.Dense(units=128, input_shape=[1]),
-    layers.Dense(1)  # Output layer with 1 node for regression
+    layers.Dense(2)  # Output layer with 1 node for regression
 ])
 
 # Compile the model
@@ -230,12 +231,13 @@ model.compile(optimizer='adam',
               loss='mean_squared_error')
 
 
-#%%
 # Train the model
-model.fit(x, y, epochs=1000, batch_size=32)
+model.fit(x, y, epochs=500, batch_size=32)
+
+
 
 #%%
-model.predict([2, 150])
+model.predict([[3, 3]])
 
 # Generate some dummy data for testing
 # Replace this with your own test data
@@ -249,3 +251,58 @@ model.predict([2, 150])
 
 
 # %%
+
+import tensorflow as tf
+data_dir = 'data/test_data/'
+image_size = (400, 400)
+batch_size = 20
+train_ds = tf.keras.utils.image_dataset_from_directory(
+  data_dir,
+  validation_split=0.2,
+  subset="training",
+  seed=123,
+  image_size=image_size,
+  batch_size=batch_size)
+
+train_ds
+#%%
+from PIL import Image
+import numpy as np
+import tensorflow as tf
+
+path_image = 'data/test_data/145 N Mall Dr UNIT 29, St. George, UT 84790.png'
+image = Image.open(path_image)
+image = image.resize((400, 400))
+
+np_array_image = np.array(image)
+
+image_tensor = tf.convert_to_tensor(np_array_image)
+image_tensor
+
+
+#%%
+
+# Define the CNN model
+model = tf.keras.models.Sequential([
+    tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(400, 400, 4)),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+    tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+    tf.keras.layers.Conv2D(128, (3, 3), activation='relu'),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(32, activation='relu'),
+    tf.keras.layers.Dense(1, activation='sigmoid')
+])
+
+# Compile the model
+model.compile(optimizer='adam',
+              loss='binary_crossentropy')
+
+# Print the model summary
+model.summary()
+
+#%%
+y = np.array([200,200])
+
+model.fit()
