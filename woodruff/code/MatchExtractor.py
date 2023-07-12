@@ -45,6 +45,12 @@ class MatchExtractor:
         self.tfidf_matrix_woodruff = self.vectorizer.fit_transform(self.data_woodruff['text'])
 
     def run_extractor(self, extensions = True, save = False, quarto_publish = False):
+        """ Uses already trained TFIDF model, first extraction algorithm
+            loops through each row of expanded scriptures dataframe and computes the tfidf vector of each scriptures phrase
+            then compute the vectors of each woodruff phrase and create a vector
+            then compute cosine similarity between each vector and filter by a certain threshold.
+            then append everything back into a dataset.
+        """
         self.progress_bar = tqdm(total=len(self.data_scriptures))
         # iterate through each row of data_scriptures_pandas dataframe and run TFIDF vectorizer on the scripture text
         for index, row_scriptures in self.data_scriptures.iterrows():
@@ -81,6 +87,10 @@ class MatchExtractor:
             self.quarto_publish()
 
     def filter_to_matches_only_data(self):
+        """ The first extraction algorithm is a much smaller runtime so it is run first.
+            Then second algorithm is run that also finds extensions which takes longer to run.
+            This method filters the data to only verses and entries that matches have already been found within.
+        """
         # filter input data down to rows that already contain matches
         if not len(self.matches_total) > 0:
             self.matches_total =  pd.read_csv(self.path_matches_temporary)
@@ -91,6 +101,8 @@ class MatchExtractor:
         self.data_scriptures_filtered = self.data_scriptures.query('verse_title in @verse_matches')
 
     def extract_tfidf_percentage_matches(self, scripture_text):
+        """ Pass in a single string and it returns a pandas dataframe containing the woodruff phrases along with the cosine similarity value
+        """
         tfidf_matrix_scriptures = self.vectorizer.transform([scripture_text])
         cosine_scores = cosine_similarity(self.tfidf_matrix_woodruff, tfidf_matrix_scriptures)
         cosine_scores = pd.DataFrame(cosine_scores, columns=['cosine_score']).apply(lambda x: round(x, 5))
