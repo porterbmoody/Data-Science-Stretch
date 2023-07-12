@@ -129,6 +129,7 @@ class MatchExtractor:
                 score = StringUtil.compute_similarity(self.vectorizer, text_woodruff_copy, text_scriptures_copy)
                 if score > self.threshold:
                     current_verse_title = self.data_scriptures_filtered.iloc[index2]['verse_title']
+                    current_volume_title = self.data_scriptures_filtered.iloc[index2]['volume_title']
                     index1_extension = index1
                     index2_extension = index2
                     while True:
@@ -156,10 +157,12 @@ class MatchExtractor:
                     matches_scriptures.append(text_scriptures_copy)
                     dates.append(current_date)
                     verse_titles.append(current_verse_title)
+                    volume_titles.append(current_volume_title)
                     scores.append(score)
                     matches_dict = {
                         'date' : dates,
                         'verse_title' : verse_titles,
+                        'volume_title' : volume_titles,
                         'phrase_indices' : total_match_indices,
                         'score' : scores,
                         'matches_woodruff' : matches_woodruff,
