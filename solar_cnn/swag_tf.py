@@ -1,50 +1,79 @@
+
 #%%
+from PIL import Image, ImageDraw
+import numpy as np
 import tensorflow as tf
-from tensorflow.keras import layers
+
+path_image = 'data/test_data/145 N Mall Dr UNIT 29, St. George, UT 84790.png'
+image = Image.open(path_image)
+image = image.resize((400, 400))
+
+image_array = np.array(image)
+# image_array = np.expand_dims(image_array, axis=0)
+image_tensor = tf.convert_to_tensor(image_array)
+image_tensor
+
+#%%
+coordinates = [
+    (160, 400-145),
+    (128, 400-278),
+    (276, 400-277),
+    (276, 400-148),
+    ]
+draw = ImageDraw.Draw(image)
+draw.polygon(coordinates, outline = 'black', width = 1)
+image
 
 #%%
 
 # Define the CNN model
-model = tf.keras.Sequential([
-    layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)),
-    layers.MaxPooling2D((2, 2)),
-    layers.Conv2D(64, (3, 3), activation='relu'),
-    layers.MaxPooling2D((2, 2)),
-    layers.Flatten(),
-    layers.Dense(64, activation='relu'),
-    layers.Dense(10, activation='softmax')
+model = tf.keras.models.Sequential([
+    tf.keras.layers.experimental.preprocessing.Rescaling(1./255, input_shape=(400, 400, 4)),
+    tf.keras.layers.Conv2D(32, (3, 3), activation='relu'),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+    tf.keras.layers.Conv2D(64, (3, 3), activation='relu'),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+    tf.keras.layers.Conv2D(128, (3, 3), activation='relu'),
+    tf.keras.layers.MaxPooling2D((2, 2)),
+    tf.keras.layers.Flatten(),
+    tf.keras.layers.Dense(32, activation='relu'),
+    tf.keras.layers.Dense(2, activation='sigmoid')
 ])
 
 # Compile the model
 model.compile(optimizer='adam',
-              loss=tf.keras.losses.SparseCategoricalCrossentropy(),
-              metrics=['accuracy'])
+              loss='binary_crossentropy')
 
-# Train the model
-model.fit(train_images, train_labels, epochs=10, validation_data=(test_images, test_labels))
-
+# Print the model summary
+model.summary()
 
 #%%
+# y = np.array([200,200])
+# list(sum(coordinates, ()))
+model.fit(image_tensor, y = [160,400-145])
 
-import numpy as np
+#%%
 import tensorflow as tf
-import trimesh
+import numpy as np
+x = np.array([[1, 2, 3, 4, 5]])
+y = -x
+y
+#%%
+model = tf.keras.models.Sequential([
+    tf.keras.layers.Dense(32, activation = 'relu', input_shape=(5, )),
+    tf.keras.layers.Dense(5),
+])
 
-import tensorflow_graphics.geometry.transformation as tfg_transformation
-from tensorflow_graphics.notebooks import threejs_visualization
+model.compile(optimizer='adam', loss = 'mean_squared_error')
 
-# Download the mesh.
-!wget https://storage.googleapis.com/tensorflow-graphics/notebooks/index/cow.obj
-# Load the mesh.
-mesh = trimesh.load("cow.obj")
-mesh = {"vertices": mesh.vertices, "faces": mesh.faces}
-# Visualize the original mesh.
-threejs_visualization.triangular_mesh_renderer(mesh, width=400, height=400)
-# Set the axis and angle parameters.
-axis = np.array((0., 1., 0.))  # y axis.
-angle = np.array((np.pi / 4.,))  # 45 degree angle.
-# Rotate the mesh.
-mesh["vertices"] = tfg_transformation.axis_angle.rotate(mesh["vertices"], axis,
-                                                        angle).numpy()
-# Visualize the rotated mesh.
-threejs_visualization.triangular_mesh_renderer(mesh, width=400, height=400)
+
+# %%
+model.fit(x, y, epochs = 500)
+
+# %%
+x_test = np.array([4])
+x_test
+
+#%%
+model.predict(x_test.reshape((1,)))
+
