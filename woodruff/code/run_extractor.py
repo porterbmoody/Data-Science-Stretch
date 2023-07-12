@@ -78,7 +78,7 @@ scripture_replacements = {
 }
 
 #%%
-path_root = '../data/all_books3/'
+path_root = '../data/all_books_10_words/'
 path_data_woodruff_raw   = '../data/data_woodruff_raw.csv'
 # path_data_woodruff_clean = path_root + 'data_woodruff_clean.csv'
 path_data_scriptures     = '../data/data_scriptures.csv'
@@ -110,6 +110,8 @@ data_scriptures = data_scriptures.query("volume_title in @volume_titles")
 data_scriptures
 
 #%%
+
+
 phrase_length = 10
 threshold = .70
 print('volumes:', volume_titles)
@@ -127,3 +129,11 @@ match_extractor.run_extractor(extensions=True, save=False, quarto_publish=False)
 match_extractor.matches_total
 
 #%%
+path = '../data/all_books_13_words/data_matches_extensions_temporary.csv'
+data = pd.read_csv(path)
+data_scriptures1 = data_scriptures[['verse_title','volume_title']]
+data_scriptures1
+
+merged_data = pd.merge(data, data_scriptures1, on='verse_title', how='left')
+merged_data.to_csv(path, index = False)
+
