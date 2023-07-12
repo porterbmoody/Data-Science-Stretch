@@ -55,25 +55,24 @@ model.fit(image_tensor, y = [160,400-145])
 #%%
 import tensorflow as tf
 import numpy as np
-x = np.array([[1, 2, 3, 4, 5]])
-y = -x
+x = np.array([1, 2, 3, 4, 5, 6])
+y = 2*x
 y
+print(x)
+print(y)
+
 #%%
 model = tf.keras.models.Sequential([
-    tf.keras.layers.Dense(32, activation = 'relu', input_shape=(5, )),
-    tf.keras.layers.Dense(5),
+    tf.keras.layers.Dense(1, input_shape=[1]),
 ])
 
-model.compile(optimizer='adam', loss = 'mean_squared_error')
+model.compile(optimizer='sgd', loss = 'mean_squared_error')
 
 
 # %%
 model.fit(x, y, epochs = 500)
 
 # %%
-x_test = np.array([4])
-x_test
 
-#%%
-model.predict(x_test.reshape((1,)))
+model.predict([8])
 

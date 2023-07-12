@@ -112,6 +112,7 @@ class MatchExtractor:
         total_match_indices = []
         dates = []
         verse_titles = []
+        volume_titles = []
         progress_bar = tqdm(total=len(list(self.data_woodruff_filtered['text'])) - 1)
         extension_count = 0
         for index1, text_woodruff in enumerate(list(self.data_woodruff_filtered['text'])):
