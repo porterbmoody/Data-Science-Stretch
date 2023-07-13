@@ -80,13 +80,12 @@ scripture_replacements = {
 #%%
 path_root = '../data/matches/all_books_10_words/'
 path_data_woodruff_raw   = '../data/raw/data_woodruff_raw.csv'
+path_data_woodruff_raw   = '../data/raw/derived_data.csv'
 # path_data_woodruff_clean = path_root + 'data_woodruff_clean.csv'
 path_data_scriptures     = '../data/raw/data_scriptures.csv'
 
 # url paths
 url_woodruff = "https://github.com/wilfordwoodruff/Main-Data/raw/main/data/derived/derived_data.csv"
-# url_woodruff = "https://github.com/wilfordwoodruff/Main-Data/raw/main/data/derived/derived_data.csv"
-# url_woodruff = 'https://raw.githubusercontent.com/wilfordwoodruff/Main-Data/main/data/derived/derived_data.csv'
 url_scriptures = 'https://github.com/wilfordwoodruff/wilford_woodruff_hack23/raw/main/data/lds-scriptures.csv'
 
 # load data
