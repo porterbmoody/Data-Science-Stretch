@@ -44,7 +44,7 @@ class MatchExtractor:
         self.vectorizer = TfidfVectorizer()
         self.tfidf_matrix_woodruff = self.vectorizer.fit_transform(self.data_woodruff['text'])
 
-    def run_extractor(self, extensions = True, save = False, quarto_publish = False):
+    def run_extractor(self, save = False, quarto_publish = False):
         """ Uses already trained TFIDF model, first extraction algorithm
             loops through each row of expanded scriptures dataframe and computes the tfidf vector of each scriptures phrase
             then compute the vectors of each woodruff phrase and create a vector
@@ -65,23 +65,18 @@ class MatchExtractor:
             self.matches_current['book_title']   = row_scriptures['book_title']
             # filter matches by threshold
             self.matches_current = self.matches_current.query("cosine_score > @self.threshold")
-            # select only relevant columns
-            output_columns = ['index_woodruff', 'index_scriptures', 'date', 'verse_title', 'cosine_score', 'phrase_woodruff','phrase_scripture', 'volume_title']
-            self.matches_current = self.matches_current[output_columns]
             if len(self.matches_current) > 0:
                 self.matches_total = pd.concat([self.matches_total, self.matches_current]).sort_values(
                     by=['index_woodruff', 'index_scriptures'], ascending=True)
 
                 # save to file
-                self.matches_total.to_csv(self.path_matches_temporary, index=False)
+                self.resolve_extensions()
+                self.matches_total.sort_values(by='cosine_score', ascending=False).to_csv(self.path_matches, index=False)
 
         self.progress_bar.close()
 
-        if extensions:
-            self.resolve_extensions()
-
-        if save:
-            self.matches_total.to_csv(self.path_matches, index=False)
+        # if save:
+            # self.matches_total.sort_values(by='cosine_score', ascending=False)#.to_csv(self.path_matches, index=False)
             # self.matches_extensions.to_csv(self.path_matches_extensions, index = False)
 
         if quarto_publish:
@@ -92,7 +87,8 @@ class MatchExtractor:
         """
         tfidf_matrix_scriptures = self.vectorizer.transform([scripture_text])
         cosine_scores = cosine_similarity(self.tfidf_matrix_woodruff, tfidf_matrix_scriptures)
-        cosine_scores = pd.DataFrame(cosine_scores, columns=['cosine_score']).apply(lambda x: round(x, 5))
+        cosine_scores = pd.DataFrame(cosine_scores, columns=['cosine_score'])
+        cosine_scores['cosine_score'] = cosine_scores['cosine_score'].apply(lambda x: round(x, 5))
         cosine_scores['phrase_woodruff'] = list(self.data_woodruff['text'])
         cosine_scores['date'] = list(self.data_woodruff['date'])
         cosine_scores['phrase_scripture'] = scripture_text
@@ -101,8 +97,23 @@ class MatchExtractor:
     def resolve_extensions(self):
         """ Use indices to attaches matching phrases that go right next to each other
         """
-        for index, row, in self.matches_total.iterrows():
-            print(row)
+        self.matches_total.sort_values(['index_woodruff', 'index_scriptures'], inplace=True)
+        # Create a mask to identify rows where the indices are not 1 apart
+        mask = (self.matches_total['index_woodruff'].diff() != 1) | (self.matches_total['index_scriptures'].diff() != 1)
+        # Create a new column to identify groups based on the mask
+        self.matches_total['group'] = mask.cumsum()
+        self.matches_total = self.matches_total.groupby('group').agg({
+            'index_woodruff': 'first',
+            'index_scriptures': 'first',
+            # 'match_count' : 'sum',
+            'date': 'first',
+            'cosine_score': 'mean',
+            'verse_title': 'first',
+            'volume_title': 'first',
+            'phrase_woodruff': ' '.join,
+            'phrase_scripture': ' '.join,
+        })
+        # print(self.matches_total)
 
     @staticmethod
     def quarto_publish():

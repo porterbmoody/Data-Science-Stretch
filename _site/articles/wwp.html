@@ -200,9 +200,9 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> tabulate <span class="im">import</span> tabulate</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>number_of_rows <span class="op">=</span> <span class="dv">50</span></span>
-<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>path_mathes <span class="op">=</span> <span class="st">"../woodruff/data/all_books/data_matches_extensions_temporary.csv"</span></span>
-<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>top_matches <span class="op">=</span> pd.read_csv(path_mathes).sort_values(by<span class="op">=</span><span class="st">'score'</span>,ascending<span class="op">=</span><span class="va">False</span>)[[<span class="st">'date'</span>, <span class="st">'verse_title'</span>,<span class="st">'score'</span>,<span class="st">'matches_woodruff'</span>,<span class="st">'matches_scriptures'</span>]]</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a>number_of_rows <span class="op">=</span> <span class="dv">65</span></span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a>path_mathes <span class="op">=</span> <span class="st">"../woodruff/data/matches/data_matches.csv"</span></span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a>top_matches <span class="op">=</span> pd.read_csv(path_mathes).sort_values(by<span class="op">=</span><span class="st">'cosine_score'</span>,ascending<span class="op">=</span><span class="va">False</span>)</span>
 <span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="co"># matches_counts = top_matches.groupby(['volume_title']).count().reset_index()[['volume_title', 'phrase_woodruff']]</span></span>
 <span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="co"># matches_counts</span></span>
@@ -213,426 +213,574 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a>  ))</span>
 <span id="cb1-16"><a href="#cb1-16" aria-hidden="true" tabindex="-1"></a>  <span class="cf">return</span> markdown_table</span>
 <span id="cb1-17"><a href="#cb1-17" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a><span class="co"># match count/volume</span></span>
-<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Markdown(tabulate(</span></span>
-<span id="cb1-20"><a href="#cb1-20" aria-hidden="true" tabindex="-1"></a><span class="co">#   matches_counts,</span></span>
-<span id="cb1-21"><a href="#cb1-21" aria-hidden="true" tabindex="-1"></a><span class="co">#   headers=list(matches_counts)</span></span>
-<span id="cb1-22"><a href="#cb1-22" aria-hidden="true" tabindex="-1"></a><span class="co"># ))</span></span>
-<span id="cb1-23"><a href="#cb1-23" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb1-24"><a href="#cb1-24" aria-hidden="true" tabindex="-1"></a>create_markdown_table(top_matches.head(<span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb1-18"><a href="#cb1-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb1-19"><a href="#cb1-19" aria-hidden="true" tabindex="-1"></a>create_markdown_table(top_matches.head(<span class="dv">50</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 <div class="cell-output cell-output-display" data-execution_count="1">
 <table class="table table-sm table-striped small">
 <thead>
 <tr class="header">
 <th></th>
+<th style="text-align: right;">index_woodruff</th>
+<th style="text-align: right;">index_scriptures</th>
 <th style="text-align: left;">date</th>
+<th style="text-align: right;">cosine_score</th>
 <th style="text-align: left;">verse_title</th>
-<th style="text-align: right;">score</th>
-<th style="text-align: left;">matches_woodruff</th>
-<th style="text-align: left;">matches_scriptures</th>
+<th style="text-align: left;">volume_title</th>
+<th style="text-align: left;">phrase_woodruff</th>
+<th style="text-align: left;">phrase_scripture</th>
 </tr>
 </thead>
 <tbody>
 <tr class="odd">
 <td>0</td>
-<td style="text-align: left;">January 13, 1856</td>
-<td style="text-align: left;">Doctrine and Covenants 98:16</td>
-<td style="text-align: right;">0.99315</td>
-<td style="text-align: left;">Fathers to the children and the hearts of the children to their Fathers</td>
-<td style="text-align: left;">of the children to their fathers and the hearts of the fathers to the children</td>
+<td style="text-align: right;">43827</td>
+<td style="text-align: right;">5844</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">1</td>
+<td style="text-align: left;">Doctrine and Covenants 136:35</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">and now cometh the day of their calamity even the days of sorrow like a</td>
+<td style="text-align: left;">And now cometh the day of their calamity even the days of sorrow like a</td>
 </tr>
 <tr class="even">
 <td>1</td>
-<td style="text-align: left;">March 10, 1844</td>
-<td style="text-align: left;">John 1:8</td>
-<td style="text-align: right;">0.98585</td>
-<td style="text-align: left;">was not that light but was sent to bear witness of that light</td>
-<td style="text-align: left;">He was not that Light but was sent to bear witness of that Light</td>
+<td style="text-align: right;">43834</td>
+<td style="text-align: right;">5850</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.9837</td>
+<td style="text-align: left;">Doctrine and Covenants 136:37</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">from Abraham to Moses from Moses to Jesus and the Apostles and from Jesus and</td>
+<td style="text-align: left;">from Abraham to Moses from Moses to Jesus and his apostles and from Jesus and</td>
 </tr>
 <tr class="odd">
 <td>2</td>
-<td style="text-align: left;">February 2, 1851</td>
-<td style="text-align: left;">Doctrine and Covenants 2:2</td>
-<td style="text-align: right;">0.96246</td>
-<td style="text-align: left;">turn the hearts of the children to their fathers and the fathers to</td>
-<td style="text-align: left;">to the fathers and the hearts of the children shall turn to their fathers</td>
+<td style="text-align: right;">43810</td>
+<td style="text-align: right;">5830</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.95187</td>
+<td style="text-align: left;">Doctrine and Covenants 136:25</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">thou borrowest of thy neighbor thou shalt restore that which thou hast borrowed and if thou canst not repay then go straitway and tell thy neighbor lest he condemn thee</td>
+<td style="text-align: left;">If thou borrowest of thy neighbor thou shalt restore that which thou hast borrowed and if thou canst not repay then go straightway and tell thy neighbor lest he condemn thee</td>
 </tr>
 <tr class="even">
 <td>3</td>
-<td style="text-align: left;">April 7, 1836</td>
-<td style="text-align: left;">2 Corinthians 11:29</td>
-<td style="text-align: right;">0.94552</td>
-<td style="text-align: left;">and I am not weak Who is offended and I burn not O</td>
-<td style="text-align: left;">Who is weak and I am not weak who is offended and I burn not</td>
+<td style="text-align: right;">98717</td>
+<td style="text-align: right;">4758</td>
+<td style="text-align: left;">September 15, 1884</td>
+<td style="text-align: right;">0.923</td>
+<td style="text-align: left;">Doctrine and Covenants 121:36</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">that the rights of the Priesthood are inseparably connected with the Powers of heavens and that the powers of heaven cannot be controlled nor handled only upon the principles of</td>
+<td style="text-align: left;">That the rights of the priesthood are inseparably connected with the powers of heaven and that the powers of heaven cannot be controlled nor handled only upon the principles of righteousness</td>
 </tr>
 <tr class="odd">
 <td>4</td>
-<td style="text-align: left;">November 11, 1855</td>
-<td style="text-align: left;">3 Nephi 13:10</td>
-<td style="text-align: right;">0.94403</td>
-<td style="text-align: left;">thy will be done on Earth as it is done in heaven[”] was</td>
-<td style="text-align: left;">Thy will be done on earth as it is in heaven</td>
+<td style="text-align: right;">81581</td>
+<td style="text-align: right;">4296</td>
+<td style="text-align: left;">February 12, 1862</td>
+<td style="text-align: right;">0.91905</td>
+<td style="text-align: left;">Doctrine and Covenants 107:56</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">being full of the Holy Ghost predicted whatsoever should befall his posterity unto the latest</td>
+<td style="text-align: left;">down with age being full of the Holy Ghost predicted whatsoever should befall his posterity unto the latest generation</td>
 </tr>
 <tr class="even">
 <td>5</td>
-<td style="text-align: left;">January 21, 1847</td>
-<td style="text-align: left;">Doctrine and Covenants 136:7</td>
-<td style="text-align: right;">0.94212</td>
-<td style="text-align: left;">Farming utensils to go as Pioneers to prepare for puting in spring crops Let each company bear an equal proportion according to the dividend of their property in taking the poor the widows the fatherless and the families of those who have gone into the armey that the cries of the widow and the Fatherless come not up into the ears of the Lord against this people Let each company prepare houses and fields for raising grain for those who are to remain behind this season and this is the will</td>
-<td style="text-align: left;">to take teams seeds and farming utensils to go as pioneers to prepare for putting in spring crops Let each company bear an equal proportion according to the dividend of their property in taking the poor the widows the fatherless and the families of those who have gone into the army that the cries of the widow and the fatherless come not up into the ears of the Lord against this people Let each company prepare houses and fields for raising grain for those who are to remain behind this season and this is the will of the Lord concerning his people</td>
+<td style="text-align: right;">58476</td>
+<td style="text-align: right;">3228</td>
+<td style="text-align: left;">January 23, 1848</td>
+<td style="text-align: right;">0.89226</td>
+<td style="text-align: left;">Doctrine and Covenants 88:79</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">and countries things which are at home and abroad the wars perplexities of nations and</td>
+<td style="text-align: left;">at home things which are abroad the wars and the perplexities of the nations and</td>
 </tr>
 <tr class="odd">
 <td>6</td>
-<td style="text-align: left;">July 18, 1845</td>
-<td style="text-align: left;">2 Nephi 19:6</td>
-<td style="text-align: right;">0.93908</td>
-<td style="text-align: left;">it is a son for unto us a child is born unto us</td>
-<td style="text-align: left;">For unto us a child is born unto us a son is given</td>
+<td style="text-align: right;">43805</td>
+<td style="text-align: right;">5826</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.8861</td>
+<td style="text-align: left;">Doctrine and Covenants 136:21</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">the Lord your God even the God of your Fathers the God of Abraham and</td>
+<td style="text-align: left;">am the Lord your God even the God of your fathers the God of Abraham and of Isaac and of Jacob</td>
 </tr>
 <tr class="even">
 <td>7</td>
-<td style="text-align: left;">July 18, 1845</td>
-<td style="text-align: left;">Isaiah 9:6</td>
-<td style="text-align: right;">0.93908</td>
-<td style="text-align: left;">it is a son for unto us a child is born unto us</td>
-<td style="text-align: left;">For unto us a child is born unto us a son is given</td>
+<td style="text-align: right;">27215</td>
+<td style="text-align: right;">1674</td>
+<td style="text-align: left;">October 21, 1855</td>
+<td style="text-align: right;">0.88113</td>
+<td style="text-align: left;">Doctrine and Covenants 49:24</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">things Jacob shall flourish in the wilderness the Lamanites shall blossom as the rose we</td>
+<td style="text-align: left;">But before the great day of the Lord shall come Jacob shall flourish in the wilderness and the Lamanites shall blossom as the rose</td>
 </tr>
 <tr class="odd">
 <td>8</td>
-<td style="text-align: left;">January 21, 1847</td>
-<td style="text-align: left;">Doctrine and Covenants 136:23</td>
-<td style="text-align: right;">0.93729</td>
-<td style="text-align: left;">contend one with another Cease to speak evil one of another Cease drunkenness</td>
-<td style="text-align: left;">Cease to contend one with another cease to speak evil one of another</td>
+<td style="text-align: right;">9567</td>
+<td style="text-align: right;">709</td>
+<td style="text-align: left;">January 19 1840</td>
+<td style="text-align: right;">0.87523</td>
+<td style="text-align: left;">Doctrine and Covenants 20:77</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">God the Eternal Father I ask the[e] in the name of thy Son Jesus Christ</td>
+<td style="text-align: left;">O God the Eternal Father we ask thee in the name of thy Son Jesus</td>
 </tr>
 <tr class="even">
 <td>9</td>
-<td style="text-align: left;">March 10, 1844</td>
-<td style="text-align: left;">Doctrine and Covenants 128:17</td>
-<td style="text-align: right;">0.93688</td>
-<td style="text-align: left;">to the Fathers lest I come and smite the earth with a curse</td>
-<td style="text-align: left;">of the children to their fathers lest I come and smite the earth with a curse</td>
+<td style="text-align: right;">9567</td>
+<td style="text-align: right;">716</td>
+<td style="text-align: left;">January 19 1840</td>
+<td style="text-align: right;">0.87523</td>
+<td style="text-align: left;">Doctrine and Covenants 20:79</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">God the Eternal Father I ask the[e] in the name of thy Son Jesus Christ</td>
+<td style="text-align: left;">O God the Eternal Father we ask thee in the name of thy Son Jesus</td>
 </tr>
 <tr class="odd">
 <td>10</td>
-<td style="text-align: left;">June 30, 1844</td>
-<td style="text-align: left;">John 15:14</td>
-<td style="text-align: right;">0.92765</td>
-<td style="text-align: left;">Jesus saying “ye are my friends if ye do whatsoever I command you[”]</td>
-<td style="text-align: left;">Ye are my friends if ye do whatsoever I command you</td>
+<td style="text-align: right;">43823</td>
+<td style="text-align: right;">5841</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.87286</td>
+<td style="text-align: left;">Doctrine and Covenants 136:32</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">the Lord his God that his eyes may be opened that he may see and</td>
+<td style="text-align: left;">his God that his eyes may be opened that he may see and his ears opened that he may hear</td>
 </tr>
 <tr class="even">
 <td>11</td>
+<td style="text-align: right;">43832</td>
+<td style="text-align: right;">5848</td>
 <td style="text-align: left;">January 21, 1847</td>
-<td style="text-align: left;">Doctrine and Covenants 136:25</td>
-<td style="text-align: right;">0.92605</td>
-<td style="text-align: left;">thy neighbor thou shalt restore that which thou hast borrowed and if thou canst not repay then go straitway and tell thy neighbor lest he condemn thee If thou shalt find that which thy neighbor has lost thou shalt</td>
-<td style="text-align: left;">If thou borrowest of thy neighbor thou shalt restore that which thou hast borrowed and if thou canst not repay then go straightway and tell thy neighbor lest he condemn thee If thou shalt find that which thy neighbor has lost thou shalt make diligent search till thou shalt deliver it to him again</td>
+<td style="text-align: right;">0.86701</td>
+<td style="text-align: left;">Doctrine and Covenants 136:37</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">bear my glory but thou shalt behold it if ye are faithful in keeping all my words that I have given you from the days of Abraham Adam to Abraham</td>
+<td style="text-align: left;">yet bear my glory but ye shall behold it if ye are faithful in keeping all my words that I have given you from the days of Adam to Abraham</td>
 </tr>
 <tr class="odd">
 <td>12</td>
-<td style="text-align: left;">January 21, 1847</td>
-<td style="text-align: left;">Doctrine and Covenants 136:31</td>
-<td style="text-align: right;">0.91095</td>
-<td style="text-align: left;">that I have for them even the glory of Zion And he that will not bear chastizment is not worthy of my Kingdom Let him that is ignorant learn wisdom by humbling himself and calling upon the Lord his God that his eyes may be opened that he may see and his</td>
-<td style="text-align: left;">to receive the glory that I have for them even the glory of Zion and he that will not bear chastisement is not worthy of my kingdom Let him that is ignorant learn wisdom by humbling himself and calling upon the Lord his God that his eyes may be opened that he may see and his ears opened that he may hear</td>
+<td style="text-align: right;">111587</td>
+<td style="text-align: right;">1872</td>
+<td style="text-align: left;">January 9, 1894</td>
+<td style="text-align: right;">0.86128</td>
+<td style="text-align: left;">Doctrine and Covenants 56:11</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">and earth pass away my words shall not pass away but shall be fulfilled saith</td>
+<td style="text-align: left;">And though the heaven and the earth pass away these words shall not pass away but shall be fulfilled</td>
 </tr>
 <tr class="even">
 <td>13</td>
+<td style="text-align: right;">43773</td>
+<td style="text-align: right;">5801</td>
 <td style="text-align: left;">January 21, 1847</td>
-<td style="text-align: left;">Doctrine and Covenants 136:42</td>
-<td style="text-align: right;">0.90932</td>
-<td style="text-align: left;">lest judgment come upon you and your faith fail you and your enemies triumph over you So no more at present Amen and Amen</td>
-<td style="text-align: left;">your faith fail you and your enemies triumph over you So no more at present Amen and Amen</td>
+<td style="text-align: right;">0.85892</td>
+<td style="text-align: left;">Doctrine and Covenants 136:2</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">into companies with a covenant and promise to keep all the commandments and Statutes of the Lord our God Let the companies be organized with Captains of Hundreds Captains of</td>
+<td style="text-align: left;">who journey with them be organized into companies with a covenant and promise to keep all the commandments and statutes of the Lord our God Let the companies be organized with captains of hundreds captains of fifties and captains of</td>
 </tr>
 <tr class="odd">
 <td>14</td>
-<td style="text-align: left;">October 19, 1851</td>
-<td style="text-align: left;">Abraham 5:9</td>
-<td style="text-align: right;">0.90407</td>
-<td style="text-align: left;">tree of knowledge of good Evil in the midst of the garden little</td>
-<td style="text-align: left;">also in the midst of the garden and the tree of knowledge of good and evil</td>
+<td style="text-align: right;">43843</td>
+<td style="text-align: right;">5858</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.84971</td>
+<td style="text-align: left;">Doctrine and Covenants 136:42</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">my commandments lest judgment come upon you and your faith fail you and your enemies triumph over you So no more at present Amen and Amen</td>
+<td style="text-align: left;">fail you and your enemies triumph over you So no more at present Amen and Amen</td>
 </tr>
 <tr class="even">
 <td>15</td>
-<td style="text-align: left;">February 2, 1851</td>
-<td style="text-align: left;">Doctrine and Covenants 98:16</td>
-<td style="text-align: right;">0.89909</td>
-<td style="text-align: left;">turn the hearts of the children to their fathers and the fathers to</td>
-<td style="text-align: left;">of the children to their fathers and the hearts of the fathers to the children</td>
+<td style="text-align: right;">17909</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: left;">March 10, 1844</td>
+<td style="text-align: right;">0.84904</td>
+<td style="text-align: left;">Doctrine and Covenants 2:2</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">and He shall turn the hearts of the Fathers to the Children and the hearts</td>
+<td style="text-align: left;">And he shall plant in the hearts of the children the promises made to the fathers and the hearts of the children shall turn to their fathers</td>
 </tr>
 <tr class="odd">
 <td>16</td>
-<td style="text-align: left;">March 27, 1842</td>
-<td style="text-align: left;">Doctrine and Covenants 20:73</td>
-<td style="text-align: right;">0.8971</td>
-<td style="text-align: left;">the Name of the Father of the Son and of the Holy Ghost</td>
-<td style="text-align: left;">name of the Father and of the Son and of the Holy Ghost Amen</td>
+<td style="text-align: right;">111254</td>
+<td style="text-align: right;">3975</td>
+<td style="text-align: left;">April 19, 1893</td>
+<td style="text-align: right;">0.84152</td>
+<td style="text-align: left;">Doctrine and Covenants 103:27</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">afraid to lay down his life for my sake for he that layeth down his</td>
+<td style="text-align: left;">Let no man be afraid to lay down his life for my sake for whoso layeth down his life for my sake shall find it again</td>
 </tr>
 <tr class="even">
 <td>17</td>
-<td style="text-align: left;">October 19, 1851</td>
-<td style="text-align: left;">Moses 3:9</td>
-<td style="text-align: right;">0.89602</td>
-<td style="text-align: left;">tree of knowledge of good Evil in the midst of the garden little</td>
-<td style="text-align: left;">the midst of the garden and also the tree of knowledge of good and evil</td>
+<td style="text-align: right;">43799</td>
+<td style="text-align: right;">5821</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.83829</td>
+<td style="text-align: left;">Doctrine and Covenants 136:17</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">have told you and fear not thine enemies for they shall not have power to stop my work Zion shall be redeemed in mine own due time time and if</td>
+<td style="text-align: left;">Go thy way and do as I have told you and fear not thine enemies for they shall not have power to stop my work Zion shall be redeemed in mine own due time</td>
 </tr>
 <tr class="odd">
 <td>18</td>
-<td style="text-align: left;">March 10, 1844</td>
-<td style="text-align: left;">Malachi 4:6</td>
-<td style="text-align: right;">0.88956</td>
-<td style="text-align: left;">to the Fathers lest I come and smite the earth with a curse</td>
-<td style="text-align: left;">the heart of the children to their fathers lest I come and smite the earth with a curse</td>
+<td style="text-align: right;">43808</td>
+<td style="text-align: right;">5828</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.834435</td>
+<td style="text-align: left;">Doctrine and Covenants 136:23</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">to save my people Israel cease to contend one with another Cease to speak evil one of another Cease drunkenness and let your words tend to edeyfing one another If</td>
+<td style="text-align: left;">Cease to contend one with another cease to speak evil one of another Cease drunkenness and let your words tend to edifying one another</td>
 </tr>
 <tr class="even">
 <td>19</td>
-<td style="text-align: left;">March 10, 1844</td>
-<td style="text-align: left;">3 Nephi 25:6</td>
-<td style="text-align: right;">0.88956</td>
-<td style="text-align: left;">to the Fathers lest I come and smite the earth with a curse</td>
-<td style="text-align: left;">the heart of the children to their fathers lest I come and smite the earth with a curse</td>
+<td style="text-align: right;">43825</td>
+<td style="text-align: right;">5842</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.8335</td>
+<td style="text-align: left;">Doctrine and Covenants 136:33</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">wor[ld] to enlighten the humble and contrite and to the condemnation of the ungodly Thy brethren have rejected you and your testimony even the Nation that has driven you out</td>
+<td style="text-align: left;">For my Spirit is sent forth into the world to enlighten the humble and contrite and to the condemnation of the ungodly Thy brethren have rejected you and your testimony even the nation that has driven you out</td>
 </tr>
 <tr class="odd">
 <td>20</td>
+<td style="text-align: right;">43836</td>
+<td style="text-align: right;">5851</td>
 <td style="text-align: left;">January 21, 1847</td>
-<td style="text-align: left;">Doctrine and Covenants 136:26</td>
-<td style="text-align: right;">0.88789</td>
-<td style="text-align: left;">make diligent search till thou shalt deliver it to him again Thou shall be diligent in preserving what thou hast that thou mayest be a wise steward for it is the free gift of the Lord thy God and</td>
-<td style="text-align: left;">If thou shalt find that which thy neighbor has lost thou shalt make diligent search till thou shalt deliver it to him again Thou shalt be diligent in preserving what thou hast that thou mayest be a wise steward for it is the free gift of the Lord thy God and thou art his steward</td>
+<td style="text-align: right;">0.82724</td>
+<td style="text-align: left;">Doctrine and Covenants 136:37</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">ministering servents and by mine own voice out of the Heavens to bring forth my work which foundation he did lay and was faithful and I took him to myself</td>
+<td style="text-align: left;">his apostles to Joseph Smith whom I did call upon by mine angels my ministering servants and by mine own voice out of the heavens to bring forth my work Which foundation he did lay and was faithful and I took him to myself</td>
 </tr>
 <tr class="even">
 <td>21</td>
-<td style="text-align: left;">January 21, 1847</td>
-<td style="text-align: left;">Doctrine and Covenants 136:36</td>
-<td style="text-align: right;">0.88206</td>
-<td style="text-align: left;">they have shed innocent blood which crieth from the ground against them Therefore marvel not at these things for ye are not yet pure thou canst not yet bear my glory but thou shalt behold it if ye are faithful in keeping all my words that I have given you from the days of Abraham Adam to Abraham from Abraham to Moses from Moses to Jesus and the Apostles and from Jesus and his Apostles to Joseph Smith</td>
-<td style="text-align: left;">For they killed the prophets and them that were sent unto them and they have shed innocent blood which crieth from the ground against them Therefore marvel not at these things for ye are not yet pure ye can not yet bear my glory but ye shall behold it if ye are faithful in keeping all my words that I have given you from the days of Adam to Abraham from Abraham to Moses from Moses to Jesus and his apostles and from Jesus and his apostles to Joseph Smith</td>
+<td style="text-align: right;">98598</td>
+<td style="text-align: right;">1872</td>
+<td style="text-align: left;">August 27, 1885</td>
+<td style="text-align: right;">0.82644</td>
+<td style="text-align: left;">Doctrine and Covenants 56:11</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">Smith Jr shall all be fulfilled And though Heaven and Earth Pass away my words</td>
+<td style="text-align: left;">And though the heaven and the earth pass away these words shall not pass away but shall be fulfilled</td>
 </tr>
 <tr class="odd">
 <td>22</td>
-<td style="text-align: left;">September 5, 1841</td>
-<td style="text-align: left;">Doctrine and Covenants 135:6</td>
-<td style="text-align: right;">0.88085</td>
-<td style="text-align: left;">the Bible Book of Mormon and book of Doctrine and Covenants Elder W</td>
-<td style="text-align: left;">the Book of Mormon and this book of Doctrine and Covenants of the</td>
+<td style="text-align: right;">43821</td>
+<td style="text-align: right;">5839</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.826275</td>
+<td style="text-align: left;">Doctrine and Covenants 136:31</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">the glory of Zion And he that will not bear chastizment is not worthy of my Kingdom Let him that is ignorant learn wisdom by humbling himself and calling upon</td>
+<td style="text-align: left;">the glory that I have for them even the glory of Zion and he that will not bear chastisement is not worthy of my kingdom Let him that is ignorant learn wisdom by humbling himself and calling upon the Lord</td>
 </tr>
 <tr class="even">
 <td>23</td>
-<td style="text-align: left;">March 10, 1844</td>
-<td style="text-align: left;">Doctrine and Covenants 27:9</td>
-<td style="text-align: right;">0.87766</td>
-<td style="text-align: left;">hearts of the Fathers to the Children and the hearts of the Children</td>
-<td style="text-align: left;">of turning the hearts of the fathers to the children and the hearts</td>
+<td style="text-align: right;">43812</td>
+<td style="text-align: right;">5832</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.82051</td>
+<td style="text-align: left;">Doctrine and Covenants 136:26</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">If thou shalt find that which thy neighbor has lost thou shalt make diligent search till thou shalt deliver it to him again Thou shall be diligent in preserving what</td>
+<td style="text-align: left;">If thou shalt find that which thy neighbor has lost thou shalt make diligent search till thou shalt deliver it to him again Thou shalt be diligent in preserving what thou hast that thou mayest be a wise</td>
 </tr>
 <tr class="odd">
 <td>24</td>
-<td style="text-align: left;">January 21, 1844</td>
-<td style="text-align: left;">Doctrine and Covenants 27:9</td>
-<td style="text-align: right;">0.87766</td>
-<td style="text-align: left;">hearts of the fathers to the children and the hearts of the children</td>
-<td style="text-align: left;">of turning the hearts of the fathers to the children and the hearts</td>
+<td style="text-align: right;">90186</td>
+<td style="text-align: right;">5624</td>
+<td style="text-align: left;">February 26, 1879</td>
+<td style="text-align: right;">0.81399</td>
+<td style="text-align: left;">Doctrine and Covenants 133:31</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">in the Land of Zion And the boundaries of the everlasting Hills shall tremble at</td>
+<td style="text-align: left;">And the boundaries of the everlasting hills shall tremble at their presence</td>
 </tr>
 <tr class="even">
 <td>25</td>
-<td style="text-align: left;">April 15, 1837</td>
-<td style="text-align: left;">Deuteronomy 23:21</td>
-<td style="text-align: right;">0.87159</td>
-<td style="text-align: left;">Thou shalt labour in the Temple of the Lord thy God Thou shalt</td>
-<td style="text-align: left;">When thou shalt vow a vow unto the Lord thy God thou shalt</td>
+<td style="text-align: right;">16333</td>
+<td style="text-align: right;">5275</td>
+<td style="text-align: left;">March 27, 1842</td>
+<td style="text-align: right;">0.80825</td>
+<td style="text-align: left;">Doctrine and Covenants 128:16</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">the doctrin “why are ye baptized for the dead if the dead rise not and”</td>
+<td style="text-align: left;">the dead if the dead rise not at all Why are they then baptized for the dead</td>
 </tr>
 <tr class="odd">
 <td>26</td>
-<td style="text-align: left;">January 21, 1847</td>
-<td style="text-align: left;">Doctrine and Covenants 136:28</td>
-<td style="text-align: right;">0.86849</td>
-<td style="text-align: left;">with music with dancing and with a prayer of praise and thanksgiving If thou art sorrowful call on the Lord thy God with supplication that your</td>
-<td style="text-align: left;">If thou art merry praise the Lord with singing with music with dancing and with a prayer of praise and thanksgiving If thou art sorrowful call on the Lord thy God with supplication that your souls may be joyful</td>
+<td style="text-align: right;">18151</td>
+<td style="text-align: right;">3590</td>
+<td style="text-align: left;">March 24, 1844</td>
+<td style="text-align: right;">0.80634</td>
+<td style="text-align: left;">Doctrine and Covenants 97:7</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">ax is laid unto the root of the tree and evry tree that bringeth not</td>
+<td style="text-align: left;">The ax is laid at the root of the trees and every tree that bringeth</td>
 </tr>
 <tr class="even">
 <td>27</td>
-<td style="text-align: left;">January 13, 1856</td>
-<td style="text-align: left;">Doctrine and Covenants 2:2</td>
-<td style="text-align: right;">0.86798</td>
-<td style="text-align: left;">Fathers to the children and the hearts of the children to their Fathers</td>
-<td style="text-align: left;">to the fathers and the hearts of the children shall turn to their fathers</td>
+<td style="text-align: right;">90241</td>
+<td style="text-align: right;">55</td>
+<td style="text-align: left;">February 26, 1879</td>
+<td style="text-align: right;">0.805055</td>
+<td style="text-align: left;">Doctrine and Covenants 1:38</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">most assuredly will 13 What I have spoken I have spoken and I excuse not myself And though the Heavens and [Earth] pass away my words will not pass away</td>
+<td style="text-align: left;">What I the Lord have spoken I have spoken and I excuse not myself and though the heavens and the earth pass away my word shall not pass away but</td>
 </tr>
 <tr class="odd">
 <td>28</td>
-<td style="text-align: left;">October 19, 1851</td>
-<td style="text-align: left;">Genesis 2:9</td>
-<td style="text-align: right;">0.86612</td>
-<td style="text-align: left;">tree of knowledge of good Evil in the midst of the garden little</td>
-<td style="text-align: left;">life also in the midst of the garden and the tree of knowledge of good and evil</td>
+<td style="text-align: right;">43791</td>
+<td style="text-align: right;">5814</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.80317</td>
+<td style="text-align: left;">Doctrine and Covenants 136:11</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">a pure heart in all faithfulness ye shall be blessed you shall be blessed in your flocks and in your herds and in your fields and in your houses and</td>
+<td style="text-align: left;">And if ye do this with a pure heart in all faithfulness ye shall be blessed you shall be blessed in your flocks and in your herds and in your fields and in your houses and in your families</td>
 </tr>
 <tr class="even">
 <td>29</td>
-<td style="text-align: left;">February 2, 1851</td>
-<td style="text-align: left;">Doctrine and Covenants 128:17</td>
-<td style="text-align: right;">0.86417</td>
-<td style="text-align: left;">the children lest I come and smite the whole Earth with a curse</td>
-<td style="text-align: left;">of the children to their fathers lest I come and smite the earth with a curse</td>
+<td style="text-align: right;">90189</td>
+<td style="text-align: right;">5626</td>
+<td style="text-align: left;">February 26, 1879</td>
+<td style="text-align: right;">0.798345</td>
+<td style="text-align: left;">Doctrine and Covenants 133:33</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">And you shall be filled with Songs of Everlasting Joy Behold this is the Blessing of the Everlasting God upon the tribes of Israel And the richer blessing upon the</td>
+<td style="text-align: left;">And they shall be filled with songs of everlasting joy Behold this is the blessing of the everlasting God upon the tribes of Israel and the richer blessing upon the head of Ephraim and his fellows</td>
 </tr>
 <tr class="odd">
 <td>30</td>
-<td style="text-align: left;">September 13, 1846</td>
-<td style="text-align: left;">Isaiah 28:13</td>
-<td style="text-align: right;">0.86291</td>
-<td style="text-align: left;">precept line upon line here a little and there a little until we</td>
-<td style="text-align: left;">upon precept line upon line line upon line here a little and there</td>
+<td style="text-align: right;">43816</td>
+<td style="text-align: right;">5835</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.796545</td>
+<td style="text-align: left;">Doctrine and Covenants 136:28</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">the Lord with singing with music with dancing and with a prayer of praise and thanksgiving If thou art sorrowful call on the Lord thy God with supplication that your</td>
+<td style="text-align: left;">If thou art merry praise the Lord with singing with music with dancing and with a prayer of praise and thanksgiving If thou art sorrowful call on the Lord thy God with supplication that your souls may be joyful</td>
 </tr>
 <tr class="even">
 <td>31</td>
-<td style="text-align: left;">March 10, 1844</td>
-<td style="text-align: left;">Hebrews 6:6</td>
-<td style="text-align: right;">0.86232</td>
-<td style="text-align: left;">the son of God afresh and put him to an open frame shame</td>
-<td style="text-align: left;">crucify to themselves the Son of God afresh and put him to an open shame</td>
+<td style="text-align: right;">43830</td>
+<td style="text-align: right;">5846</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.793835</td>
+<td style="text-align: left;">Doctrine and Covenants 136:36</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">them and they have shed innocent blood which crieth from the ground against them Therefore marvel not at these things for ye are not yet pure thou canst not yet</td>
+<td style="text-align: left;">For they killed the prophets and them that were sent unto them and they have shed innocent blood which crieth from the ground against them Therefore marvel not at these things for ye are not yet pure ye can not</td>
 </tr>
 <tr class="odd">
-<td>33</td>
-<td style="text-align: left;">March 10, 1844</td>
-<td style="text-align: left;">Doctrine and Covenants 98:16</td>
-<td style="text-align: right;">0.8604</td>
-<td style="text-align: left;">hearts of the Fathers to the Children and the hearts of the Children</td>
-<td style="text-align: left;">of the children to their fathers and the hearts of the fathers to the children</td>
+<td>32</td>
+<td style="text-align: right;">43778</td>
+<td style="text-align: right;">5805</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.78867</td>
+<td style="text-align: left;">Doctrine and Covenants 136:5</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">all the Teams waggons provisions clothing and other necessaries for the journey that they can When the companies are organized let them go to with their might to prepare for</td>
+<td style="text-align: left;">Let each company provide themselves with all the teams wagons provisions clothing and other necessaries for the journey that they can When the companies are organized let them go to with their might to prepare for those who are to tarry</td>
 </tr>
 <tr class="even">
-<td>32</td>
-<td style="text-align: left;">January 21, 1844</td>
-<td style="text-align: left;">Doctrine and Covenants 98:16</td>
-<td style="text-align: right;">0.8604</td>
-<td style="text-align: left;">hearts of the fathers to the children and the hearts of the children</td>
-<td style="text-align: left;">of the children to their fathers and the hearts of the fathers to the children</td>
+<td>33</td>
+<td style="text-align: right;">26650</td>
+<td style="text-align: right;">850</td>
+<td style="text-align: left;">January 13, 1856</td>
+<td style="text-align: right;">0.78643</td>
+<td style="text-align: left;">Doctrine and Covenants 27:9</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">the Hearts of the Fathers to the children and the hearts of the children to</td>
+<td style="text-align: left;">the hearts of the fathers to the children and the hearts of the children to the fathers that the whole earth may not be smitten with a curse</td>
 </tr>
 <tr class="odd">
 <td>34</td>
-<td style="text-align: left;">January 21, 1847</td>
-<td style="text-align: left;">Doctrine and Covenants 136:13</td>
-<td style="text-align: right;">0.85808</td>
-<td style="text-align: left;">Snow organize a company and let my servants Orson Pratt and Wilford Woodr[uff] organize a company Also let my servants Amasa Mason Lyman and George Albert</td>
-<td style="text-align: left;">And let my servants Orson Pratt and Wilford Woodruff organize a company Also let my servants Amasa Lyman and George A Smith organize a company</td>
+<td style="text-align: right;">11659</td>
+<td style="text-align: right;">139</td>
+<td style="text-align: left;">August 20, 1843</td>
+<td style="text-align: right;">0.78375</td>
+<td style="text-align: left;">Doctrine and Covenants 5:22</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">4 par Behold I grant unto you eternal life if you should be slain Page</td>
+<td style="text-align: left;">if you do this behold I grant unto you eternal life even if you should be slain</td>
 </tr>
 <tr class="even">
 <td>35</td>
-<td style="text-align: left;">August 25, 1844</td>
-<td style="text-align: left;">Job 32:8</td>
-<td style="text-align: right;">0.85782</td>
-<td style="text-align: left;">in man and the inspiration of the Almighty giveth it understanding it is</td>
-<td style="text-align: left;">But there is a spirit in man and the inspiration of the Almighty giveth them understanding</td>
+<td style="text-align: right;">43801</td>
+<td style="text-align: right;">5823</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.78027</td>
+<td style="text-align: left;">Doctrine and Covenants 136:19</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">any man shall seek to build up himself and seeketh not my council he shall</td>
+<td style="text-align: left;">And if any man shall seek to build up himself and seeketh not my counsel he shall have no power and his folly shall be made manifest</td>
 </tr>
 <tr class="odd">
 <td>36</td>
-<td style="text-align: left;">September 13, 1846</td>
-<td style="text-align: left;">2 Nephi 28:30</td>
-<td style="text-align: right;">0.85766</td>
-<td style="text-align: left;">precept line upon line here a little and there a little until we</td>
-<td style="text-align: left;">of men line upon line precept upon precept here a little and there</td>
+<td style="text-align: right;">43803</td>
+<td style="text-align: right;">5824</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.77882</td>
+<td style="text-align: left;">Doctrine and Covenants 136:20</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">your pledges one with another and covet not that which is thy brothers Keep yourselves</td>
+<td style="text-align: left;">Seek ye and keep all your pledges one with another and covet not that which is thy brother’s</td>
 </tr>
 <tr class="even">
 <td>37</td>
-<td style="text-align: left;">September 9, 1838</td>
-<td style="text-align: left;">Jeremiah 31:8</td>
-<td style="text-align: right;">0.84801</td>
-<td style="text-align: left;">travaileth with child together and a great company shall return thither I expect</td>
-<td style="text-align: left;">the woman with child and her that travaileth with child together a great company shall return thither</td>
+<td style="text-align: right;">21970</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: left;">January 21, 1844</td>
+<td style="text-align: right;">0.77675</td>
+<td style="text-align: left;">Doctrine and Covenants 2:2</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">Lord come that he shall turn the hearts of the fathers to the children and</td>
+<td style="text-align: left;">And he shall plant in the hearts of the children the promises made to the fathers and the hearts of the children shall turn to their fathers</td>
 </tr>
 <tr class="odd">
 <td>38</td>
-<td style="text-align: left;">March 29, 1838</td>
-<td style="text-align: left;">Matthew 12:39</td>
-<td style="text-align: right;">0.84619</td>
-<td style="text-align: left;">that there should no sign be given but the sign of the Prophet</td>
-<td style="text-align: left;">after a sign and there shall no sign be given to it but the sign of the prophet Jonas</td>
+<td style="text-align: right;">43782</td>
+<td style="text-align: right;">5808</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.77629</td>
+<td style="text-align: left;">Doctrine and Covenants 136:7</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">expert men to take teams seeds and Farming utensils to go as Pioneers to prepare</td>
+<td style="text-align: left;">then choose out a sufficient number of ablebodied and expert men to take teams seeds and farming utensils to go as pioneers to prepare for putting in spring crops</td>
 </tr>
 <tr class="even">
 <td>39</td>
-<td style="text-align: left;">January 21, 1847</td>
-<td style="text-align: left;">Doctrine and Covenants 136:21</td>
-<td style="text-align: right;">0.84555</td>
-<td style="text-align: left;">the Lord your God even the God of your Fathers the God of</td>
-<td style="text-align: left;">for I am the Lord your God even the God of your fathers the God of Abraham and of Isaac and of Jacob</td>
+<td style="text-align: right;">33414</td>
+<td style="text-align: right;">852</td>
+<td style="text-align: left;">October 15, 1870</td>
+<td style="text-align: right;">0.7749</td>
+<td style="text-align: left;">Doctrine and Covenants 27:11</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">and the Ancient of Days The Father of all and the prince of All I</td>
+<td style="text-align: left;">And also with Michael or Adam the father of all the prince of all the ancient of days</td>
 </tr>
 <tr class="odd">
 <td>40</td>
-<td style="text-align: left;">September 13, 1846</td>
-<td style="text-align: left;">Isaiah 28:10</td>
-<td style="text-align: right;">0.84537</td>
-<td style="text-align: left;">precept line upon line here a little and there a little until we</td>
-<td style="text-align: left;">For precept must be upon precept precept upon precept line upon line line upon line here a little and there a little</td>
+<td style="text-align: right;">49757</td>
+<td style="text-align: right;">2367</td>
+<td style="text-align: left;">September 7, 1851</td>
+<td style="text-align: right;">0.77467</td>
+<td style="text-align: left;">Doctrine and Covenants 68:9</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">a Prophet Brigham is as great a Prophet and he that believeth it may be saved and he that believeth it not will be damned</td>
+<td style="text-align: left;">And he that believeth and is baptized shall be saved and he that believeth not shall be damned</td>
 </tr>
 <tr class="even">
-<td>42</td>
-<td style="text-align: left;">March 10, 1844</td>
-<td style="text-align: left;">Joseph Smith–History 1:39</td>
-<td style="text-align: right;">0.84401</td>
-<td style="text-align: left;">hearts of the Fathers to the Children and the hearts of the Children</td>
-<td style="text-align: left;">hearts of the children the promises made to the fathers and the hearts</td>
+<td>41</td>
+<td style="text-align: right;">24409</td>
+<td style="text-align: right;">4909</td>
+<td style="text-align: left;">December 19, 1841</td>
+<td style="text-align: right;">0.7722</td>
+<td style="text-align: left;">Doctrine and Covenants 124:32</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">shall be rejected as a Church with your dead saith the Lord so if that</td>
+<td style="text-align: left;">the appointment ye shall be rejected as a church with your dead saith the Lord your God</td>
 </tr>
 <tr class="odd">
-<td>41</td>
-<td style="text-align: left;">January 21, 1844</td>
-<td style="text-align: left;">Joseph Smith–History 1:39</td>
-<td style="text-align: right;">0.84401</td>
-<td style="text-align: left;">hearts of the fathers to the children and the hearts of the children</td>
-<td style="text-align: left;">hearts of the children the promises made to the fathers and the hearts</td>
+<td>42</td>
+<td style="text-align: right;">43786</td>
+<td style="text-align: right;">5811</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.77104</td>
+<td style="text-align: left;">Doctrine and Covenants 136:8</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">the Fatherless come not up into the ears of the Lord against this people Let each company prepare houses and fields for raising grain for those who are to remain</td>
+<td style="text-align: left;">into the army that the cries of the widow and the fatherless come not up into the ears of the Lord against this people Let each company prepare houses and fields for raising grain for those who are to remain behind this season and this is the will of the Lord concerning his people</td>
 </tr>
 <tr class="even">
 <td>43</td>
+<td style="text-align: right;">43796</td>
+<td style="text-align: right;">5819</td>
 <td style="text-align: left;">January 21, 1847</td>
-<td style="text-align: left;">Doctrine and Covenants 136:11</td>
-<td style="text-align: right;">0.8404</td>
-<td style="text-align: left;">your flocks and in your herds and in your fields and in your</td>
-<td style="text-align: left;">shall be blessed you shall be blessed in your flocks and in your herds and in your fields and in your houses and in your families</td>
+<td style="text-align: right;">0.766915</td>
+<td style="text-align: left;">Doctrine and Covenants 136:15</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">Captains of hundreds and of fifties and of tens And let my servants that have been appointed go and teach this my will to the Saints that they may be</td>
+<td style="text-align: left;">And appoint presidents and captains of hundreds and of fifties and of tens And let my servants that have been appointed go and teach this my will to the saints that they may be ready to go to a land of peace</td>
 </tr>
 <tr class="odd">
 <td>44</td>
-<td style="text-align: left;">December 31, 1840</td>
-<td style="text-align: left;">Isaiah 49:23</td>
-<td style="text-align: right;">0.83708</td>
-<td style="text-align: left;">Kings that they m[a]y become their nursing fathers and Queens their nursing mothers</td>
-<td style="text-align: left;">And kings shall be thy nursing fathers and their queens thy nursing mothers</td>
+<td style="text-align: right;">43789</td>
+<td style="text-align: right;">5813</td>
+<td style="text-align: left;">January 21, 1847</td>
+<td style="text-align: right;">0.7662</td>
+<td style="text-align: left;">Doctrine and Covenants 136:10</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">every man use all his influence and property to remove this people to the place</td>
+<td style="text-align: left;">Let every man use all his influence and property to remove this people to the place where the Lord shall locate a stake of Zion</td>
 </tr>
 <tr class="even">
 <td>45</td>
-<td style="text-align: left;">December 31, 1840</td>
-<td style="text-align: left;">1 Nephi 21:23</td>
-<td style="text-align: right;">0.83708</td>
-<td style="text-align: left;">Kings that they m[a]y become their nursing fathers and Queens their nursing mothers</td>
-<td style="text-align: left;">And kings shall be thy nursing fathers and their queens thy nursing mothers</td>
+<td style="text-align: right;">90184</td>
+<td style="text-align: right;">5621</td>
+<td style="text-align: left;">February 26, 1879</td>
+<td style="text-align: right;">0.76614</td>
+<td style="text-align: left;">Doctrine and Covenants 133:28</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">midst of the Great Deep Their Enemies shall become a prey unto them Bring forth</td>
+<td style="text-align: left;">Their enemies shall become a prey unto them</td>
 </tr>
 <tr class="odd">
 <td>46</td>
-<td style="text-align: left;">December 31, 1840</td>
-<td style="text-align: left;">2 Nephi 6:7</td>
-<td style="text-align: right;">0.83708</td>
-<td style="text-align: left;">Kings that they m[a]y become their nursing fathers and Queens their nursing mothers</td>
-<td style="text-align: left;">And kings shall be thy nursing fathers and their queens thy nursing mothers</td>
+<td style="text-align: right;">75411</td>
+<td style="text-align: right;">3442</td>
+<td style="text-align: left;">July 28, 1860</td>
+<td style="text-align: right;">0.76379</td>
+<td style="text-align: left;">Doctrine and Covenants 93:3</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">said I am in the Father and the Father in me Now I do not</td>
+<td style="text-align: left;">And that I am in the Father and the Father in me and the Father and I are one</td>
 </tr>
 <tr class="even">
 <td>47</td>
-<td style="text-align: left;">September 23, 1849</td>
-<td style="text-align: left;">Jeremiah 30:21</td>
-<td style="text-align: right;">0.83682</td>
-<td style="text-align: left;">Nobles shall be of themselves And their Governor shall procede out of the</td>
-<td style="text-align: left;">And their nobles shall be of themselves and their governor shall proceed from</td>
+<td style="text-align: right;">98495</td>
+<td style="text-align: right;">1444</td>
+<td style="text-align: left;">March 14, 1885</td>
+<td style="text-align: right;">0.75822</td>
+<td style="text-align: left;">Doctrine and Covenants 43:26</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">the cup of the wrath of mine indignation is full and I will not stay</td>
+<td style="text-align: left;">Behold the day has come when the cup of the wrath of mine indignation is full</td>
 </tr>
 <tr class="odd">
 <td>48</td>
-<td style="text-align: left;">December 31, 1837</td>
-<td style="text-align: left;">1 Nephi 1:14</td>
-<td style="text-align: right;">0.83444</td>
-<td style="text-align: left;">old “great and marvelous are thy works”O LORD GOD ALMIGHTY” when I</td>
-<td style="text-align: left;">such as Great and marvelous are thy works O Lord God Almighty! Thy</td>
+<td style="text-align: right;">17910</td>
+<td style="text-align: right;">5282</td>
+<td style="text-align: left;">March 10, 1844</td>
+<td style="text-align: right;">0.75703</td>
+<td style="text-align: left;">Doctrine and Covenants 128:17</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">of the Children to the Fathers lest I come and smite the earth with a</td>
+<td style="text-align: left;">he shall turn the heart of the fathers to the children and the heart of the children to their fathers lest I come and smite the earth with a curse</td>
 </tr>
 <tr class="even">
 <td>49</td>
-<td style="text-align: left;">November 18, 1855</td>
-<td style="text-align: left;">Mark 3:15</td>
-<td style="text-align: right;">0.83367</td>
-<td style="text-align: left;">have had power to heal the sick and cast out devils open the</td>
-<td style="text-align: left;">And to have power to heal sicknesses and to cast out devils</td>
+<td style="text-align: right;">26650</td>
+<td style="text-align: right;">60</td>
+<td style="text-align: left;">January 13, 1856</td>
+<td style="text-align: right;">0.75685</td>
+<td style="text-align: left;">Doctrine and Covenants 2:2</td>
+<td style="text-align: left;">Doctrine and Covenants</td>
+<td style="text-align: left;">the Hearts of the Fathers to the children and the hearts of the children to</td>
+<td style="text-align: left;">And he shall plant in the hearts of the children the promises made to the fathers and the hearts of the children shall turn to their fathers</td>
 </tr>
 </tbody>
 </table>

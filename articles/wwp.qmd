@@ -14,9 +14,9 @@ from IPython.display import Markdown
 from tabulate import tabulate
 import pandas as pd
 
-number_of_rows = 50
-path_mathes = "../woodruff/data/all_books/data_matches_extensions_temporary.csv"
-top_matches = pd.read_csv(path_mathes).sort_values(by='score',ascending=False)[['date', 'verse_title','score','matches_woodruff','matches_scriptures']]
+number_of_rows = 65
+path_mathes = "../woodruff/data/matches/data_matches.csv"
+top_matches = pd.read_csv(path_mathes).sort_values(by='cosine_score',ascending=False)
 
 # matches_counts = top_matches.groupby(['volume_title']).count().reset_index()[['volume_title', 'phrase_woodruff']]
 # matches_counts
@@ -27,11 +27,6 @@ def create_markdown_table(data):
   ))
   return markdown_table
 
-# match count/volume
-# Markdown(tabulate(
-#   matches_counts,
-#   headers=list(matches_counts)
-# ))
 
 create_markdown_table(top_matches.head(50))
 ```

@@ -368,3 +368,14 @@ entries_to_remove = [
     #                 self.matches_extensions = pd.DataFrame(matches_dict).sort_values(by = 'score', ascending=False)
     #                 self.matches_extensions.to_csv(self.path_matches_extensions_temporary, index = False)
     #     progress_bar.close()
+
+    # def compute_similarity(vectorizer, text1, text2):
+    #     raw_percentage_match = StringUtil.str_percentage_match(text1, text2)
+    #     if raw_percentage_match > 0.1:
+    #         tfidf_matrix_woodruff = vectorizer.transform([text1])
+    #         tfidf_matrix_scriptures = vectorizer.transform([text2])
+    #         cosine_score = cosine_similarity(tfidf_matrix_woodruff, tfidf_matrix_scriptures)[0][0]
+    #         # cosine_scores = pd.DataFrame(cosine_scores, columns=['cosine_score'])
+    #         return round(cosine_score, 5)
+    #     else:
+    #         return 0

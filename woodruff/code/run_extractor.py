@@ -85,14 +85,18 @@ path_data_scriptures     = '../data/raw/data_scriptures.csv'
 
 # url paths
 url_woodruff = "https://github.com/wilfordwoodruff/Main-Data/raw/main/data/derived/derived_data.csv"
+# url_woodruff = "https://github.com/wilfordwoodruff/Main-Data/raw/main/data/derived/derived_data.csv"
+# url_woodruff = 'https://raw.githubusercontent.com/wilfordwoodruff/Main-Data/main/data/derived/derived_data.csv'
 url_scriptures = 'https://github.com/wilfordwoodruff/wilford_woodruff_hack23/raw/main/data/lds-scriptures.csv'
 
 # load data
 data_scriptures = pd.read_csv(path_data_scriptures)
-data_woodruff = pd.read_csv(path_data_woodruff_raw)
+data_woodruff = pd.read_csv(url_woodruff)
 
 # clean woodruff data
-data_woodruff['text'] = StringUtil.str_replace_column(data_woodruff['text'], replacements_woodruff)
+# data_woodruff['text'] = StringUtil.str_replace_column(data_woodruff['text'], replacements_woodruff)
+data_woodruff
+#%%
 # clean scripture data
 data_scriptures['text'] = StringUtil.str_replace_column(data_scriptures['text'], scripture_replacements)
 
@@ -104,15 +108,14 @@ volume_titles = [
      'Doctrine and Covenants',
     #  'Pearl of Great Price',
      ]
-# data_scriptures = data_scriptures.query("volume_title in @volume_titles")
-query = "verse_title == 'Doctrine and Covenants 136:11'|verse_title == 'Doctrine and Covenants 136:12'|verse_title == 'Doctrine and Covenants 136:13'|verse_title == 'Doctrine and Covenants 136:14'|verse_title == 'Doctrine and Covenants 136:15'|verse_title == 'Doctrine and Covenants 136:16'|verse_title == 'Doctrine and Covenants 136:17'"
-data_scriptures = data_scriptures.query(query)
+data_scriptures = data_scriptures.query("volume_title in @volume_titles")
+# query = "verse_title == 'Doctrine and Covenants 136:11'|verse_title == 'Doctrine and Covenants 136:12'|verse_title == 'Doctrine and Covenants 136:13'|verse_title == 'Doctrine and Covenants 136:14'|verse_title == 'Doctrine and Covenants 136:15'|verse_title == 'Doctrine and Covenants 136:16'|verse_title == 'Doctrine and Covenants 136:17'"
+# data_scriptures = data_scriptures.query(query)
 data_scriptures
 
 #%%
 
-
-phrase_length = 10
+phrase_length = 15
 threshold = .7
 print('volumes:', volume_titles)
 print('phrase length:', phrase_length)
@@ -123,7 +126,7 @@ match_extractor = MatchExtractor(data_woodruff.copy(),
                                  threshold=threshold)
 
 # iterate through each row of scripture phrases dataset and run TFIDF model and cosine similarity.
-match_extractor.run_extractor(extensions=False, save=False, quarto_publish=False)
+match_extractor.run_extractor(save=False, quarto_publish=True)
 
 match_extractor.matches_total
 
