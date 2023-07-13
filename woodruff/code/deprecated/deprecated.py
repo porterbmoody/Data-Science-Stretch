@@ -279,3 +279,92 @@ entries_to_remove = [
 
 # print("Dataframe 2:")
 # print(data_expanded2)
+############### swag awesomeness
+    # def filter_to_matches_only_data(self):
+    #     """ The first extraction algorithm is a much smaller runtime so it is run first.
+    #         Then second algorithm is run that also finds extensions which takes longer to run.
+    #         This method filters the data to only verses and entries that matches have already been found within.
+    #     """
+    #     # filter input data down to rows that already contain matches
+    #     if not len(self.matches_total) > 0:
+    #         self.matches_total =  pd.read_csv(self.path_matches_temporary)
+    #     date_matches = list(self.matches_total['date'].unique())
+    #     self.data_woodruff_filtered = self.data_woodruff.query('date in @date_matches')[['date','text']]
+
+    #     verse_matches = list(self.matches_total['verse_title'].unique())
+    #     self.data_scriptures_filtered = self.data_scriptures.query('verse_title in @verse_matches')
+
+
+    # def extract_matches_extensions(self):
+    #     """ Double for loop looping through expanded woodruff entries dataframe and expanded scriptures dataframe
+    #         checks each phrase with each other phrase. If the score is above the threshold it uses a while loop to check for extensions of each phrase
+    #         index values are stored in a list each time a score is calculated for each phrase
+    #         that way it can detect if 2 phrases have already been compared and skip to the next phrases
+    #         it appends all matche data to lists and creates a pandas dataframe with each list as a column to be saved to a csv
+    #     """
+    #     matches_woodruff = []
+    #     matches_scriptures = []
+    #     scores = []
+    #     total_match_indices = []
+    #     dates = []
+    #     verse_titles = []
+    #     volume_titles = []
+    #     progress_bar = tqdm(total=len(list(self.data_woodruff_filtered['text'])) - 1)
+    #     extension_count = 0
+    #     for index1, text_woodruff in enumerate(list(self.data_woodruff_filtered['text'])):
+    #         progress_bar.update(1)
+    #         current_date = self.data_woodruff_filtered.iloc[index1]['date']
+    #         progress_bar.set_description('current_date:'+str(current_date)+'extensions found: ' + str(extension_count))
+    #         for index2, text_scriptures in enumerate(list(self.data_scriptures_filtered['text'])):
+    #             current_match_indices = []
+    #             if (index1, index2) in list(itertools.chain.from_iterable(total_match_indices)):
+    #                 # print('repeat:', (index1, index2))
+    #                 continue
+    #             current_match_indices.append((index1, index2))
+    #             text_woodruff_copy = text_woodruff
+    #             text_scriptures_copy = text_scriptures
+    #             score = StringUtil.compute_similarity(self.vectorizer, text_woodruff_copy, text_scriptures_copy)
+    #             if score > self.threshold:
+    #                 current_verse_title = self.data_scriptures_filtered.iloc[index2]['verse_title']
+    #                 current_volume_title = self.data_scriptures_filtered.iloc[index2]['volume_title']
+    #                 index1_extension = index1
+    #                 index2_extension = index2
+    #                 while True:
+    #                     index1_extension += 1
+    #                     index2_extension += 1
+    #                     if index1_extension > len(list(self.data_woodruff_filtered['text']))-1:
+    #                         break
+    #                     if index2_extension > len(list(self.data_scriptures_filtered['text']))-1:
+    #                         break
+    #                     text_woodruff_extension = list(self.data_woodruff_filtered['text'])[index1_extension]
+    #                     text_scriptures_extension = list(self.data_scriptures_filtered['text'])[index2_extension]
+    #                     score_extension = StringUtil.compute_similarity(self.vectorizer, text_woodruff_extension, text_scriptures_extension)
+    #                     if score_extension > self.threshold:
+    #                         extension_count += 1
+    #                         current_match_indices.append((index1_extension, index2_extension))
+    #                         # print('adding extensions...', (index1_extension, index2_extension))
+    #                         text_woodruff_copy += ' ' + text_woodruff_extension
+    #                         text_scriptures_copy += ' ' + text_scriptures_extension
+    #                     else:
+    #                         break
+    #                 # compute new score with extensions included
+    #                 score = StringUtil.compute_similarity(self.vectorizer, text_woodruff_copy, text_scriptures_copy)
+    #                 total_match_indices.append(current_match_indices)
+    #                 matches_woodruff.append(text_woodruff_copy)
+    #                 matches_scriptures.append(text_scriptures_copy)
+    #                 dates.append(current_date)
+    #                 verse_titles.append(current_verse_title)
+    #                 volume_titles.append(current_volume_title)
+    #                 scores.append(score)
+    #                 matches_dict = {
+    #                     'date' : dates,
+    #                     'verse_title' : verse_titles,
+    #                     'volume_title' : volume_titles,
+    #                     'phrase_indices' : total_match_indices,
+    #                     'score' : scores,
+    #                     'matches_woodruff' : matches_woodruff,
+    #                     'matches_scriptures' : matches_scriptures,
+    #                 }
+    #                 self.matches_extensions = pd.DataFrame(matches_dict).sort_values(by = 'score', ascending=False)
+    #                 self.matches_extensions.to_csv(self.path_matches_extensions_temporary, index = False)
+    #     progress_bar.close()
