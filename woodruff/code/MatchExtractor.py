@@ -17,10 +17,6 @@ class MatchExtractor:
         self.matches_current = pd.DataFrame()
         self.phrase_length = phrase_length
         self.threshold = threshold
-        self.path_matches             = '../data/matches/data_matches.csv'
-        self.path_matches_temporary   = '../data/matches/data_matches_temporary.csv'
-        self.path_matches_extensions = '../data/matches/data_matches_extensions.csv'
-        self.path_matches_extensions_temporary = '../data/matches/data_matches_extensions_temporary.csv'
         # local paths
         self.__load_woodruff_data(data_woodruff)
         self.__load_scripture_data(data_scriptures)
@@ -44,7 +40,7 @@ class MatchExtractor:
         self.vectorizer = TfidfVectorizer()
         self.tfidf_matrix_woodruff = self.vectorizer.fit_transform(self.data_woodruff['text'])
 
-    def run_extractor(self, save = False, quarto_publish = False):
+    def run_extractor(self, path_matches, quarto_publish = False):
         """ Uses already trained TFIDF model, first extraction algorithm
             loops through each row of expanded scriptures dataframe and computes the tfidf vector of each scriptures phrase
             then compute the vectors of each woodruff phrase and create a vector
@@ -58,7 +54,22 @@ class MatchExtractor:
             description = f"{row_scriptures['verse_title']} total match count: {len(self.matches_total)}"
             self.progress_bar.set_description(description)
             # compute cosine similarity scores for given verse
-            self.compute_percentage_matches(row_scriptures['text'])
+            # self.compute_percentage_matches(row_scriptures['text'])
+            tfidf_matrix_scriptures = self.vectorizer.transform([row_scriptures['text']])
+            cosine_scores = cosine_similarity(self.tfidf_matrix_woodruff, tfidf_matrix_scriptures)
+            cosine_scores_dict = {
+                'cosine_score' : cosine_scores.flatten(),
+                'phrase_woodruff' : self.data_woodruff['text'],
+                'dates' : self.data_woodruff['dates'],
+                'phrase_scripture' : row_scriptures['text'],
+                'internal_id' : self.data_woodruff['internal_id'],
+                'parent_id' : self.data_woodruff['parent_id'],
+                'order' : self.data_woodruff['order'],
+                'website_url' : self.data_woodruff['website_url'],
+            }
+            cosine_scores = pd.DataFrame(cosine_scores_dict)
+            cosine_scores['cosine_score'] = cosine_scores['cosine_score'].apply(lambda x: round(x, 5))
+            self.matches_current = cosine_scores.rename_axis('index_woodruff').reset_index()
             self.matches_current['index_scriptures'] = index
             self.matches_current['verse_title']  = row_scriptures['verse_title']
             self.matches_current['volume_title'] = row_scriptures['volume_title']
@@ -71,28 +82,17 @@ class MatchExtractor:
 
                 # save to file
                 self.resolve_extensions()
-                self.matches_total.sort_values(by='cosine_score', ascending=False).to_csv(self.path_matches, index=False)
+                self.matches_total.sort_values(by='cosine_score', ascending=False).to_csv(path_matches, index=False)
 
         self.progress_bar.close()
-
-        # if save:
-            # self.matches_total.sort_values(by='cosine_score', ascending=False)#.to_csv(self.path_matches, index=False)
-            # self.matches_extensions.to_csv(self.path_matches_extensions, index = False)
 
         if quarto_publish:
             self.quarto_publish()
 
-    def compute_percentage_matches(self, scripture_text):
-        """ Pass in a single string and it returns a pandas dataframe containing the woodruff phrases along with the cosine similarity value
-        """
-        tfidf_matrix_scriptures = self.vectorizer.transform([scripture_text])
-        cosine_scores = cosine_similarity(self.tfidf_matrix_woodruff, tfidf_matrix_scriptures)
-        cosine_scores = pd.DataFrame(cosine_scores, columns=['cosine_score'])
-        cosine_scores['cosine_score'] = cosine_scores['cosine_score'].apply(lambda x: round(x, 5))
-        cosine_scores['phrase_woodruff'] = list(self.data_woodruff['text'])
-        cosine_scores['date'] = list(self.data_woodruff['date'])
-        cosine_scores['phrase_scripture'] = scripture_text
-        self.matches_current = cosine_scores.rename_axis('index_woodruff').reset_index()
+    # def compute_percentage_matches(self, scripture_text):
+        # """ Pass in a single string and it returns a pandas dataframe containing the woodruff phrases along with the cosine similarity value
+        # """
+
 
     def resolve_extensions(self):
         """ Use indices to attaches matching phrases that go right next to each other
@@ -106,10 +106,14 @@ class MatchExtractor:
             'index_woodruff': 'first',
             'index_scriptures': 'first',
             # 'match_count' : 'sum',
-            'date': 'first',
+            'dates': 'first',
             'cosine_score': 'mean',
             'verse_title': 'first',
             'volume_title': 'first',
+            'internal_id': 'first',
+            'parent_id': 'first',
+            'order': 'first',
+            'website_url': 'first',
             'phrase_woodruff': ' '.join,
             'phrase_scripture': ' '.join,
         })

@@ -69,7 +69,7 @@ class StringUtil:
 
     @staticmethod
     def str_count_words(string):
-        return len(StringUtil.str_split(string))
+        return len(string.split())
 
     @staticmethod
     def str_remove(string, regex):
