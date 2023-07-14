@@ -83,7 +83,7 @@ path_data_woodruff_raw   = '../data/raw/data_woodruff_raw.csv'
 path_data_woodruff_raw   = '../data/raw/derived_data.csv'
 # path_data_woodruff_clean = path_root + 'data_woodruff_clean.csv'
 path_data_scriptures     = '../data/raw/data_scriptures.csv'
-path_matches = '../data/matches/data_matches_test.csv'
+path_matches = '../data/matches/data_matches.csv'
 
 # url paths
 url_woodruff = "https://github.com/wilfordwoodruff/Main-Data/raw/main/data/derived/derived_data.csv"
@@ -123,8 +123,8 @@ volume_titles = [
     #  'Pearl of Great Price',
      ]
 data_scriptures = data_scriptures.query("volume_title in @volume_titles")
-query = "verse_title == 'Doctrine and Covenants 136:11'|verse_title == 'Doctrine and Covenants 136:12'|verse_title == 'Doctrine and Covenants 136:13'|verse_title == 'Doctrine and Covenants 136:14'|verse_title == 'Doctrine and Covenants 136:15'|verse_title == 'Doctrine and Covenants 136:16'|verse_title == 'Doctrine and Covenants 136:17'"
-data_scriptures = data_scriptures.query(query)
+# query = "verse_title == 'Doctrine and Covenants 136:11'|verse_title == 'Doctrine and Covenants 136:12'|verse_title == 'Doctrine and Covenants 136:13'|verse_title == 'Doctrine and Covenants 136:14'|verse_title == 'Doctrine and Covenants 136:15'|verse_title == 'Doctrine and Covenants 136:16'|verse_title == 'Doctrine and Covenants 136:17'"
+# data_scriptures = data_scriptures.query(query)
 data_scriptures
 
 #%%

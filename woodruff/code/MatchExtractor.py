@@ -53,13 +53,11 @@ class MatchExtractor:
             self.progress_bar.update(1)
             description = f"{row_scriptures['verse_title']} total match count: {len(self.matches_total)}"
             self.progress_bar.set_description(description)
-            # compute cosine similarity scores for given verse
-            # self.compute_percentage_matches(row_scriptures['text'])
             tfidf_matrix_scriptures = self.vectorizer.transform([row_scriptures['text_scriptures']])
+            # compute cosine similarity scores for given verse for each phrase in woodruff dataset
             cosine_scores = cosine_similarity(self.tfidf_matrix_woodruff, tfidf_matrix_scriptures)
             self.data_woodruff['cosine_score'] = cosine_scores.flatten()
             self.data_woodruff['text_scriptures'] = row_scriptures['text_scriptures']
-            self.data_woodruff['cosine_score'] = self.data_woodruff['cosine_score'].apply(lambda x: round(x, 5))
             self.matches_current = self.data_woodruff.rename_axis('index_woodruff').reset_index()
             self.matches_current['index_scriptures'] = index
             self.matches_current['verse_title']  = row_scriptures['verse_title']
@@ -103,7 +101,7 @@ class MatchExtractor:
             'text_woodruff': ' '.join,
             'text_scriptures': ' '.join,
         })
-        # print(self.matches_total)
+        self.matches_total['cosine_score'] = self.matches_total['cosine_score'].apply(lambda x: round(x, 5))
 
     @staticmethod
     def quarto_publish():
