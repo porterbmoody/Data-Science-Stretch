@@ -90,8 +90,8 @@ class MatchExtractor:
         # Create a new column to identify groups based on the mask
         self.matches_total['group'] = mask.cumsum()
         self.matches_total = self.matches_total.groupby('group').agg({
-            'index_woodruff': 'first',
-            'index_scriptures': 'first',
+            # 'index_woodruff': 'first',
+            # 'index_scriptures': 'first',
             # 'match_count' : 'sum',
             'cosine_score': 'mean',
             'verse_title': 'first',
