@@ -21,6 +21,7 @@ replacements_woodruff = {
     r'\s+'                  : r' ',
     r'\.|\:|\;|\,|\(|\)|\?' : r'',
     r'confer ence|Conferance'     : r'conference',
+    r'appoin ted'     : r'appointed',
     r'sacrafice'           : r'sacrifice',
     r'discours'            : r'discourse',
     r'travling'            : r'traveling',
@@ -139,7 +140,7 @@ match_extractor = MatchExtractor(data_woodruff.copy(),
                                  phrase_length,
                                  threshold=threshold)
 # iterate through each row of scripture phrases dataset and run TFIDF model and cosine similarity.
-match_extractor.run_extractor(path_matches=path_matches, quarto_publish=False)
+match_extractor.run_extractor(path_matches=path_matches, git_push = True, quarto_publish=False)
 
 match_extractor.matches_total
 

@@ -40,7 +40,7 @@ class MatchExtractor:
         self.vectorizer = TfidfVectorizer()
         self.tfidf_matrix_woodruff = self.vectorizer.fit_transform(self.data_woodruff['text_woodruff'])
 
-    def run_extractor(self, path_matches, quarto_publish = False):
+    def run_extractor(self, path_matches, git_push, quarto_publish = False):
         """ Uses already trained TFIDF model, first extraction algorithm
             loops through each row of expanded scriptures dataframe and computes the tfidf vector of each scriptures phrase
             then compute the vectors of each woodruff phrase and create a vector
@@ -75,6 +75,9 @@ class MatchExtractor:
 
         self.progress_bar.close()
 
+        if git_push:
+            self.git_push()
+
         if quarto_publish:
             self.quarto_publish()
 
@@ -102,6 +105,11 @@ class MatchExtractor:
             'dates': 'first',
         })
         self.matches_total['cosine_score'] = self.matches_total['cosine_score'].apply(lambda x: round(x, 5))
+
+    @staticmethod
+    def git_push():
+        command = 'git add .;git commit -m "new matches data";git pull;git push;'
+        subprocess.run(command, shell = True, input = 'y\n', encoding = 'utf-8')
 
     @staticmethod
     def quarto_publish():
