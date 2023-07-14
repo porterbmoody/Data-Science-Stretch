@@ -90,7 +90,6 @@ class MatchExtractor:
             'index_woodruff': 'first',
             'index_scriptures': 'first',
             # 'match_count' : 'sum',
-            'dates': 'first',
             'cosine_score': 'mean',
             'verse_title': 'first',
             'volume_title': 'first',
@@ -100,6 +99,7 @@ class MatchExtractor:
             'website_url': 'first',
             'text_woodruff': ' '.join,
             'text_scriptures': ' '.join,
+            'dates': 'first',
         })
         self.matches_total['cosine_score'] = self.matches_total['cosine_score'].apply(lambda x: round(x, 5))
 
