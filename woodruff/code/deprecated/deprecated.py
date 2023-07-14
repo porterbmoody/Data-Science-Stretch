@@ -379,3 +379,15 @@ entries_to_remove = [
     #         return round(cosine_score, 5)
     #     else:
     #         return 0
+
+                # cosine_scores_dict = {
+            #     'cosine_score' : cosine_scores.flatten(),
+            #     'phrase_woodruff' : self.data_woodruff['text'],
+            #     'dates' : self.data_woodruff['dates'],
+            #     'internal_id' : self.data_woodruff['internal_id'],
+            #     'parent_id' : self.data_woodruff['parent_id'],
+            #     'order' : self.data_woodruff['order'],
+            #     'website_url' : self.data_woodruff['website_url'],
+            #     'phrase_scripture' : row_scriptures['text'],
+            # }
+            # cosine_scores = pd.DataFrame(cosine_scores_dict)
