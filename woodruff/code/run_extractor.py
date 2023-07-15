@@ -124,8 +124,8 @@ volume_titles = [
     #  'Pearl of Great Price',
      ]
 data_scriptures = data_scriptures.query("volume_title in @volume_titles")
-query = "verse_title == 'Doctrine and Covenants 136:11'|verse_title == 'Doctrine and Covenants 136:12'|verse_title == 'Doctrine and Covenants 136:13'|verse_title == 'Doctrine and Covenants 136:14'|verse_title == 'Doctrine and Covenants 136:15'|verse_title == 'Doctrine and Covenants 136:16'|verse_title == 'Doctrine and Covenants 136:17'"
-data_scriptures = data_scriptures.query(query)
+# query = "verse_title == 'Doctrine and Covenants 136:11'|verse_title == 'Doctrine and Covenants 136:12'|verse_title == 'Doctrine and Covenants 136:13'|verse_title == 'Doctrine and Covenants 136:14'|verse_title == 'Doctrine and Covenants 136:15'|verse_title == 'Doctrine and Covenants 136:16'|verse_title == 'Doctrine and Covenants 136:17'"
+# data_scriptures = data_scriptures.query(query)
 data_scriptures
 
 #%%
@@ -157,6 +157,7 @@ match_extractor.matches_total
 # data
 
 # #%%
+
 # data.sort_values(['index_woodruff', 'index_scriptures'], inplace=True)
 # # Create a mask to identify rows where the indices are not 1 apart
 # mask = (data['index_woodruff'].diff() != 1) | (data['index_scriptures'].diff() != 1)
@@ -167,8 +168,8 @@ match_extractor.matches_total
 # #%%
 # # Create a new column to identify groups based on the mask
 # data = data.groupby('group').agg({
-#     'index_woodruff': 'first',
-#     'index_scriptures': 'first',
+#     'index_woodruff': 'last',
+#     'index_scriptures': 'last',
 #     # 'match_count' : 'sum',
 #     # 'cosine_score': 'mean',
 #     # 'verse_title': 'first',
@@ -182,5 +183,33 @@ match_extractor.matches_total
 #     # 'dates': 'first',
 # })
 # # data['cosine_score'] = data['cosine_score'].apply(lambda x: round(x, 5))
-
 # data
+
+# #%%
+
+# data = data.append({'index_woodruff':4, 'index_scriptures':4,'text_woodruff':'is porter'}, ignore_index=True)
+# data
+
+# # %%
+# data.sort_values(['index_woodruff', 'index_scriptures'], inplace=True)
+# # Create a mask to identify rows where the indices are not 1 apart
+# mask = (data['index_woodruff'].diff() != 1) | (data['index_scriptures'].diff() != 1)
+# mask
+# data['group'] = mask.cumsum()
+# data
+
+# data.groupby('group').agg({
+#     'index_woodruff': 'last',
+#     'index_scriptures': 'last',
+#     # 'match_count' : 'sum',
+#     # 'cosine_score': 'mean',
+#     # 'verse_title': 'first',
+#     # 'volume_title': 'first',
+#     # 'internal_id': 'first',
+#     # 'parent_id': 'first',
+#     # 'order': 'first',
+#     # 'website_url': 'first',
+#     'text_woodruff': ' '.join,
+#     # 'text_scriptures': ' '.join,
+#     # 'dates': 'first',
+# })

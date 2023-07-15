@@ -72,11 +72,10 @@ class MatchExtractor:
             self.matches_total = self.matches_total.sort_values(by='cosine_score', ascending=False)
 
             # save to file
+            self.resolve_extensions()
             self.matches_total.to_csv(path_matches, index=False)
 
-        self.resolve_extensions()
         progress_bar.close()
-        self.matches_total.to_csv(path_matches, index=False)
 
         if git_push:
             self.git_push()
@@ -92,9 +91,8 @@ class MatchExtractor:
         self.matches_total['group'] = mask.cumsum()
         self.matches_total['match_count'] = 1
         self.matches_total = self.matches_total.groupby('group').agg({
-            # 'index_woodruff': 'first',
-            # 'index_scriptures': 'first',
-            # 'match_count' : 'sum',
+            'index_woodruff': 'last',
+            'index_scriptures': 'last',
             'cosine_score': 'mean',
             'verse_title': 'first',
             'volume_title': 'first',
