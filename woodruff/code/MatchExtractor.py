@@ -106,18 +106,14 @@ class MatchExtractor:
 
     @staticmethod
     def git_push():
-        command = 'git add .;git commit -m "poop";git pull;git push;'
-        subprocess.run(command, shell = True, encoding = 'utf-8')
+        commands = ['git add .','git commit -m "poop"','git pull','git push']
+
+        subprocess.run(commands[0], shell = True, encoding = 'utf-8')
+        subprocess.run(commands[1], shell = True, encoding = 'utf-8')
+        subprocess.run(commands[2], shell = True, encoding = 'utf-8')
+        subprocess.run(commands[3], shell = True, encoding = 'utf-8')
 
     @staticmethod
     def quarto_publish():
         command = 'quarto publish'
         subprocess.run(command, shell = True, input = 'y\n', encoding = 'utf-8')
-
-#%%
-MatchExtractor.git_push()
-# %%
-commands = ['git add .','git commit -m "poop"','git pull','git push']
-
-subprocess.run(commands[0], shell = True, encoding = 'utf-8')
-subprocess.run(commands[1], shell = True, encoding = 'utf-8')
