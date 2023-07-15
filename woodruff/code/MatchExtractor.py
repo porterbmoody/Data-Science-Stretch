@@ -1,3 +1,4 @@
+#%%
 from sklearn.feature_extraction.text import TfidfVectorizer
 from sklearn.metrics.pairwise import cosine_similarity
 from StringUtil import StringUtil
@@ -40,40 +41,62 @@ class MatchExtractor:
         self.vectorizer = TfidfVectorizer()
         self.tfidf_matrix_woodruff = self.vectorizer.fit_transform(self.data_woodruff['text_woodruff'])
 
-    def run_extractor(self, path_matches, git_push, quarto_publish = False):
+    def run_extractor(self, path_matches, git_push = False, quarto_publish = False):
         """ Uses already trained TFIDF model, first extraction algorithm
             loops through each row of expanded scriptures dataframe and computes the tfidf vector of each scriptures phrase
             then compute the vectors of each woodruff phrase and create a vector
             then compute cosine similarity between each vector and filter by a certain threshold.
             then append everything back into a dataset.
         """
-        self.progress_bar = tqdm(total=len(self.data_scriptures))
+        self.data_woodruff_copy = self.data_woodruff.copy()
+        progress_bar = tqdm(total=len(self.data_scriptures))
         # iterate through each row of data_scriptures_pandas dataframe and run TFIDF vectorizer on the scripture text
         for index, row_scriptures in self.data_scriptures.iterrows():
-            self.progress_bar.update(1)
+            progress_bar.update(1)
             description = f"{row_scriptures['verse_title']} total match count: {len(self.matches_total)}"
-            self.progress_bar.set_description(description)
+            progress_bar.set_description(description)
+            # compute cosine similarity scores
             tfidf_matrix_scriptures = self.vectorizer.transform([row_scriptures['text_scriptures']])
             # compute cosine similarity scores for given verse for each phrase in woodruff dataset
             cosine_scores = cosine_similarity(self.tfidf_matrix_woodruff, tfidf_matrix_scriptures)
-            self.data_woodruff['cosine_score'] = cosine_scores.flatten()
-            self.data_woodruff['text_scriptures'] = row_scriptures['text_scriptures']
-            self.matches_current = self.data_woodruff.rename_axis('index_woodruff').reset_index()
+            self.data_woodruff_copy['cosine_score'] = cosine_scores.flatten()
+            self.data_woodruff_copy['text_scriptures'] = row_scriptures['text_scriptures']
+            self.matches_current = self.data_woodruff_copy.rename_axis('index_woodruff').reset_index()
             self.matches_current['index_scriptures'] = index
             self.matches_current['verse_title']  = row_scriptures['verse_title']
             self.matches_current['volume_title'] = row_scriptures['volume_title']
             self.matches_current['book_title']   = row_scriptures['book_title']
             # filter matches by threshold
             self.matches_current = self.matches_current.query("cosine_score > @self.threshold")
-            if len(self.matches_current) > 0:
-                self.matches_total = pd.concat([self.matches_total, self.matches_current]).sort_values(
-                    by=['index_woodruff', 'index_scriptures'], ascending=True)
+            self.matches_total = pd.concat([self.matches_total, self.matches_current])
+            if len(self.matches_total) > 1:
+                print(self.matches_total)
+                self.matches_total.sort_values(['index_woodruff', 'index_scriptures'], inplace=True)
+                # Create a mask to identify rows where the indices are not 1 apart
+                mask = (self.matches_total['index_woodruff'].diff() != 1) | (self.matches_total['index_scriptures'].diff() != 1)
+                # Create a new column to identify groups based on the mask
+                self.matches_total['group'] = mask.cumsum()
+                self.matches_total = self.matches_total.groupby('group').agg({
+                    # 'index_woodruff': 'first',
+                    # 'index_scriptures': 'first',
+                    # 'match_count' : 'sum',
+                    'cosine_score': 'mean',
+                    'verse_title': 'first',
+                    'volume_title': 'first',
+                    'internal_id': 'first',
+                    'parent_id': 'first',
+                    'order': 'first',
+                    'website_url': 'first',
+                    'text_woodruff': ' '.join,
+                    'text_scriptures': ' '.join,
+                    'dates': 'first',
+                })
+                self.matches_total['cosine_score'] = self.matches_total['cosine_score'].apply(lambda x: round(x, 5))
 
-                # save to file
-                self.resolve_extensions()
-                self.matches_total.sort_values(by='cosine_score', ascending=False).to_csv(path_matches, index=False)
+            # save to file
+            self.matches_total.sort_values(by='cosine_score', ascending=False).to_csv(path_matches, index=False)
 
-        self.progress_bar.close()
+        progress_bar.close()
 
         if git_push:
             self.git_push()
@@ -81,35 +104,16 @@ class MatchExtractor:
         if quarto_publish:
             self.quarto_publish()
 
-    def resolve_extensions(self):
-        """ Use indices to attaches matching phrases that go right next to each other
-        """
-        self.matches_total.sort_values(['index_woodruff', 'index_scriptures'], inplace=True)
-        # Create a mask to identify rows where the indices are not 1 apart
-        mask = (self.matches_total['index_woodruff'].diff() != 1) | (self.matches_total['index_scriptures'].diff() != 1)
-        # Create a new column to identify groups based on the mask
-        self.matches_total['group'] = mask.cumsum()
-        self.matches_total = self.matches_total.groupby('group').agg({
-            # 'index_woodruff': 'first',
-            # 'index_scriptures': 'first',
-            # 'match_count' : 'sum',
-            'cosine_score': 'mean',
-            'verse_title': 'first',
-            'volume_title': 'first',
-            'internal_id': 'first',
-            'parent_id': 'first',
-            'order': 'first',
-            'website_url': 'first',
-            'text_woodruff': ' '.join,
-            'text_scriptures': ' '.join,
-            'dates': 'first',
-        })
-        self.matches_total['cosine_score'] = self.matches_total['cosine_score'].apply(lambda x: round(x, 5))
-
     @staticmethod
     def git_push():
-        command = 'git add .;git commit -m "new matches data";git pull;git push;'
-        subprocess.run(command, shell = True, input = 'y\n', encoding = 'utf-8')
+        commands = ['git add .',
+                    'git commit -m "new matches data"',
+                    'git pull',
+                    'git push']
+        subprocess.run(commands[0], shell = True, encoding = 'utf-8')
+        subprocess.run(commands[1], shell = True, encoding = 'utf-8')
+        subprocess.run(commands[2], shell = True, encoding = 'utf-8')
+        subprocess.run(commands[3], shell = True, encoding = 'utf-8')
 
     @staticmethod
     def quarto_publish():
@@ -117,3 +121,4 @@ class MatchExtractor:
         subprocess.run(command, shell = True, input = 'y\n', encoding = 'utf-8')
 
 #%%
+MatchExtractor.git_push()
