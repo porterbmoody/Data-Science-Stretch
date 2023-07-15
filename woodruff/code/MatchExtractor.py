@@ -70,7 +70,6 @@ class MatchExtractor:
             self.matches_current = self.matches_current.query("cosine_score > @self.threshold")
             self.matches_total = pd.concat([self.matches_total, self.matches_current])
             if len(self.matches_total) > 1:
-                print(self.matches_total)
                 self.matches_total.sort_values(['index_woodruff', 'index_scriptures'], inplace=True)
                 # Create a mask to identify rows where the indices are not 1 apart
                 mask = (self.matches_total['index_woodruff'].diff() != 1) | (self.matches_total['index_scriptures'].diff() != 1)
@@ -106,7 +105,7 @@ class MatchExtractor:
 
     @staticmethod
     def git_push():
-        commands = ['git add .','git commit -m "poop"','git pull','git push']
+        commands = ['git add .','git commit -m "new matches"','git pull','git push']
 
         subprocess.run(commands[0], shell = True, encoding = 'utf-8')
         subprocess.run(commands[1], shell = True, encoding = 'utf-8')
