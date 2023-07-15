@@ -74,7 +74,7 @@ class MatchExtractor:
             # save to file
             self.matches_total.to_csv(path_matches, index=False)
 
-        self.resolve_extensions()
+        # self.resolve_extensions()
         progress_bar.close()
         self.matches_total.to_csv(path_matches, index=False)
 
