@@ -69,39 +69,43 @@ class MatchExtractor:
             # filter matches by threshold
             self.matches_current = self.matches_current.query("cosine_score > @self.threshold")
             self.matches_total = pd.concat([self.matches_total, self.matches_current])
-            if len(self.matches_total) > 1:
-                self.matches_total.sort_values(['index_woodruff', 'index_scriptures'], inplace=True)
-                # Create a mask to identify rows where the indices are not 1 apart
-                mask = (self.matches_total['index_woodruff'].diff() != 1) | (self.matches_total['index_scriptures'].diff() != 1)
-                # Create a new column to identify groups based on the mask
-                self.matches_total['group'] = mask.cumsum()
-                self.matches_total = self.matches_total.groupby('group').agg({
-                    # 'index_woodruff': 'first',
-                    # 'index_scriptures': 'first',
-                    # 'match_count' : 'sum',
-                    'cosine_score': 'mean',
-                    'verse_title': 'first',
-                    'volume_title': 'first',
-                    'internal_id': 'first',
-                    'parent_id': 'first',
-                    'order': 'first',
-                    'website_url': 'first',
-                    'text_woodruff': ' '.join,
-                    'text_scriptures': ' '.join,
-                    'dates': 'first',
-                })
-                self.matches_total['cosine_score'] = self.matches_total['cosine_score'].apply(lambda x: round(x, 5))
+            self.matches_total = self.matches_total.sort_values(by='cosine_score', ascending=False)
 
             # save to file
-            self.matches_total.sort_values(by='cosine_score', ascending=False).to_csv(path_matches, index=False)
+            self.matches_total.to_csv(path_matches, index=False)
 
+        self.resolve_extensions()
         progress_bar.close()
+        self.matches_total.to_csv(path_matches, index=False)
 
         if git_push:
             self.git_push()
 
         if quarto_publish:
             self.quarto_publish()
+
+    def resolve_extensions(self):
+        self.matches_total.sort_values(['index_woodruff', 'index_scriptures'], inplace=True)
+        # Create a mask to identify rows where the indices are not 1 apart
+        mask = (self.matches_total['index_woodruff'].diff() != 1) | (self.matches_total['index_scriptures'].diff() != 1)
+        # Create a new column to identify groups based on the mask
+        self.matches_total['group'] = mask.cumsum()
+        self.matches_total = self.matches_total.groupby('group').agg({
+            # 'index_woodruff': 'first',
+            # 'index_scriptures': 'first',
+            # 'match_count' : 'sum',
+            'cosine_score': 'mean',
+            'verse_title': 'first',
+            'volume_title': 'first',
+            'internal_id': 'first',
+            'parent_id': 'first',
+            'order': 'first',
+            'website_url': 'first',
+            'text_woodruff': ' '.join,
+            'text_scriptures': ' '.join,
+            'dates': 'first',
+        })
+        self.matches_total['cosine_score'] = self.matches_total['cosine_score'].apply(lambda x: round(x, 5))
 
     @staticmethod
     def git_push():
