@@ -69,7 +69,7 @@ class MatchExtractor:
             # filter matches by threshold
             self.matches_current = self.matches_current.query("cosine_score > @self.threshold")
             self.matches_total = pd.concat([self.matches_total, self.matches_current])
-            self.matches_total = self.matches_total.sort_values(by='cosine_score', ascending=False)
+            self.matches_total = self.matches_total#.sort_values(by='cosine_score', ascending=False)
 
             # save to file
             self.resolve_extensions()
