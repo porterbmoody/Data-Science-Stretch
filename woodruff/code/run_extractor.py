@@ -130,7 +130,7 @@ data_scriptures
 
 #%%
 
-phrase_length = 13
+phrase_length = 10
 threshold = .7
 print('volumes:', volume_titles)
 print('phrase length:', phrase_length)
@@ -146,3 +146,41 @@ match_extractor.matches_total
 
 #%%
 # git add .;git commit -m 'changes';git push;
+# import pandas as pd
+# cool_dict = {
+#     'index_woodruff':[1,2,3,10,20],
+#     'index_scriptures':[1,2,3,20,32],
+#     'text_woodruff':['hello','my','name','poop','banana'],
+# }
+
+# data = pd.DataFrame(cool_dict)
+# data
+
+# #%%
+# data.sort_values(['index_woodruff', 'index_scriptures'], inplace=True)
+# # Create a mask to identify rows where the indices are not 1 apart
+# mask = (data['index_woodruff'].diff() != 1) | (data['index_scriptures'].diff() != 1)
+# mask
+# data['group'] = mask.cumsum()
+# data
+
+# #%%
+# # Create a new column to identify groups based on the mask
+# data = data.groupby('group').agg({
+#     'index_woodruff': 'first',
+#     'index_scriptures': 'first',
+#     # 'match_count' : 'sum',
+#     # 'cosine_score': 'mean',
+#     # 'verse_title': 'first',
+#     # 'volume_title': 'first',
+#     # 'internal_id': 'first',
+#     # 'parent_id': 'first',
+#     # 'order': 'first',
+#     # 'website_url': 'first',
+#     'text_woodruff': ' '.join,
+#     # 'text_scriptures': ' '.join,
+#     # 'dates': 'first',
+# })
+# # data['cosine_score'] = data['cosine_score'].apply(lambda x: round(x, 5))
+
+# data
