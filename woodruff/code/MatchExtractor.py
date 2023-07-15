@@ -90,6 +90,7 @@ class MatchExtractor:
         mask = (self.matches_total['index_woodruff'].diff() != 1) | (self.matches_total['index_scriptures'].diff() != 1)
         # Create a new column to identify groups based on the mask
         self.matches_total['group'] = mask.cumsum()
+        self.matches_total['match_count'] = 1
         self.matches_total = self.matches_total.groupby('group').agg({
             # 'index_woodruff': 'first',
             # 'index_scriptures': 'first',
@@ -101,6 +102,7 @@ class MatchExtractor:
             'parent_id': 'first',
             'order': 'first',
             'website_url': 'first',
+            'match_count' : 'count',
             'text_woodruff': ' '.join,
             'text_scriptures': ' '.join,
             'dates': 'first',
