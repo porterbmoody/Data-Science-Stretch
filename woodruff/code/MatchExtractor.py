@@ -72,8 +72,8 @@ class MatchExtractor:
             self.matches_total = self.matches_total#.sort_values(by='cosine_score', ascending=False)
 
             # save to file
-            self.resolve_extensions()
             self.matches_total.to_csv(path_matches, index=False)
+        self.resolve_extensions()
 
         progress_bar.close()
 
