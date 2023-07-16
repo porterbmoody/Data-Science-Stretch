@@ -5,78 +5,8 @@ from MatchExtractor import MatchExtractor
 import warnings
 
 pd.set_option('display.max_colwidth', None)
-warnings.filterwarnings('ignore')
+# warnings.filterwarnings('ignore')
 
-replacements_woodruff = {
-    r'(, b\.)'              : r'',
-    r'\<U\+25CA\>'          : r'',
-    r'\&amp;c?'             : r"and",
-    r'\&apos;'              : r"'",
-    r"(\^?FIGURES?\^?)"     : r'',
-    r'[\{\}\~]'             : r'',
-    r'\n'                   : r' ',
-    r'\[\[(.*?)\|(.*?)\]\]' : r'\1',
-    r'\n'                   : r' ',
-    r'\–|\-|\—|\-\s'        : r'',
-    r'\s+'                  : r' ',
-    r'\.|\:|\;|\,|\(|\)|\?' : r'',
-    r'confer ence|Conferance'     : r'conference',
-    r'appoin ted'     : r'appointed',
-    r'sacrafice'           : r'sacrifice',
-    r'discours'            : r'discourse',
-    r'travling'            : r'traveling',
-    r'oclock'              : r'oclock',
-    r'w\. woodruff'        : r'wilford woodruff',
-    r'any\s?whare'         : r'anywhere',
-    r'some\s?whare'        : r'somewhere',
-    r'whare'               : r'where',
-    r'sumthing'            : r'something',
-    r' els '               : r' else ',
-    r' wil '               : r' will ',
-    r'savio saviour'     : r'saviour',
-    r'arived'            : r'arrived',
-    r'intirely    '      : r'entirely',
-    r'phylosophers'      : r'philosophers',
-    r'baptised'           : r'baptized',
-    r'benef\- it'       : r'benefit',
-    r'preachi \-ng'      : r'preaching',
-    r'oppor- tunities' : r'opportunities',
-    r'vary'         : r'very',
-    r'councellor'   : r'counselor',
-    r'sircumstances' : r'circumstances',
-    r'Preasent'    : r'present',
-    r'sept\.'      : r'september',
-    r'sacramento sacramento' : r'sacramento',
-    r'tryed'       : r'tried',
-    r'fals'        : r'false',
-    r'aprail'      : r'april',
-    r'untill'      : r'until',
-    r'sumwhat'      : r'somewhat',
-    r'joseph smith jun' : r'joseph smith jr',
-    r'miricle' : r'miracle',
-    r'procedings' : r'proceedings',
-    r'w odruff' : r'woodruff',
-    r'prefered' : r'preferred',
-    r'esspecially' : r'especially',
-    r'ownly' : r'only',
-    r'th\[e\]' : r'the',
-    r'judjment' : r'judgement',
-    r'experiance' : r'experience',
-    r'ingaged' : r'engaged',
-    r'\[she\]' : r'she',
-    r'fulnes ' : r'fulness ',
-    r'interestin ' : r'interesting ',
-    r'respetible ' : r'respectable ',
-    r'attonement' : r'atonement',
-    r'diestroy ' : r'destroy ',
-    r'a b c d e f g h i j k l m n o p q r s t u v w x y z and 1 2 3 4 5 6 7 8 9 0' : r'',
-    r' \^e\^ 4 \^p\^ 5 \^t\^ 1 \^d\^ 3 ': r'',
-    r'W X Y Z and 1 2 3 4 5': r'',
-}
-
-scripture_replacements = {
-    r'\.|\:|\;|\,|\-|\(|\)|\?' : r'',
-}
 
 #%%
 path_root = '../data/matches/all_books_10_words/'
@@ -107,13 +37,13 @@ new_columns = {'Internal ID':'internal_id',
 data_woodruff = data_woodruff.rename(columns=new_columns)[list(new_columns.values())]
 data_woodruff = data_woodruff.query("document_type=='Journals'")
 # text = StringUtil.combine_rows(data_woodruff['text'])
-data_woodruff['text_woodruff'] = StringUtil.str_replace_column(data_woodruff['text_woodruff'], replacements_woodruff)
+# data_woodruff['text_woodruff'] = StringUtil.str_replace_column(data_woodruff['text_woodruff'], replacements_woodruff)
 # data_woodruff.info()
 
 #%%
 # clean scripture data
 data_scriptures = data_scriptures.rename(columns={'text':'text_scriptures'})
-data_scriptures['text_scriptures'] = StringUtil.str_replace_column(data_scriptures['text_scriptures'], scripture_replacements)
+# data_scriptures['text_scriptures'] = StringUtil.str_replace_column(data_scriptures['text_scriptures'], scripture_replacements)
 
 # filter to certain volumes
 volume_titles = [
@@ -213,3 +143,57 @@ match_extractor.matches_total
 #     # 'text_scriptures': ' '.join,
 #     # 'dates': 'first',
 # })
+
+#%%
+
+# import pandas as pd
+# import numpy as np
+# from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer, TfidfTransformer
+# from IPython.display import display
+
+# documentA = 'the man went out for a walk'
+# documentB = 'the children sat around the fire'
+# corpus = [documentA, documentB]
+# bagOfWordsA = documentA.split(' ')
+# bagOfWordsB = documentB.split(' ')
+# bagOfWordsA
+# bagOfWordsB
+
+# #%%
+# uniqueWords = set(bagOfWordsA).union(set(bagOfWordsB))
+# uniqueWords
+# #%%
+# print('----------- compare word count -------------------')
+# numOfWordsA = dict.fromkeys(uniqueWords, 0)
+# for word in bagOfWordsA:
+#     numOfWordsA[word] += 1
+# numOfWordsB = dict.fromkeys(uniqueWords, 0)
+# for word in bagOfWordsB:
+#     numOfWordsB[word] += 1
+# numOfWordsB
+
+# #%%
+# series_A = pd.Series(numOfWordsA)
+# series_B = pd.Series(numOfWordsB)
+# df = pd.concat([series_A, series_B], axis=1).T
+# df = df.reindex(sorted(df.columns), axis=1)
+# display(df)
+
+# #%%
+# tf_df = df.divide(df.sum(1),axis='index')
+# tf_df
+
+# #%%
+
+# n_d = 1+ tf_df.shape[0]
+# df_d_t = 1 + (tf_df.values>0).sum(0)
+# idf = np.log(n_d/df_d_t) + 1
+# idf
+
+# #%%
+# pd.DataFrame(df.values * idf,
+#                   columns=df.columns )
+
+
+
+# # %%
