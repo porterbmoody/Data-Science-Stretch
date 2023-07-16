@@ -14,7 +14,7 @@ path_data_woodruff_raw   = '../data/raw/data_woodruff_raw.csv'
 path_data_woodruff_raw   = '../data/raw/derived_data.csv'
 # path_data_woodruff_clean = path_root + 'data_woodruff_clean.csv'
 path_data_scriptures     = '../data/raw/data_scriptures.csv'
-path_matches = '../data/matches/data_matches.csv'
+path_matches = '../data/matches/data_matches2.csv'
 
 # url paths
 url_woodruff = "https://github.com/wilfordwoodruff/Main-Data/raw/main/data/derived/derived_data.csv"
