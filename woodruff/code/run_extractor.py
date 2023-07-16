@@ -7,6 +7,9 @@ import warnings
 pd.set_option('display.max_colwidth', None)
 # warnings.filterwarnings('ignore')
 
+replacements_woodruff = {
+    r'\[\[(.*?)\|(.*?)\]\]' : r'\1',
+}
 
 #%%
 path_root = '../data/matches/all_books_10_words/'
@@ -14,7 +17,7 @@ path_data_woodruff_raw   = '../data/raw/data_woodruff_raw.csv'
 path_data_woodruff_raw   = '../data/raw/derived_data.csv'
 # path_data_woodruff_clean = path_root + 'data_woodruff_clean.csv'
 path_data_scriptures     = '../data/raw/data_scriptures.csv'
-path_matches = '../data/matches/data_matches2.csv'
+path_matches = '../data/matches/data_matches.csv'
 
 # url paths
 url_woodruff = "https://github.com/wilfordwoodruff/Main-Data/raw/main/data/derived/derived_data.csv"
@@ -37,7 +40,7 @@ new_columns = {'Internal ID':'internal_id',
 data_woodruff = data_woodruff.rename(columns=new_columns)[list(new_columns.values())]
 data_woodruff = data_woodruff.query("document_type=='Journals'")
 # text = StringUtil.combine_rows(data_woodruff['text'])
-# data_woodruff['text_woodruff'] = StringUtil.str_replace_column(data_woodruff['text_woodruff'], replacements_woodruff)
+data_woodruff['text_woodruff'] = StringUtil.str_replace_column(data_woodruff['text_woodruff'], replacements_woodruff)
 # data_woodruff.info()
 
 #%%
