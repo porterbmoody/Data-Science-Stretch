@@ -8,7 +8,70 @@ pd.set_option('display.max_colwidth', None)
 # warnings.filterwarnings('ignore')
 
 replacements_woodruff = {
+    r'(, b\.)'              : r'',
+    r'\<U\+25CA\>'          : r'',
+    r'\&amp;c?'             : r"and",
+    r'\&apos;'              : r"'",
+    r"(\^?FIGURES?\^?)"     : r'',
+    r'[\{\}\~]'             : r'',
+    r'\n'                   : r' ',
     r'\[\[(.*?)\|(.*?)\]\]' : r'\1',
+    r'\n'                   : r' ',
+    r'\–|\-|\—|\-\s'        : r'',
+    r'\s+'                  : r' ',
+    # r'\.|\:|\;|\,|\(|\)|\?' : r'',
+    r'confer ence|Conferance'     : r'conference',
+    r'appoin ted'     : r'appointed',
+    r'sacrafice'           : r'sacrifice',
+    r'discours'            : r'discourse',
+    r'travling'            : r'traveling',
+    r'oclock'              : r'oclock',
+    r'w\. woodruff'        : r'wilford woodruff',
+    r'any\s?whare'         : r'anywhere',
+    r'some\s?whare'        : r'somewhere',
+    r'whare'               : r'where',
+    r'sumthing'            : r'something',
+    r' els '               : r' else ',
+    r' wil '               : r' will ',
+    r'savio saviour'     : r'saviour',
+    r'arived'            : r'arrived',
+    r'intirely    '      : r'entirely',
+    r'phylosophers'      : r'philosophers',
+    r'baptised'           : r'baptized',
+    r'benef\- it'       : r'benefit',
+    r'preachi \-ng'      : r'preaching',
+    r'oppor- tunities' : r'opportunities',
+    r'vary'         : r'very',
+    r'councellor'   : r'counselor',
+    r'sircumstances' : r'circumstances',
+    r'Preasent'    : r'present',
+    r'sept\.'      : r'september',
+    r'sacramento sacramento' : r'sacramento',
+    r'tryed'       : r'tried',
+    r'fals'        : r'false',
+    r'aprail'      : r'april',
+    r'untill'      : r'until',
+    r'sumwhat'      : r'somewhat',
+    r'joseph smith jun' : r'joseph smith jr',
+    r'miricle' : r'miracle',
+    r'procedings' : r'proceedings',
+    r'w odruff' : r'woodruff',
+    r'prefered' : r'preferred',
+    r'esspecially' : r'especially',
+    r'ownly' : r'only',
+    r'th\[e\]' : r'the',
+    r'judjment' : r'judgement',
+    r'experiance' : r'experience',
+    r'ingaged' : r'engaged',
+    r'\[she\]' : r'she',
+    r'fulnes ' : r'fulness ',
+    r'interestin ' : r'interesting ',
+    r'respetible ' : r'respectable ',
+    r'attonement' : r'atonement',
+    r'diestroy ' : r'destroy ',
+    r'a b c d e f g h i j k l m n o p q r s t u v w x y z and 1 2 3 4 5 6 7 8 9 0' : r'',
+    r' \^e\^ 4 \^p\^ 5 \^t\^ 1 \^d\^ 3 ': r'',
+    r'W X Y Z and 1 2 3 4 5': r'',
 }
 
 #%%
@@ -42,6 +105,7 @@ data_woodruff = data_woodruff.query("document_type=='Journals'")
 # text = StringUtil.combine_rows(data_woodruff['text'])
 data_woodruff['text_woodruff'] = StringUtil.str_replace_column(data_woodruff['text_woodruff'], replacements_woodruff)
 # data_woodruff.info()
+data_woodruff
 
 #%%
 # clean scripture data
@@ -50,11 +114,11 @@ data_scriptures = data_scriptures.rename(columns={'text':'text_scriptures'})
 
 # filter to certain volumes
 volume_titles = [
-    #  'Old Testament',
-    #  'New Testament',
-    #  'Book of Mormon',
+     'Old Testament',
+     'New Testament',
+     'Book of Mormon',
      'Doctrine and Covenants',
-    #  'Pearl of Great Price',
+     'Pearl of Great Price',
      ]
 data_scriptures = data_scriptures.query("volume_title in @volume_titles")
 # query = "verse_title == 'Doctrine and Covenants 136:11'|verse_title == 'Doctrine and Covenants 136:12'|verse_title == 'Doctrine and Covenants 136:13'|verse_title == 'Doctrine and Covenants 136:14'|verse_title == 'Doctrine and Covenants 136:15'|verse_title == 'Doctrine and Covenants 136:16'|verse_title == 'Doctrine and Covenants 136:17'"
@@ -199,4 +263,22 @@ match_extractor.matches_total
 
 
 
-# # %%
+# %%
+import tensorflow as tf
+
+# Check available GPU devices
+print("Available GPUs:")
+tf.config.list_physical_devices('GPU')
+
+# Set TensorFlow to utilize GPU
+physical_devices = tf.config.list_physical_devices('CPU')
+physical_devices
+# tf.config.experimental.set_memory_growth(physical_devices[0], True)
+# tf.config.set_visible_devices(physical_devices[0], 'GPU')
+
+# Build and train your neural network
+# ...
+
+# Run your neural network
+# ...
+print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
