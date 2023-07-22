@@ -2,7 +2,6 @@ import pandas as pd
 import re
 from nltk.tokenize import word_tokenize
 from nltk.probability import FreqDist
-from sklearn.metrics.pairwise import cosine_similarity
 
 
 class StringUtil:
