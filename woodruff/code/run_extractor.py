@@ -141,144 +141,16 @@ match_extractor.run_extractor(path_matches=path_matches, git_push = True, quarto
 
 match_extractor.matches_total
 
-#%%
-# git add .;git commit -m 'changes';git push;
-# import pandas as pd
-# cool_dict = {
-#     'index_woodruff':[1,2,3,10,20],
-#     'index_scriptures':[1,2,3,20,32],
-#     'text_woodruff':['hello','my','name','poop','banana'],
-# }
-
-# data = pd.DataFrame(cool_dict)
-# data
-
-# #%%
-
-# data.sort_values(['index_woodruff', 'index_scriptures'], inplace=True)
-# # Create a mask to identify rows where the indices are not 1 apart
-# mask = (data['index_woodruff'].diff() != 1) | (data['index_scriptures'].diff() != 1)
-# mask
-# data['group'] = mask.cumsum()
-# data
-
-# #%%
-# # Create a new column to identify groups based on the mask
-# data = data.groupby('group').agg({
-#     'index_woodruff': 'last',
-#     'index_scriptures': 'last',
-#     # 'match_count' : 'sum',
-#     # 'cosine_score': 'mean',
-#     # 'verse_title': 'first',
-#     # 'volume_title': 'first',
-#     # 'internal_id': 'first',
-#     # 'parent_id': 'first',
-#     # 'order': 'first',
-#     # 'website_url': 'first',
-#     'text_woodruff': ' '.join,
-#     # 'text_scriptures': ' '.join,
-#     # 'dates': 'first',
-# })
-# # data['cosine_score'] = data['cosine_score'].apply(lambda x: round(x, 5))
-# data
-
-# #%%
-
-# data = data.append({'index_woodruff':4, 'index_scriptures':4,'text_woodruff':'is porter'}, ignore_index=True)
-# data
-
-# # %%
-# data.sort_values(['index_woodruff', 'index_scriptures'], inplace=True)
-# # Create a mask to identify rows where the indices are not 1 apart
-# mask = (data['index_woodruff'].diff() != 1) | (data['index_scriptures'].diff() != 1)
-# mask
-# data['group'] = mask.cumsum()
-# data
-
-# data.groupby('group').agg({
-#     'index_woodruff': 'last',
-#     'index_scriptures': 'last',
-#     # 'match_count' : 'sum',
-#     # 'cosine_score': 'mean',
-#     # 'verse_title': 'first',
-#     # 'volume_title': 'first',
-#     # 'internal_id': 'first',
-#     # 'parent_id': 'first',
-#     # 'order': 'first',
-#     # 'website_url': 'first',
-#     'text_woodruff': ' '.join,
-#     # 'text_scriptures': ' '.join,
-#     # 'dates': 'first',
-# })
 
 #%%
 
-# import pandas as pd
-# import numpy as np
-# from sklearn.feature_extraction.text import CountVectorizer, TfidfVectorizer, TfidfTransformer
-# from IPython.display import display
+import pandas as pd
+path = '../data/matches/data_matches2.csv'
 
-# documentA = 'the man went out for a walk'
-# documentB = 'the children sat around the fire'
-# corpus = [documentA, documentB]
-# bagOfWordsA = documentA.split(' ')
-# bagOfWordsB = documentB.split(' ')
-# bagOfWordsA
-# bagOfWordsB
-
-# #%%
-# uniqueWords = set(bagOfWordsA).union(set(bagOfWordsB))
-# uniqueWords
-# #%%
-# print('----------- compare word count -------------------')
-# numOfWordsA = dict.fromkeys(uniqueWords, 0)
-# for word in bagOfWordsA:
-#     numOfWordsA[word] += 1
-# numOfWordsB = dict.fromkeys(uniqueWords, 0)
-# for word in bagOfWordsB:
-#     numOfWordsB[word] += 1
-# numOfWordsB
-
-# #%%
-# series_A = pd.Series(numOfWordsA)
-# series_B = pd.Series(numOfWordsB)
-# df = pd.concat([series_A, series_B], axis=1).T
-# df = df.reindex(sorted(df.columns), axis=1)
-# display(df)
-
-# #%%
-# tf_df = df.divide(df.sum(1),axis='index')
-# tf_df
-
-# #%%
-
-# n_d = 1+ tf_df.shape[0]
-# df_d_t = 1 + (tf_df.values>0).sum(0)
-# idf = np.log(n_d/df_d_t) + 1
-# idf
-
-# #%%
-# pd.DataFrame(df.values * idf,
-#                   columns=df.columns )
+data = pd.read_csv(path).sort_values(by = 'cosine_score', ascending=False)
 
 
+data.sample(5)
 
-# %%
-import tensorflow as tf
 
-# Check available GPU devices
-print("Available GPUs:")
-tf.config.list_physical_devices('GPU')
-
-# Set TensorFlow to utilize GPU
-physical_devices = tf.config.list_physical_devices('CPU')
-physical_devices
-# tf.config.experimental.set_memory_growth(physical_devices[0], True)
-# tf.config.set_visible_devices(physical_devices[0], 'GPU')
-
-# Build and train your neural network
-# ...
-
-# Run your neural network
-# ...
-print("Num GPUs Available: ", len(tf.config.list_physical_devices('GPU')))
+#%%
