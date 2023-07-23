@@ -80,7 +80,7 @@ path_data_woodruff_raw   = '../data/raw/data_woodruff_raw.csv'
 path_data_woodruff_raw   = '../data/raw/derived_data.csv'
 # path_data_woodruff_clean = path_root + 'data_woodruff_clean.csv'
 path_data_scriptures     = '../data/raw/data_scriptures.csv'
-path_matches = '../data/matches/data_matches2.csv'
+path_matches = '../data/matches/data_matches.csv'
 
 # url paths
 url_woodruff = "https://github.com/wilfordwoodruff/Main-Data/raw/main/data/derived/derived_data.csv"
@@ -91,13 +91,13 @@ data_scriptures = pd.read_csv(path_data_scriptures)
 data_woodruff = pd.read_csv(path_data_woodruff_raw)
 
 # clean woodruff data
-columns = ['Internal ID', 'Parent ID', 'Order', 'Document Type', 'Website URL', 'Dates', 'Text Only Transcript']
+# columns = ['Internal ID', 'Parent ID', 'Order', 'Document Type', 'Website URL', 'Dates', 'Text Only Transcript']
 new_columns = {'Internal ID':'internal_id',
                'Parent ID':'parent_id',
                'Order':'order',
                'Document Type':'document_type',
                'Website URL':'website_url',
-               'Dates':'dates',
+            #    'Dates':'dates',
                'Text Only Transcript':'text_woodruff'
                }
 data_woodruff = data_woodruff.rename(columns=new_columns)[list(new_columns.values())]
@@ -114,15 +114,15 @@ data_scriptures = data_scriptures.rename(columns={'text':'text_scriptures'})
 
 # filter to certain volumes
 volume_titles = [
-     'Old Testament',
-     'New Testament',
-     'Book of Mormon',
+    #  'Old Testament',
+    #  'New Testament',
+    #  'Book of Mormon',
      'Doctrine and Covenants',
-     'Pearl of Great Price',
+    #  'Pearl of Great Price',
      ]
 data_scriptures = data_scriptures.query("volume_title in @volume_titles")
-# query = "verse_title == 'Doctrine and Covenants 136:11'|verse_title == 'Doctrine and Covenants 136:12'|verse_title == 'Doctrine and Covenants 136:13'|verse_title == 'Doctrine and Covenants 136:14'|verse_title == 'Doctrine and Covenants 136:15'|verse_title == 'Doctrine and Covenants 136:16'|verse_title == 'Doctrine and Covenants 136:17'"
-# data_scriptures = data_scriptures.query(query)
+query = "verse_title == 'Doctrine and Covenants 136:11'|verse_title == 'Doctrine and Covenants 136:12'|verse_title == 'Doctrine and Covenants 136:13'|verse_title == 'Doctrine and Covenants 136:14'|verse_title == 'Doctrine and Covenants 136:15'|verse_title == 'Doctrine and Covenants 136:16'|verse_title == 'Doctrine and Covenants 136:17'"
+data_scriptures = data_scriptures.query(query)
 data_scriptures
 
 #%%
@@ -144,13 +144,13 @@ match_extractor.matches_total
 
 #%%
 
-import pandas as pd
-path = '../data/matches/data_matches2.csv'
+# import pandas as pd
+# path = '../data/matches/data_matches2.csv'
 
-data = pd.read_csv(path).sort_values(by = 'cosine_score', ascending=False)
+# data = pd.read_csv(path).sort_values(by = 'cosine_score', ascending=False)
 
 
-data.sample(5)
+# data.sample(5)
 
 
 #%%

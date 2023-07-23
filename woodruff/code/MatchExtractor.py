@@ -104,7 +104,6 @@ class MatchExtractor:
             'match_count' : 'count',
             'text_woodruff': ' '.join,
             'text_scriptures': ' '.join,
-            'dates': 'first',
         })
         self.matches_total['cosine_score'] = self.matches_total['cosine_score'].apply(lambda x: round(x, 5))
 
