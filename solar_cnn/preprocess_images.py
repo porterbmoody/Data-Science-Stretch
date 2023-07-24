@@ -6,6 +6,8 @@ image_dir = 'data/'
 image_width = 400
 image_height = 400
 num_polygon_coordinates = 2
+num_polygon_coordinates
+
 #%%
 # Create an instance of ImageDataGenerator
 datagen = ImageDataGenerator(rescale=1.0 / 255.0)  # Normalize pixel values between 0 and 1
@@ -23,7 +25,7 @@ data_generator = datagen.flow_from_directory(
     target_size=input_shape,
     shuffle=True,
 )
-
+data_generator
 # Note that we set class_mode to None since we're not using traditional class labels.
 
 
