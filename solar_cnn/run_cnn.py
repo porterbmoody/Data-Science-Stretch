@@ -1,23 +1,25 @@
+#%%
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 
 
+
 def create_cnn_model(input_shape, num_classes):
-    model = Sequential()
-    model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=input_shape))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
+	model = Sequential()
+	model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape=input_shape))
+	model.add(MaxPooling2D(pool_size=(2, 2)))
 
-    model.add(Conv2D(64, kernel_size=(3, 3), activation='relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
+	model.add(Conv2D(64, kernel_size=(3, 3), activation='relu'))
+	model.add(MaxPooling2D(pool_size=(2, 2)))
 
-    model.add(Conv2D(128, kernel_size=(3, 3), activation='relu'))
-    model.add(MaxPooling2D(pool_size=(2, 2)))
+	model.add(Conv2D(128, kernel_size=(3, 3), activation='relu'))
+	model.add(MaxPooling2D(pool_size=(2, 2)))
 
-    model.add(Flatten())
-    model.add(Dense(256, activation='relu'))
-    model.add(Dense(num_classes, activation='sigmoid'))  # Output layer for coordinates
-    return model
+	model.add(Flatten())
+	model.add(Dense(256, activation='relu'))
+	model.add(Dense(num_classes, activation='sigmoid'))  # Output layer for coordinates
+	return model
 
 create_cnn_model()
 
@@ -51,17 +53,17 @@ image_tensor
 
 #%%
 coordinates = [
-    (160, 400-145),
-    (128, 400-278),
-    (276, 400-277),
-    (276, 400-148),
-    ]
+	(160, 400-145),
+	(128, 400-278),
+	(276, 400-277),
+	(276, 400-148),
+	]
 coordinates_list = [
-    160, 400-145,
-    128, 400-278,
-    276, 400-277,
-    276, 400-148,
-    ]
+	160, 400-145,
+	128, 400-278,
+	276, 400-277,
+	276, 400-148,
+	]
 draw = ImageDraw.Draw(image)
 draw.polygon(coordinates, outline = 'black', width = 1)
 image
@@ -85,15 +87,15 @@ coordinates_list
 # ])
 
 model = tf.keras.models.Sequential([
-    # tf.keras.layers.experimental.preprocessing.Rescaling(1./255, input_shape=(2, 2, 1)),
-    # tf.keras.layers.Flatten(),
-    tf.keras.layers.Dense(8, input_shape = [1]),
-    tf.keras.layers.Dense(1),
+	# tf.keras.layers.experimental.preprocessing.Rescaling(1./255, input_shape=(2, 2, 1)),
+	# tf.keras.layers.Flatten(),
+	tf.keras.layers.Dense(8, input_shape = [1]),
+	tf.keras.layers.Dense(1),
 ])
 
 # Compile the model
 model.compile(optimizer='sgd',
-              loss='mean_squared_error')
+			  loss='mean_squared_error')
 
 # Print the model summary
 model.summary()
@@ -106,8 +108,8 @@ x = np.array([1,2,3,4, 5, 6, 7])
 y = 2*x
 y
 data = pd.DataFrame({
-    'x':x,
-    'y':y,
+	'x':x,
+	'y':y,
 })
 data
 
@@ -129,7 +131,7 @@ print(y)
 
 #%%
 model = tf.keras.models.Sequential([
-    tf.keras.layers.Dense(1, input_shape=[1]),
+	tf.keras.layers.Dense(1, input_shape=[1]),
 ])
 
 model.compile(optimizer='sgd', loss = 'mean_squared_error')
