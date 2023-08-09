@@ -6,7 +6,7 @@ from matplotlib import pyplot as plt
 from AIUtil import AIUtil
 import tensorflow as tf
 from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
+from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense, Rescaling
 from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.utils import image_dataset_from_directory
 import os
@@ -18,12 +18,14 @@ data_dir = 'data'
 batch_size = 32
 img_height = 100
 img_width = 100
+validation_split = .2
+seed = 42
 
 train_data = tf.keras.utils.image_dataset_from_directory(
   data_dir,
-  validation_split=0.2,
+  validation_split=validation_split,
   subset="training",
-  seed=123,
+  seed=seed,
   image_size=(img_height, img_width),
   batch_size=batch_size)
 
@@ -33,26 +35,15 @@ train_data
 
 test_data = tf.keras.utils.image_dataset_from_directory(
   data_dir,
-  validation_split=0.2,
+  validation_split=validation_split,
   subset="validation",
-  seed=123,
+  seed=seed,
   image_size=(img_height, img_width),
   batch_size=batch_size)
 test_data
 
-# #%%
-# model.compile(
-#   optimizer='adam',
-#   loss=tf.keras.losses.SparseCategoricalCrossentropy(from_logits=True),
-#   metrics=['accuracy'])
-
-# model.summary()
-# #%%
-# model.fit(
-#   train_data,
-#   validation_data=test_data,
-#   epochs=3
-# )
+for element in test_data.as_numpy_iterator():
+  print(element)
 
 
 #%%
@@ -77,6 +68,7 @@ test_data
 # build model
 input_shape = (100,100,3)
 model = Sequential()
+model.add(Rescaling(scale=1.0/255.0, input_shape=input_shape))
 model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape = input_shape))
 model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Flatten())
@@ -100,6 +92,7 @@ model.fit(
   validation_data=test_data,
   epochs = epochs
 )
+
 
 #%%
 # Evaluate the model on the test dataset

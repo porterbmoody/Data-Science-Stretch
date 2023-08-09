@@ -1,7 +1,5 @@
 import pandas as pd
 import re
-from nltk.tokenize import word_tokenize
-from nltk.probability import FreqDist
 
 
 class StringUtil:
