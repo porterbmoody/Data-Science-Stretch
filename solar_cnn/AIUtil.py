@@ -2,15 +2,24 @@ import numpy as np
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
 import tensorflow as tf
+from PIL import Image
 
 
 
 class AIUtil:
 
     @staticmethod
-    def invert_coordinates(coordinates, image):
-        inverted_polygon_coordinates = [(x, image.size[1] - y) for x, y in coordinates]
+    def invert_coordinates(coordinates, image_size):
+        inverted_polygon_coordinates = [(x, image_size[1] - y) for x, y in coordinates]
         return inverted_polygon_coordinates
+
+    @staticmethod
+    def load_image_data(path, image_size):
+        image = Image.open(path)
+        image = image.resize(image_size)
+        image_tensor = tf.convert_to_tensor(np.array(image))
+        # image_tensor = tf.expand_dims(image_array, 0)
+        return image_tensor
 
     @staticmethod
     def flatten_coordinates(coordinates):

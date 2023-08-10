@@ -1,0 +1,8 @@
+name,age,score
+Alice,22,85
+Bob,,90
+Charlie,23,78
+David,21,
+Emma,25,88
+Fiona,,75
+Grace,22,80

@@ -1,12 +1,15 @@
 #%%
-
 from flask import Flask, render_template, request
 from PanelFramework import PanelFramework
 from RooftopImage import RooftopImage
 from shapely.geometry import Polygon
+from AIUtil import AIUtil
+from PIL import Image, ImageDraw
+import PIL
 import os
 import pandas as pd
 from termcolor import colored
+import tensorflow as tf
 
 #%%
 
@@ -100,6 +103,31 @@ if __name__ == '__main__':
                 gui = GUI(address)
                 app.run()
 
-
-
 # %%
+path = 'data/without_panels/145 N Mall Dr UNIT 31, St. George, UT 84790.png'
+image_size = (400, 400)
+image = Image.open(path)
+image = image.resize(image_size)
+image
+
+draw = ImageDraw.Draw(image)
+coordinates = [(130, 145), (200,200)]
+# coordinates = tf.reshape(tf.convert_to_tensor(coordinates), shape=(-1,))
+# coordinates = list(sum(coordinates, ()))
+coordinates
+
+#%%
+coordinates = AIUtil.invert_coordinates(coordinates, image_size)
+draw.line(coordinates)
+
+image
+
+
+#%%
+
+# Convert the PIL image to a TensorFlow tensor
+tf_image = tf.convert_to_tensor(image)
+
+# Print the shape and data type of the TensorFlow tensor
+print("Tensor shape:", tf_image.shape)
+print("Data type:", tf_image.dtype)
