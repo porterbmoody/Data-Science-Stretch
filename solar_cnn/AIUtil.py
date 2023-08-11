@@ -14,7 +14,7 @@ class AIUtil:
         return inverted_polygon_coordinates
 
     @staticmethod
-    def load_image_data(path, image_size):
+    def load_image_tensor(path, image_size):
         image = Image.open(path)
         image = image.resize(image_size)
         image_tensor = tf.convert_to_tensor(np.array(image))
