@@ -5,14 +5,14 @@ title: "Deep Learning: The Future of Intelligence"
 
 # Background
 
-Deep learning is a type of artifitial intelligence model that uses linear algebra and multivariable calculus to learn the relationship between an set of inputs and a set of outputs. A deep learning model is a neural network that involves more than 1 hidden layer.
+Deep learning is a type of artificial intelligence model that uses linear algebra and multivariable calculus to learn the relationship between an set of inputs and a set of outputs. A deep learning model is a neural network that involves more than 1 hidden layer.
 
 ![](../images/nn_cool.png)
 
 
-## Prerequisites:
-- Transformations, mappings, vector and matrix multiplication and other operations from linear algebra
-- Partial derivatives and their implications from multivariable calculus
+<!-- ## Prerequisites: -->
+<!-- - Transformations, mappings, vector and matrix multiplication and other operations from linear algebra -->
+<!-- - Partial derivatives and their implications from multivariable calculus -->
 
 
 # Forward Propagation

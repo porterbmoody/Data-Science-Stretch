@@ -122,7 +122,6 @@ draw.line(coordinates)
 
 image
 
-
 #%%
 
 # Convert the PIL image to a TensorFlow tensor
@@ -131,3 +130,66 @@ tf_image = tf.convert_to_tensor(image)
 # Print the shape and data type of the TensorFlow tensor
 print("Tensor shape:", tf_image.shape)
 print("Data type:", tf_image.dtype)
+
+#%%
+path = 'data/without_panels/' + image_paths[10]
+print(path)
+image = Image.open(path).convert('RGB')
+image = image.resize(image_size)
+
+draw = ImageDraw.Draw(image)
+coordinates = [(56, 71),(100, 100)]
+coordinates = AIUtil.invert_coordinates(coordinates, image_size)
+draw.line(coordinates)
+image
+
+#%%
+import pandas as pd
+from PIL import Image, ImageDraw
+from AIUtil import AIUtil
+
+path_coordinates = 'data_coordinates.csv'
+path = 'data/without_panels/'
+data_coordinates = pd.read_csv(path_coordinates)
+image_paths = os.listdir(path)
+image_paths
+data_coordinates
+
+#%%
+def input_coordinates(path):
+    image = Image.open(path)
+    x = input('input x coordinate:')
+    y = input('input y coordinate:')
+    return image
+
+for image_path in image_paths:
+    image_path = path + image_path
+    if image_path in list(data_coordinates['address']):
+        continue
+    # input_coordinates(image_path)
+    print(image_path)
+
+#%%
+
+path_image = 'data/without_panels/2304 E 50 S St, St. George, UT 84790.png'
+image_size = (200,200)
+def read_image(path, image_size = (200,200), mode = 'L'):
+    image = Image.open(path_image)
+    image = image.resize(image_size)
+    image = image.convert('L')
+
+    return image
+
+def draw_point(image, coordinates):
+    draw = ImageDraw.Draw(image)
+    coordinates = AIUtil.invert_coordinates(coordinates, image_size)
+    draw.line(coordinates)
+    return draw
+image = read_image(path_image)
+coordinates = [(56, 71),(100, 100)]
+image_new = draw_point(image, coordinates)
+image_new
+
+image
+
+# %%

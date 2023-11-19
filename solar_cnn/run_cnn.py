@@ -11,51 +11,32 @@ from tensorflow.keras.preprocessing.image import ImageDataGenerator
 from tensorflow.keras.utils import image_dataset_from_directory
 import os
 import shutil
+import ast
 
-image_paths =  os.listdir('data/without_panels')
-image_size = (200,200)
+pd.set_option('display.max_colwidth', None)
 
-image_tensors = []
-# load images in folder as tensors
-for image_path in image_paths:
-	path = 'data/without_panels/' + image_path
-	image_tensor = AIUtil.load_image_tensor(path, image_size)
-	image_tensors.append(image_tensor)
+path = 'data/without_panels/'
+path_coordinates = 'data_coordinates.csv'
 
-image_tensors
-
-
-#%%
-image = Image.open('data/without_panels/' + image_paths[5]).convert('RGB')
-image = image.resize(image_size)
-
-draw = ImageDraw.Draw(image)
-coordinates = [(65, 73),(100, 100)]# ]
-coordinates = AIUtil.invert_coordinates(coordinates, image_size)
-draw.line(coordinates)
-image
-
-
-#%%
-data_coordinates = pd.DataFrame({
-	'address':image_paths[0],
-	'coordinates':[
-		[78, 62], 
-		[64, 62],
-		[55, 75],
-		[59, 69],
-		[55, 69],
-		],
-})
+data_coordinates = pd.read_csv(path_coordinates, converters={'coordinates': ast.literal_eval})
 
 data_coordinates
-# coordinates = np.array([
-	# [70, 71],
-	# [62, 74],
-	# [56, 68],
-	# [73, 75],
-	# [71, 76],
-	# ])
+
+#%%
+image_size = (200,200)
+
+image_tensors = AIUtil.load_image_tensors(data_coordinates['address'], image_size)
+image_tensors
+print('image tensors:',len(image_tensors))
+print('shape:', image_tensors[0].shape)
+
+#%%
+x = np.array(image_tensors)
+# x = tf.reshape(x, (1, 200, 200, 4))
+y = np.array(list(data_coordinates['coordinates']))
+
+print(x.shape)
+print(y.shape)
 
 
 #%%
@@ -64,11 +45,11 @@ data_coordinates
 input_shape = (200,200,4)
 model = Sequential()
 model.add(Rescaling(scale=1.0/255.0, input_shape=input_shape))
-# model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape = input_shape))
-# model.add(MaxPooling2D(pool_size=(2, 2)))
+model.add(Conv2D(32, kernel_size=(3, 3), activation='relu', input_shape = input_shape))
+model.add(MaxPooling2D(pool_size=(2, 2)))
 model.add(Flatten())
-model.add(Dense(32))
-model.add(Dense(32, activation='sigmoid'))
+model.add(Dense(64))
+model.add(Dense(64, activation='sigmoid'))
 model.add(Dense(2))
 
 # Compile the model with appropriate optimizer and loss function
@@ -80,24 +61,9 @@ model.compile(optimizer=optimizer, loss=loss)
 model.summary()
 
 #%%
-x = np.array([
-	image_tensors[0],
-	image_tensors[1],
-	image_tensors[2],
-	image_tensors[3],
-	image_tensors[4],
-	image_tensors[5],
-	])
-# x = tf.reshape(x, (1, 200, 200, 4))
-y = np.array(list(data_coordinates['coordinates']))
-
-print(x.shape)
-print(y.shape)
-
-#%%
-epochs=25
+epochs=50
 batch_size = 1
-model.fit(
+history = model.fit(
 	x,
 	y,
 	epochs = epochs,
@@ -105,12 +71,39 @@ model.fit(
 )
 
 #%%
-# Evaluate the model on the test dataset
+plt.plot(history.history['loss'])
 
-test = image_tensors[3]
+#%%
+
+test = image_tensors[1]
 test = tf.reshape(test, (1, 200, 200, 4))
 test.shape
-#%%
+
 model.predict(test, batch_size = batch_size)
 
 # %%
+
+# coordinates = np.array([
+	# [70, 71],
+	# [62, 74],
+	# [56, 68],
+	# [73, 75],
+	# [71, 76],
+	# ])
+
+# data_coordinates = pd.DataFrame({
+# 	'address':image_paths[:11],
+# 	'coordinates':[
+# 		[78, 62],
+# 		[64, 62],
+# 		[55, 75],
+# 		[59, 69],
+# 		[55, 69],
+# 		[55, 69],
+# 		[78, 75],
+# 		[79, 73],
+# 		[68, 70],
+# 		[62, 75],
+# 		[56, 71],
+# 		],
+# })

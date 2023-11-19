@@ -5,13 +5,17 @@ import tensorflow as tf
 from PIL import Image
 
 
-
 class AIUtil:
 
     @staticmethod
     def invert_coordinates(coordinates, image_size):
         inverted_polygon_coordinates = [(x, image_size[1] - y) for x, y in coordinates]
         return inverted_polygon_coordinates
+
+    @staticmethod
+    def load_image_tensors(image_paths, image_size):
+        image_tensors = [AIUtil.load_image_tensor(image_path, image_size) for image_path in image_paths]
+        return image_tensors
 
     @staticmethod
     def load_image_tensor(path, image_size):
