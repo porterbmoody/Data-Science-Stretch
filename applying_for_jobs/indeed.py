@@ -167,7 +167,6 @@ import sendgrid
 from sendgrid.helpers.mail import Mail, Attachment, FileContent, FileName, FileType, Disposition
 import os
 
-api_key = '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'
 
 sg = sendgrid.SendGridAPIClient(api_key=api_key)
 
